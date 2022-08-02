@@ -1,3 +1,10 @@
+# Prepare Your Own Secrets File
+
+1. Log into https://www.alchemy.com/ or create an account to obtain an api key.
+2. Fill in your details in [secrets.json](./secrets.json)
+
+Don't commit any of the info you put in this file.
+ 
 # Advanced Sample Hardhat Project
 
 This project demonstrates an advanced Hardhat use case, integrating other tools commonly used alongside Hardhat in the ecosystem.
