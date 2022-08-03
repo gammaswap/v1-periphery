@@ -1,25 +1,24 @@
-// We require the Hardhat Runtime Environment explicitly here. This is optional
-// but useful for running the script in a standalone fashion through `node <script>`.
-//
-// When running the script with `npx hardhat run <script>` you'll find the Hardhat
-// Runtime Environment's members available in the global scope.
 import { ethers } from "hardhat";
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
+  
+  const Factory = await ethers.getContractFactory("TestGammaPoolFactory");
+  const factory = await Factory.deploy();
 
-  // We get the contract to deploy
-  const Greeter = await ethers.getContractFactory("Greeter");
-  const greeter = await Greeter.deploy("Hello, Hardhat!");
+  const Erc20 = await ethers.getContractFactory("TestERC20");
+  const erc20 = await Erc20.deploy();
 
-  await greeter.deployed();
+  const GammaPool = await ethers.getContractFactory("TestGammaPool");
+  const COMPUTED_INIT_CODE_HASH = ethers.utils.keccak256(
+    GammaPool.bytecode
+  );
 
-  console.log("Greeter deployed to:", greeter.address);
+  const PositionManager = await ethers.getContractFactory("PositionManager");
+  const positionManager = await PositionManager.deploy(factory.address, erc20.address, COMPUTED_INIT_CODE_HASH);
+    
+  await positionManager.deployed();
+
+  console.log("PositionManager deployed to:", positionManager.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
