@@ -15,7 +15,7 @@ describe("GammaPool", function () {
     // Get the ContractFactory and Signers here.
     TestERC20 = await ethers.getContractFactory("TestERC20");
     TestPoolAddress = await ethers.getContractFactory("TestPoolAddress");
-    GammaPool = await ethers.getContractFactory("GammaPool");
+    GammaPool = await ethers.getContractFactory("TestGammaPool");
     [owner] = await ethers.getSigners();
 
     // To deploy our contract, we just have to call Token.deploy() and await
