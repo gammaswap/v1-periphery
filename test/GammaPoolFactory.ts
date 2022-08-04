@@ -1,4 +1,4 @@
-import { ethers } from "hardhat";
+/*import { ethers } from "hardhat";
 import { expect } from "chai";
 
 describe("GammaPoolFactory", function () {
@@ -165,4 +165,4 @@ describe("GammaPoolFactory", function () {
       expect(await factory.feeToSetter()).to.equal(addr2.address);
     });
   });
-});
+});/**/

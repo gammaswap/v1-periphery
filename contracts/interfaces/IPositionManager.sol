@@ -4,15 +4,20 @@ pragma solidity ^0.8.0;
 import "./ITransfers.sol";
 
 interface IPositionManager  is ITransfers {
-    struct DepositParams {
-        address cfmm;
-        uint24 protocol;
-        uint256 lpTokens;
-        address to;
-        uint256 deadline;
-    }
 
-    struct WithdrawParams {
+    event DepositNoPull(address indexed pool, uint256 shares);
+    event WithdrawNoPull(address indexed pool, uint256 assets);
+    event DepositReserves(address indexed pool, uint256 reservesLen, uint256 shares);
+    event WithdrawReserves(address indexed pool, uint256 reservesLen, uint256 assets);
+    event CreateLoan(address indexed pool, uint256 tokenId);
+    event BorrowLiquidity(address indexed pool, uint256 tokenId, uint256 amountsLen);
+    event RepayLiquidity(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint256 lpTokensPaid, uint256 amountsLen);
+    event IncreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
+    event DecreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
+    event RebalanceCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
+    event RebalanceCollateralWithLiquidity(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
+
+    struct DepositWithdrawParams {
         address cfmm;
         uint24 protocol;
         uint256 lpTokens;
@@ -78,8 +83,8 @@ interface IPositionManager  is ITransfers {
     function factory() external view returns (address);
 
     //Short Gamma
-    function depositNoPull(DepositParams calldata params) external returns(uint256 shares);
-    function withdrawNoPull(WithdrawParams calldata params) external returns(uint256 assets);
+    function depositNoPull(DepositWithdrawParams calldata params) external returns(uint256 shares);
+    function withdrawNoPull(DepositWithdrawParams calldata params) external returns(uint256 assets);
     function depositReserves(DepositReservesParams calldata params) external returns (uint256[] memory reserves, uint256 shares);
     function withdrawReserves(WithdrawReservesParams calldata params) external returns (uint256[] memory reserves, uint256 assets);
 
