@@ -24,6 +24,8 @@ describe("GammaPoolFactory", function () {
     let protocol: any;
     let count: any;
     let gammaPoolAddr: any;
+    let tokenId: any;
+    let createLoanArgs: any;
 
     // `beforeEach` will run before each test, re-deploying the contract every
     // time. It receives a callback, which can be async.
@@ -86,6 +88,10 @@ describe("GammaPoolFactory", function () {
         gammaPool = await GammaPool.attach(
             gammaPoolAddr // The deployed contract address
         );
+
+        const createLoanResponse = await (await posMgr.createLoan(cfmm.address, 1, owner.address, ethers.constants.MaxUint256)).wait();
+        createLoanArgs = createLoanResponse.events[1].args
+        tokenId = createLoanArgs.tokenId.toNumber()
     });
 
     // You can nest describe calls to create subsections.
@@ -131,10 +137,206 @@ describe("GammaPoolFactory", function () {
                 expect(event.args.pool).to.equal(gammaPool.address);
                 expect(event.args.assets.toNumber()).to.equal(16);
             });
-        });/**/
+        });
+
+        it("depositReserves", async function () {
+            await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            const DepositReservesParams =  {
+                cfmm: cfmm.address,
+                amountsDesired: [10000, 100],
+                amountsMin: [1000, 10],
+                to: addr4.address,
+                protocol: 1,
+                deadline: ethers.constants.MaxUint256
+            }
+            const res = await (await posMgr.depositReserves(DepositReservesParams)).wait();
+            res.events.forEach(function(event: any, i: any){
+                expect(event.args).to.not.be.an('undefined');
+                console.log("event >>");
+                console.log(event.args);
+                expect(event.args.pool).to.equal(gammaPool.address);
+                expect(event.args.reservesLen).to.equal(4);
+                expect(event.args.shares.toNumber()).to.equal(18);
+            });
+        });
+
+        // FIXME: Throwing amountsMin error
+        it("withdrawReserves", async function () {            
+            await gammaPool.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+
+            const WithdrawReservesParams =  {
+                cfmm: cfmm.address,
+                protocol: 1,
+                amount: 1000,
+                amountsMin: [10000, 100],
+                to: owner.address,
+                deadline: ethers.constants.MaxUint256
+            }
+            
+            const res = await (await posMgr.withdrawReserves(WithdrawReservesParams)).wait();
+            console.log("Response", res);
+            
+            res.events.forEach(function(event: any, i: any){
+                if(i == 0)
+                    return;
+                console.log("event >>");
+                console.log(event.args);
+                expect(event.args.pool).to.equal(gammaPool.address);
+                expect(event.args.reservesLen).to.equal(3);
+                expect(event.args.assets.toNumber()).to.equal(17);
+            });
+        });
     });
+
     // You can nest describe calls to create subsections.
     describe("Long Gamma", function () {
+        it("createLoan", async function () {
+            await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            
+            console.log("event >>");
+            console.log(createLoanArgs);
+            expect(createLoanArgs.pool).to.equal(gammaPool.address);
+            expect(createLoanArgs.tokenId.toNumber()).to.equal(19);
+        });
 
+        it("borrowLiquidity", async function () {
+            await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+
+            const BorrowLiquidityParams = {
+                cfmm: cfmm.address,
+                protocol: 1,
+                tokenId: tokenId,
+                lpTokens: 1,
+                to: owner.address,
+                deadline: ethers.constants.MaxUint256
+            }
+            
+            const res = await (await posMgr.borrowLiquidity(BorrowLiquidityParams)).wait();
+            
+            const { args } = res.events[0]
+            console.log("event >>");
+            console.log(args);
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(19);
+        });
+
+        it("repayLiquidity", async function () {
+            await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            
+            const RepayLiquidityParams = {
+                cfmm: cfmm.address,
+                protocol: 1,
+                tokenId: tokenId,
+                liquidity: 1,
+                to: owner.address,
+                deadline: ethers.constants.MaxUint256
+            }
+            
+            const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
+            
+            const { args } = res.events[0]
+            console.log("event >>");
+            console.log(args);
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(19);
+            expect(args.liquidityPaid.toNumber()).to.equal(24);
+            expect(args.lpTokensPaid.toNumber()).to.equal(25);
+            expect(args.amountsLen.toNumber()).to.equal(9);
+        });
+
+        // FIXME: reverted with reason string 'STF'
+        it("increaseCollateral", async function () {
+            await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            
+            const AddRemoveCollateralParams = {
+                cfmm: cfmm.address,
+                protocol: 1,
+                tokenId: tokenId,
+                amounts: [1000,100],
+                to: addr1.address,
+                deadline: ethers.constants.MaxUint256
+            }
+            
+            const res = await (await posMgr.increaseCollateral(AddRemoveCollateralParams)).wait();
+            console.log("Response: ", res.events[0].args);
+            
+            // res.events.forEach(function(event: any, i: any){
+            //     if(i == 0)
+            //         return;
+
+            //     console.log("event >>");
+            //     console.log(event.args);
+            //     expect(event.args.pool).to.equal(gammaPool.address);
+            //     expect(event.args.tokenId.toNumber()).to.equal(19);
+            // });
+        });
+
+        it("decreaseCollateral", async function () {
+            await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            
+            const AddRemoveCollateralParams = {
+                cfmm: cfmm.address,
+                protocol: 1,
+                tokenId: tokenId,
+                amounts: [100,10],
+                to: owner.address,
+                deadline: ethers.constants.MaxUint256
+            }
+            
+            const res = await (await posMgr.decreaseCollateral(AddRemoveCollateralParams)).wait();
+            
+            const { args } = res.events[0]
+            console.log("event >>");
+            console.log(args);
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(19);
+            expect(args.tokensHeldLen.toNumber()).to.equal(7);
+        });
+
+        it("rebalanceCollateral", async function () {
+            await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            
+            const RebalanceCollateralParams = {
+                cfmm: cfmm.address,
+                protocol: 1,
+                tokenId: tokenId,
+                deltas: [4, 2],
+                liquidity: 1,
+                to: owner.address,
+                deadline: ethers.constants.MaxUint256
+            }
+            
+            const res = await (await posMgr.rebalanceCollateral(RebalanceCollateralParams)).wait();
+            
+            const { args } = res.events[0]
+            console.log("event >>");
+            console.log(args);
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(19);
+            expect(args.tokensHeldLen.toNumber()).to.equal(10);
+        });
+
+        it("rebalanceCollateralWithLiquidity", async function () {
+            await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            
+            const RebalanceCollateralParams = {
+                cfmm: cfmm.address,
+                protocol: 1,
+                tokenId: tokenId,
+                deltas: [4, 2],
+                liquidity: 2,
+                to: owner.address,
+                deadline: ethers.constants.MaxUint256
+            }
+            
+            const res = await (await posMgr.rebalanceCollateralWithLiquidity(RebalanceCollateralParams)).wait();
+            
+            const { args } = res.events[0]
+            console.log("event >>");
+            console.log(args);
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(19);
+            expect(args.tokensHeldLen.toNumber()).to.equal(11);
+        });
     });
 });

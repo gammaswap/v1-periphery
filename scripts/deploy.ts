@@ -1,12 +1,13 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  
+  const [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
+
   const Factory = await ethers.getContractFactory("TestGammaPoolFactory");
-  const factory = await Factory.deploy();
+  const factory = await Factory.deploy(owner.address, addr1.address, addr2.address, addr3.address);
 
   const Erc20 = await ethers.getContractFactory("TestERC20");
-  const erc20 = await Erc20.deploy();
+  const erc20 = await Erc20.deploy("WETH", "WETH");
 
   const GammaPool = await ethers.getContractFactory("TestGammaPool");
   const COMPUTED_INIT_CODE_HASH = ethers.utils.keccak256(
