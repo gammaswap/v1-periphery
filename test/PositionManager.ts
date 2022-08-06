@@ -94,6 +94,60 @@ describe("GammaPoolFactory", function () {
         tokenId = createLoanArgs.tokenId.toNumber()
     });
 
+    describe("Base Functions", function () {
+        it("sendTokensCallback should FORBIDDEN", async function () {
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            
+            const sendTokensCallback =  {
+                payer: owner.address,
+                cfmm: cfmm.address,
+                protocol: 1,
+            }
+            const tokens = [tokenA.address, tokenB.address];
+            const amounts =  [10000, 10000];
+            const payee = addr1.address;
+            const data = ethers.utils.defaultAbiCoder.encode(["tuple(address payer, address cfmm, uint24 protocol)"],[sendTokensCallback]);
+            
+            const res = posMgr.sendTokensCallback(tokens, amounts, payee, data)
+            
+            await expect(res).to.be.revertedWith("FORBIDDEN");
+        })
+
+        it("sendTokensCallback should not be FORBIDDEN", async function () {
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            
+            const prevBalanceOwnerA = await tokenA.balanceOf(owner.address);
+            const prevBalanceOwnerB = await tokenB.balanceOf(owner.address);
+
+            const sendTokensCallback =  {
+                payer: owner.address,
+                cfmm: cfmm.address,
+                protocol: 1,
+            }
+            const tokens = [tokenA.address, tokenB.address];
+            const amounts =  [90000, 1000];
+            const payee = addr1.address;
+            const data = ethers.utils.defaultAbiCoder.encode(["tuple(address payer, address cfmm, uint24 protocol)"],[sendTokensCallback]);
+            
+            const res = await gammaPool.testTokenCallbackFunction(posMgr.address, tokens, amounts, payee, data)
+
+            const newBalanceOwnerA = await tokenA.balanceOf(owner.address);
+            const newBalanceOwnerB = await tokenB.balanceOf(owner.address);
+
+            console.log("Previous Balance >>");
+            console.log("TokenA: ", prevBalanceOwnerA.toString());
+            console.log("TokenB: ", prevBalanceOwnerB.toString());
+            
+            console.log("New Balance >>");
+            console.log("TokenA: ", newBalanceOwnerA.toString());
+            console.log("TokenB: ", newBalanceOwnerB.toString());
+                        
+            await expect(prevBalanceOwnerA.toString()).to.not.be.equal(newBalanceOwnerA.toString());
+        })
+    });
+
     // You can nest describe calls to create subsections.
     describe("Short Gamma", function () {
         it("depositNoPull", async function () {
@@ -160,7 +214,6 @@ describe("GammaPoolFactory", function () {
             });
         });
 
-        // FIXME: Throwing amountsMin error
         it("withdrawReserves", async function () {            
             await gammaPool.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
 
@@ -168,14 +221,13 @@ describe("GammaPoolFactory", function () {
                 cfmm: cfmm.address,
                 protocol: 1,
                 amount: 1000,
-                amountsMin: [10000, 100],
+                amountsMin: [100, 200, 300],
                 to: owner.address,
                 deadline: ethers.constants.MaxUint256
             }
-            
+
             const res = await (await posMgr.withdrawReserves(WithdrawReservesParams)).wait();
-            console.log("Response", res);
-            
+
             res.events.forEach(function(event: any, i: any){
                 if(i == 0)
                     return;
@@ -244,31 +296,28 @@ describe("GammaPoolFactory", function () {
             expect(args.amountsLen.toNumber()).to.equal(9);
         });
 
-        // FIXME: reverted with reason string 'STF'
         it("increaseCollateral", async function () {
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             
             const AddRemoveCollateralParams = {
                 cfmm: cfmm.address,
                 protocol: 1,
                 tokenId: tokenId,
-                amounts: [1000,100],
-                to: addr1.address,
+                amounts: [100,10],
+                to: owner.address,
                 deadline: ethers.constants.MaxUint256
             }
             
             const res = await (await posMgr.increaseCollateral(AddRemoveCollateralParams)).wait();
-            console.log("Response: ", res.events[0].args);
             
-            // res.events.forEach(function(event: any, i: any){
-            //     if(i == 0)
-            //         return;
-
-            //     console.log("event >>");
-            //     console.log(event.args);
-            //     expect(event.args.pool).to.equal(gammaPool.address);
-            //     expect(event.args.tokenId.toNumber()).to.equal(19);
-            // });
+            const { args } = res.events[2];
+            console.log("event >>");
+            console.log(args);
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(19);
+            expect(args.tokensHeldLen.toNumber()).to.equal(6);
         });
 
         it("decreaseCollateral", async function () {
