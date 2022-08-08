@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
 
 import "../interfaces/IGammaPool.sol";
+import "../interfaces/ISendTokensCallback.sol";
 import "./ITestGammaPoolFactory.sol";
 //import "hardhat/console.sol";
 
@@ -99,6 +100,10 @@ contract TestGammaPool is IGammaPool, ERC20 {
         return 14;
     }
 
+    function testSendTokensCallback(address posAddr, address[] calldata tokens, uint256[] calldata amounts, address payee, bytes calldata data) external virtual {
+        ISendTokensCallback(posAddr).sendTokensCallback(tokens, amounts, payee, data);
+    }
+
     //Short Gamma
     function depositNoPull(address to) external virtual override returns(uint256 shares) {
         shares = 15;
@@ -110,6 +115,9 @@ contract TestGammaPool is IGammaPool, ERC20 {
 
     function withdrawReserves(address to) external virtual override returns (uint256[] memory reserves, uint256 assets) {
         reserves = new uint256[](3);
+        reserves[0] = 200;
+        reserves[1] = 300;
+        reserves[2] = 400;
         assets = 17;
     }
 
