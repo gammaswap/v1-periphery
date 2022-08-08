@@ -100,7 +100,7 @@ contract TestGammaPool is IGammaPool, ERC20 {
         return 14;
     }
 
-    function testTokenCallbackFunction(address posAddr, address[] calldata tokens, uint256[] calldata amounts, address payee, bytes calldata data) external virtual {
+    function testSendTokensCallback(address posAddr, address[] calldata tokens, uint256[] calldata amounts, address payee, bytes calldata data) external virtual {
         ISendTokensCallback(posAddr).sendTokensCallback(tokens, amounts, payee, data);
     }
 

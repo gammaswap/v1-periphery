@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
-pragma abicoder v2;
 
 import '../PositionManager.sol';
-import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
 
 contract TestPositionManager is PositionManager {
     

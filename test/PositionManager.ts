@@ -125,7 +125,7 @@ describe("GammaPoolFactory", function () {
             const payee = addr1.address;
             const data = ethers.utils.defaultAbiCoder.encode(["tuple(address payer, address cfmm, uint24 protocol)"],[sendTokensCallback]);
             
-            const res = await gammaPool.testTokenCallbackFunction(posMgr.address, tokens, amounts, payee, data)
+            const res = await gammaPool.testSendTokensCallback(posMgr.address, tokens, amounts, payee, data)
 
             const newBalancePayer_A = await tokenA.balanceOf(owner.address);
             const newBalancePayer_B = await tokenB.balanceOf(owner.address);
@@ -178,7 +178,6 @@ describe("GammaPoolFactory", function () {
         });
 
         it("#depositReserves should return shares and length of reserves", async function () {
-            await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             const DepositReservesParams =  {
                 cfmm: cfmm.address,
                 amountsDesired: [10000, 100],
@@ -217,14 +216,18 @@ describe("GammaPoolFactory", function () {
     // You can nest describe calls to create subsections.
     describe("Long Gamma Functions", function () {
         it("#createLoan should return tokenId", async function () {
-            expect(tokenId.toNumber()).to.equal(1);
+            const res = await (await posMgr.createLoan(cfmm.address, 1, owner.address, ethers.constants.MaxUint256)).wait();
+            
+            const { args } = res.events[1];
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(19);
         });
 
         it("#borrowLiquidity should return tokenId", async function () {
             const BorrowLiquidityParams = {
                 cfmm: cfmm.address,
                 protocol: 1,
-                tokenId: 1,
+                tokenId: tokenId,
                 lpTokens: 1,
                 to: owner.address,
                 deadline: ethers.constants.MaxUint256
@@ -234,14 +237,14 @@ describe("GammaPoolFactory", function () {
             
             const { args } = res.events[0]
             expect(args.pool).to.equal(gammaPool.address);
-            expect(args.tokenId.toNumber()).to.equal(1);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
         });
 
         it("#repayLiquidity should return tokenId, paid liquidity, paid lp tokens and length of amounts array", async function () {
             const RepayLiquidityParams = {
                 cfmm: cfmm.address,
                 protocol: 1,
-                tokenId: 1,
+                tokenId: tokenId,
                 liquidity: 1,
                 to: owner.address,
                 deadline: ethers.constants.MaxUint256
@@ -251,7 +254,7 @@ describe("GammaPoolFactory", function () {
             
             const { args } = res.events[0]
             expect(args.pool).to.equal(gammaPool.address);
-            expect(args.tokenId.toNumber()).to.equal(1);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.liquidityPaid.toNumber()).to.equal(24);
             expect(args.lpTokensPaid.toNumber()).to.equal(25);
             expect(args.amountsLen.toNumber()).to.equal(9);
@@ -264,7 +267,7 @@ describe("GammaPoolFactory", function () {
             const AddRemoveCollateralParams = {
                 cfmm: cfmm.address,
                 protocol: 1,
-                tokenId: 1,
+                tokenId: tokenId,
                 amounts: [100,10],
                 to: owner.address,
                 deadline: ethers.constants.MaxUint256
@@ -274,7 +277,7 @@ describe("GammaPoolFactory", function () {
             
             const { args } = res.events[2];
             expect(args.pool).to.equal(gammaPool.address);
-            expect(args.tokenId.toNumber()).to.equal(1);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.tokensHeldLen.toNumber()).to.equal(6);
         });
 
@@ -282,7 +285,7 @@ describe("GammaPoolFactory", function () {
             const AddRemoveCollateralParams = {
                 cfmm: cfmm.address,
                 protocol: 1,
-                tokenId: 1,
+                tokenId: tokenId,
                 amounts: [100,10],
                 to: owner.address,
                 deadline: ethers.constants.MaxUint256
@@ -292,7 +295,7 @@ describe("GammaPoolFactory", function () {
             
             const { args } = res.events[0]
             expect(args.pool).to.equal(gammaPool.address);
-            expect(args.tokenId.toNumber()).to.equal(1);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.tokensHeldLen.toNumber()).to.equal(7);
         });
 
@@ -300,7 +303,7 @@ describe("GammaPoolFactory", function () {
             const RebalanceCollateralParams = {
                 cfmm: cfmm.address,
                 protocol: 1,
-                tokenId: 1,
+                tokenId: tokenId,
                 deltas: [4, 2],
                 liquidity: 1,
                 to: owner.address,
@@ -311,7 +314,7 @@ describe("GammaPoolFactory", function () {
             
             const { args } = res.events[0]
             expect(args.pool).to.equal(gammaPool.address);
-            expect(args.tokenId.toNumber()).to.equal(1);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.tokensHeldLen.toNumber()).to.equal(10);
         });
 
@@ -319,7 +322,7 @@ describe("GammaPoolFactory", function () {
             const RebalanceCollateralParams = {
                 cfmm: cfmm.address,
                 protocol: 1,
-                tokenId: 1,
+                tokenId: tokenId,
                 deltas: [4, 2],
                 liquidity: 2,
                 to: owner.address,
@@ -330,7 +333,7 @@ describe("GammaPoolFactory", function () {
             
             const { args } = res.events[0]
             expect(args.pool).to.equal(gammaPool.address);
-            expect(args.tokenId.toNumber()).to.equal(1);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.tokensHeldLen.toNumber()).to.equal(11);
         });
     });
