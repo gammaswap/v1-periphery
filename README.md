@@ -14,11 +14,8 @@ You only need to fill in your address info.
 
 # Steps to Deploy To Contracts To Local Live Network
 
-1. Log into https://www.alchemy.com/ or create an account to obtain an api key.
-2. Fill in your key in [secrets.json](./secrets.json)
-3. Run ```npx hardhat node``` the root folder.
-4. Open a new command prompt to the root folder.
-5. Run ```npx hardhat --network localhost faucet <your address>``` to fund your wallet.
-6. Run ```npx hardhat --network localhost run scripts/deploy.ts``` to deploy.
+1. Run ```npx hardhat node``` the root folder in admin mode.
+2. Open a new command prompt to the root folder in admin mode.
+3. Run ```npx hardhat --network localhost run scripts/deploy.ts``` to deploy.
 
 Don't commit any of the info you put in the secrets file.
