@@ -38,12 +38,17 @@ async function main() {
     tokens: [tokenA.address, tokenB.address]
   };
 
-  const gammaPoolAddr = await factory.createPool(createPoolParams);
-  
+  const res = await (await factory.createPool(createPoolParams)).wait();
+
+  if (res.events && res.events[1].args) {
+    console.log("GSP deployed to:", res.events[1].args.pool);
+  } else {
+    console.log("Could not get GSP address. Please check" );
+  }
+    
   console.log("Token A deployed to:", tokenA.address);
   console.log("Token B deployed to:", tokenB.address);
   console.log("CFMM deployed to:", cfmm.address);
-  console.log("GSP deployed to:", gammaPoolAddr.to);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
