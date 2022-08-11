@@ -101,17 +101,26 @@ let INTERFACES: any = {
   ],
 };
 
-const INTERFACE_IDS = {};
-const FN_SIGNATURES = {};
+interface INTERFACE_IDS {
+  [key: string]: any;
+};
+interface FN_SIGNATURES {
+  [key: string]: any;
+};
+
+const interfacIds: INTERFACE_IDS = {}
+const fnSignatures: FN_SIGNATURES = {}
+
+
 for (const k of Object.getOwnPropertyNames(INTERFACES)) {
-  INTERFACE_IDS[k] = makeInterfaceId.ERC165(INTERFACES[k]);
+  interfacIds[k] = makeInterfaceId.ERC165(INTERFACES[k]);
   for (const fnName of INTERFACES[k]) {
     // the interface id of a single function is equivalent to its function signature
-    FN_SIGNATURES[fnName] = makeInterfaceId.ERC165([fnName]);
+    fnSignatures[fnName] = makeInterfaceId.ERC165([fnName]);
   }
 }
 
-function shouldSupportInterfaces (interfaces = []) {
+export function shouldSupportInterfaces (interfaces: any) {
   describe('ERC165', function () {
     beforeEach(function () {
       this.contractUnderTest = this.mock || this.token || this.holder || this.accessControl;
@@ -119,29 +128,25 @@ function shouldSupportInterfaces (interfaces = []) {
 
     it('supportsInterface uses less than 30k gas', async function () {
       for (const k of interfaces) {
-        const interfaceId = INTERFACE_IDS[k];
+        const interfaceId = interfacIds[k];
         expect(await this.contractUnderTest.supportsInterface.estimateGas(interfaceId)).to.be.lte(30000);
       }
     });
 
     it('all interfaces are reported as supported', async function () {
       for (const k of interfaces) {
-        const interfaceId = INTERFACE_IDS[k];
-        expect(await this.contractUnderTest.supportsInterface(interfaceId)).to.equal(true);
+        const interfaceId = interfacIds[k];
+        expect(await this.contractUnderTest.functions['supportsInterface(bytes4)'](interfaceId)).to.equal(true);
       }
     });
 
     it('all interface functions are in ABI', async function () {
       for (const k of interfaces) {
         for (const fnName of INTERFACES[k]) {
-          const fnSig = FN_SIGNATURES[fnName];
-          expect(this.contractUnderTest.abi.filter(fn => fn.signature === fnSig).length).to.equal(1);
+          const fnSig = fnSignatures[fnName];
+          expect(this.contractUnderTest.abi.filter((fn: any) => fn.signature === fnSig).length).to.equal(1);
         }
       }
     });
   });
 }
-
-module.exports = {
-  shouldSupportInterfaces,
-};
