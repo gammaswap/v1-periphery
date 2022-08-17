@@ -129,22 +129,23 @@ export function shouldSupportInterfaces (interfaces: any) {
     it('supportsInterface uses less than 30k gas', async function () {
       for (const k of interfaces) {
         const interfaceId = interfacIds[k];
-        expect(await this.contractUnderTest.supportsInterface.estimateGas(interfaceId)).to.be.lte(30000);
+        expect(await this.contractUnderTest.estimateGas.supportsInterface(interfaceId)).to.be.lte(30000);
       }
     });
 
     it('all interfaces are reported as supported', async function () {
       for (const k of interfaces) {
         const interfaceId = interfacIds[k];
-        expect(await this.contractUnderTest.functions['supportsInterface(bytes4)'](interfaceId)).to.equal(true);
+        expect(await this.contractUnderTest.supportsInterface(interfaceId)).to.equal(true);
       }
     });
 
     it('all interface functions are in ABI', async function () {
+      const functions = Object.keys(this.contractUnderTest.interface.functions);
       for (const k of interfaces) {
         for (const fnName of INTERFACES[k]) {
           const fnSig = fnSignatures[fnName];
-          expect(this.contractUnderTest.abi.filter((fn: any) => fn.signature === fnSig).length).to.equal(1);
+          expect(functions.filter((fn: any) => this.contractUnderTest.interface.getSighash(fn) === fnSig).length).to.equal(1);
         }
       }
     });

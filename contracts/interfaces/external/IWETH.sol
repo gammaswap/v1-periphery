@@ -1,7 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
-interface IWETH {
+import '@openzeppelin/contracts/token/ERC20/IERC20.sol';
+
+interface IWETH is IERC20 {
+    event  Deposit(address indexed to, uint amount); 
+    event  Withdrawal(address indexed from, uint amount);
+
     // Deposit ether to get wrapped ether
     function deposit() external payable;
 

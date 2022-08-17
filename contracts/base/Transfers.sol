@@ -3,8 +3,10 @@ pragma solidity ^0.8.0;
 
 import '../interfaces/ITransfers.sol';
 import '../interfaces/external/IWETH.sol';
-import '../interfaces/external/IERC20.sol';
+// import '../interfaces/external/IERC20.sol';
 import '../libraries/TransferHelper.sol';
+
+import 'hardhat/console.sol';
 
 abstract contract Transfers is ITransfers {
 
@@ -28,7 +30,9 @@ abstract contract Transfers is ITransfers {
         }
     }
 
-    function refundETH() external payable override {
+    function refundETH() public payable override {
+        console.log("Transfer Contract Balance: ");
+        console.log(address(this).balance);
         if (address(this).balance > 0) TransferHelper.safeTransferETH(msg.sender, address(this).balance);
     }
 
