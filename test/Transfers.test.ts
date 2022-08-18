@@ -13,7 +13,6 @@ describe("Transfer", function () {
 
     beforeEach(async function () {
         [owner, addr1] = await ethers.getSigners();
-
         TestERC20 = await ethers.getContractFactory("TestERC20");
         tokenA = await TestERC20.deploy("Token A", "TOKA");
 
@@ -43,8 +42,10 @@ describe("Transfer", function () {
     })
 
     it("#refundETH", async function () {
-        await testTransfersToken.testUnwrapWETH(1000, testTransfersToken.address)
-        // expect(await testTransfersToken.testRefundETH()).to.be.ok;
+        let prevBalance = await ethers.provider.getBalance(owner.address);
+        await testTransfersToken.testUnwrapWETH(1000, testTransfersToken.address);
+        expect(await testTransfersToken.testRefundETH()).to.be.ok;
+        expect(await ethers.provider.getBalance(owner.address)).to.not.equal(prevBalance);
     })
 
     it("#clearToken", async function () {

@@ -3,12 +3,10 @@ import { ethers } from "hardhat";
 import {
   shouldBehaveLikeERC721,
   shouldBehaveLikeERC721Metadata
-} from './ERC721.behavior';
+} from './GammaPoolERC721.behavior';
 
 describe("GammaPoolERC721", function () {
   let ERC721Mock: any;
-  let name: any;
-  let symbol: any;
   let tokenId: any;
   
   beforeEach(async function () {

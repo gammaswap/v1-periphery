@@ -16,7 +16,7 @@ abstract contract Transfers is ITransfers {
         WETH = _WETH;
     }
 
-    receive() external payable {
+    receive() external payable virtual {
         require(msg.sender == WETH, 'NOT_WETH');
     }
 
@@ -31,8 +31,6 @@ abstract contract Transfers is ITransfers {
     }
 
     function refundETH() public payable override {
-        console.log("Transfer Contract Balance: ");
-        console.log(address(this).balance);
         if (address(this).balance > 0) TransferHelper.safeTransferETH(msg.sender, address(this).balance);
     }
 

@@ -23,11 +23,6 @@ fourthTokenId = BigNumber.from(4);
 baseURI = 'https://api.example.com/v1/';
 RECEIVER_MAGIC_VALUE = '0x150b7a02';
 
-console.log(firstTokenId);
-console.log(secondTokenId);
-console.log(nonExistentTokenId);
-console.log(fourthTokenId);
-
 export function shouldBehaveLikeERC721(errorPrefix: any) {
   shouldSupportInterfaces([
     'ERC721',
@@ -628,7 +623,6 @@ export function shouldBehaveLikeERC721Metadata(errorPrefix: any) {
 
       describe('base URI', function () {
         beforeEach(function () {
-          console.log(this.token.setBaseURI)
           if (this.token.setBaseURI === undefined) {
             this.skip();
           }

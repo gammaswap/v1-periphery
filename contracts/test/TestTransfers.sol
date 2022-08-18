@@ -3,9 +3,13 @@ pragma solidity ^0.8.0;
 
 import "../base/Transfers.sol";
 import "../interfaces/ITransfers.sol";
+import 'hardhat/console.sol';
 
 contract TestTransfers is Transfers {
     constructor(address _WETH) Transfers(_WETH) {
+    }
+
+    receive() external payable override {
     }
 
     function testUnwrapWETH(uint256 minAmt, address to) external payable virtual {
