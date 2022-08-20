@@ -1,6 +1,7 @@
 import { ethers } from "hardhat";
 import { expect } from "chai";
-const { web3 } = require("@openzeppelin/test-helpers/src/setup.js");
+
+const web3 = require('../config/web3').getWeb3();
 
 export async function inTransaction(txHash: any, emitter: any, eventName: any, eventArgs = {}) {
   const receipt = await ethers.provider.getTransactionReceipt(txHash);

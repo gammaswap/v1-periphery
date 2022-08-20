@@ -3,10 +3,8 @@ pragma solidity ^0.8.0;
 
 import '../interfaces/ITransfers.sol';
 import '../interfaces/external/IWETH.sol';
-// import '../interfaces/external/IERC20.sol';
+import '../interfaces/external/IERC20.sol';
 import '../libraries/TransferHelper.sol';
-
-import 'hardhat/console.sol';
 
 abstract contract Transfers is ITransfers {
 
@@ -16,7 +14,7 @@ abstract contract Transfers is ITransfers {
         WETH = _WETH;
     }
 
-    receive() external payable virtual {
+    receive() external payable {
         require(msg.sender == WETH, 'NOT_WETH');
     }
 

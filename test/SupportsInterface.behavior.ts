@@ -1,6 +1,6 @@
-const { makeInterfaceId } = require('@openzeppelin/test-helpers');
+import { expect } from 'chai';
 
-const { expect } = require('chai');
+const { ERC165 } = require('./gammapool-helper/makeInterfaceId');
 
 let INTERFACES: any = {
   ERC165: [
@@ -113,10 +113,10 @@ const fnSignatures: FN_SIGNATURES = {}
 
 
 for (const k of Object.getOwnPropertyNames(INTERFACES)) {
-  interfacIds[k] = makeInterfaceId.ERC165(INTERFACES[k]);
+  interfacIds[k] = ERC165(INTERFACES[k]);
   for (const fnName of INTERFACES[k]) {
     // the interface id of a single function is equivalent to its function signature
-    fnSignatures[fnName] = makeInterfaceId.ERC165([fnName]);
+    fnSignatures[fnName] = ERC165([fnName]);
   }
 }
 

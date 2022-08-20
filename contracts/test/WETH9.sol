@@ -9,7 +9,7 @@ contract WETH9 is IWETH {
     uint8  public decimals = 18;
 
     mapping (address => uint)                       public  balance;
-    mapping (address => mapping (address => uint))  public  allowances;
+    mapping (address => mapping (address => uint))  public override allowance;
 
     receive() external payable {
         deposit();
@@ -31,16 +31,12 @@ contract WETH9 is IWETH {
         return balance[account];
     }
 
-    function allowance(address owner, address spender) public view override returns (uint256) {
-
-    }
-
     function totalSupply() public view override returns (uint) {
         return address(this).balance;
     }
 
     function approve(address guy, uint amount) public override returns (bool) {
-        allowances[msg.sender][guy] = amount;
+        allowance[msg.sender][guy] = amount;
         emit Approval(msg.sender, guy, amount);
         return true;
     }
@@ -56,9 +52,9 @@ contract WETH9 is IWETH {
     {
         require(balance[from] >= amount);
 
-        if (from != msg.sender && allowances[from][msg.sender] != type(uint).max) {
-            require(allowances[from][msg.sender] >= amount);
-            allowances[from][msg.sender] -= amount;
+        if (from != msg.sender && allowance[from][msg.sender] != type(uint).max) {
+            require(allowance[from][msg.sender] >= amount);
+            allowance[from][msg.sender] -= amount;
         }
 
         balance[from] -= amount;

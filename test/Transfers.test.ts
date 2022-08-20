@@ -36,24 +36,24 @@ describe("Transfer", function () {
         let currentAddr1Balance = await ethers.provider.getBalance(addr1.address)
 
         expect((await tokenWeth.balanceOf(testTransfersToken.address)).toNumber()).to.equal(5000);
-        expect(await testTransfersToken.testUnwrapWETH(1000, addr1.address)).to.be.ok;
+        expect(await testTransfersToken.unwrapWETH(1000, addr1.address)).to.be.ok;
         expect((await tokenWeth.balanceOf(testTransfersToken.address)).toNumber()).to.equal(0);
         expect(await ethers.provider.getBalance(addr1.address)).to.equal(currentAddr1Balance.add(ethers.BigNumber.from(5000)));
     })
 
     it("#refundETH", async function () {
         let prevBalance = await ethers.provider.getBalance(owner.address);
-        await testTransfersToken.testUnwrapWETH(1000, testTransfersToken.address);
-        expect(await testTransfersToken.testRefundETH()).to.be.ok;
-        expect(await ethers.provider.getBalance(owner.address)).to.not.equal(prevBalance);
+        await testTransfersToken.unwrapWETH(1000, testTransfersToken.address);
+        let prevBalanceTestTransfersToken = await ethers.provider.getBalance(testTransfersToken.address);
+        expect(await testTransfersToken.refundETH()).to.be.ok;
+        expect(await ethers.provider.getBalance(owner.address)).to.equal(prevBalance.add(prevBalanceTestTransfersToken));
     })
 
     it("#clearToken", async function () {
-        await tokenA.approve(testTransfersToken.address, ethers.constants.MaxUint256);
-
         expect((await tokenA.balanceOf(testTransfersToken.address)).toNumber()).to.equal(5000);
-        expect(await testTransfersToken.testClearToken(tokenA.address, 1000, addr1.address)).to.be.ok;
+        expect(await testTransfersToken.clearToken(tokenA.address, 1000, addr1.address)).to.be.ok;
         expect((await tokenA.balanceOf(testTransfersToken.address)).toNumber()).to.equal(0);
+        expect((await tokenA.balanceOf(addr1.address)).toNumber()).to.equal(5000);
     })
 
     it("#send", async function () {
