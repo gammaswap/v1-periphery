@@ -3,10 +3,12 @@ const UniswapV2FactoryJSON = require("@uniswap/v2-core/build/UniswapV2Factory.js
 import type { TestERC20 } from "../typechain/TestERC20";
 
 async function main() {
-  // get these values from deploying v1core
   const GammaFactoryAddress = "<get this from v1core deploy logs>";
-  const COMPUTED_INIT_CODE_HASH = "<get this from v1core deploy logs>";
 
+  const COMPUTED_INIT_CODE_HASH =
+    "0x157cb49461412afba53e7bd9359b3da3e81a31825666371966e5354af6fe2693";
+    // This value come from v1-core. If this gives an error, then the hash may
+    // need to be updated.
   const [owner] = await ethers.getSigners();
   const TestERC20Contract = await ethers.getContractFactory("TestERC20");
   const tokenA = await TestERC20Contract.deploy("Test Token A", "TOKA");
@@ -47,13 +49,11 @@ async function main() {
   await createPair(tokenA, WETH);
   await createPair(tokenB, WETH);
   await createPair(tokenC, WETH);
-  
-  const PositionManager = await ethers.getContractFactory("PositionManager");
-  const positionManager = await PositionManager.deploy(GammaFactoryAddress, 
-    WETH.address, COMPUTED_INIT_CODE_HASH);
-  
-  await positionManager.deployed();
 
+  const PositionManager = await ethers.getContractFactory("PositionManager");
+  const positionManager = await PositionManager.deploy(GammaFactoryAddress,
+    WETH.address, COMPUTED_INIT_CODE_HASH);
+  await positionManager.deployed();
   console.log("PositionManager Address >> ", positionManager.address);
 }
 
