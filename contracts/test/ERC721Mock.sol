@@ -4,8 +4,8 @@ pragma solidity ^0.8.0;
 
 import "../base/GammaPoolERC721.sol";
 
-contract ERC721Mock is ERC721 {
-    constructor (string memory name, string memory symbol) ERC721(name, symbol) { }
+contract ERC721Mock is GammaPoolERC721 {
+    constructor (string memory name, string memory symbol) GammaPoolERC721(name, symbol) { }
 
     function baseURI() public view returns (string memory) {
         return _baseURI();
