@@ -5,7 +5,7 @@ describe("Transfer", function () {
     let owner: any;
     let addr1: any;
     let TestTransfers: any;
-    let testTransfersToken: any;
+    let testTransfers: any;
     let WETH: any;
     let TestERC20: any;
     let tokenWeth: any;
@@ -22,12 +22,12 @@ describe("Transfer", function () {
         await tokenWeth.deposit({value: ethers.utils.parseEther('100')});
 
         TestTransfers = await ethers.getContractFactory("TestTransfers");
-        testTransfersToken = await TestTransfers.deploy(tokenWeth.address);
+        testTransfers = await TestTransfers.deploy(tokenWeth.address);
 
-        await tokenWeth.transfer(testTransfersToken.address, 5000);
-        await tokenA.transfer(testTransfersToken.address, 5000);
+        await tokenWeth.transfer(testTransfers.address, 5000);
+        await tokenA.transfer(testTransfers.address, 5000);
 
-        await testTransfersToken.deployed();
+        await testTransfers.deployed();
         await tokenWeth.deployed();
         await tokenA.deployed();
     })
@@ -35,35 +35,36 @@ describe("Transfer", function () {
     it("#unwrapWETH", async function () {
         let currentAddr1Balance = await ethers.provider.getBalance(addr1.address)
 
-        expect((await tokenWeth.balanceOf(testTransfersToken.address)).toNumber()).to.equal(5000);
-        expect(await testTransfersToken.unwrapWETH(1000, addr1.address)).to.be.ok;
-        expect((await tokenWeth.balanceOf(testTransfersToken.address)).toNumber()).to.equal(0);
+        expect((await tokenWeth.balanceOf(testTransfers.address)).toNumber()).to.equal(5000);
+        expect(await testTransfers.unwrapWETH(1000, addr1.address)).to.be.ok;
+        expect((await tokenWeth.balanceOf(testTransfers.address)).toNumber()).to.equal(0);
         expect(await ethers.provider.getBalance(addr1.address)).to.equal(currentAddr1Balance.add(ethers.BigNumber.from(5000)));
     })
 
     it("#refundETH", async function () {
+        await testTransfers.testUnwrapWETH();
         let prevBalance = await ethers.provider.getBalance(owner.address);
-        await testTransfersToken.unwrapWETH(1000, testTransfersToken.address);
-        let prevBalanceTestTransfersToken = await ethers.provider.getBalance(testTransfersToken.address);
-        expect(await testTransfersToken.refundETH()).to.be.ok;
-        expect(await ethers.provider.getBalance(owner.address)).to.equal(prevBalance.add(prevBalanceTestTransfersToken));
+        let prevBalanceTestTransfers = await ethers.provider.getBalance(testTransfers.address);
+        let receipt = await (await testTransfers.refundETH()).wait();
+        let gasCost = receipt.gasUsed.mul(receipt.effectiveGasPrice)
+        expect(await ethers.provider.getBalance(owner.address)).to.equal(prevBalance.add(prevBalanceTestTransfers).sub(gasCost));
     })
 
     it("#clearToken", async function () {
-        expect((await tokenA.balanceOf(testTransfersToken.address)).toNumber()).to.equal(5000);
-        expect(await testTransfersToken.clearToken(tokenA.address, 1000, addr1.address)).to.be.ok;
-        expect((await tokenA.balanceOf(testTransfersToken.address)).toNumber()).to.equal(0);
+        expect((await tokenA.balanceOf(testTransfers.address)).toNumber()).to.equal(5000);
+        expect(await testTransfers.clearToken(tokenA.address, 1000, addr1.address)).to.be.ok;
+        expect((await tokenA.balanceOf(testTransfers.address)).toNumber()).to.equal(0);
         expect((await tokenA.balanceOf(addr1.address)).toNumber()).to.equal(5000);
     })
 
     it("#send", async function () {
-        await tokenA.approve(testTransfersToken.address, ethers.constants.MaxUint256);
+        await tokenA.approve(testTransfers.address, ethers.constants.MaxUint256);
         let amount = 1000;
         let currentAddr1Balance = await tokenA.balanceOf(addr1.address);
 
-        expect((await tokenA.balanceOf(testTransfersToken.address)).toNumber()).to.equal(5000);
-        expect(await testTransfersToken.testSend(tokenA.address, testTransfersToken.address, addr1.address, amount)).to.be.ok;
-        expect((await tokenA.balanceOf(testTransfersToken.address)).toNumber()).to.equal(5000 - amount);
+        expect((await tokenA.balanceOf(testTransfers.address)).toNumber()).to.equal(5000);
+        expect(await testTransfers.testSend(tokenA.address, testTransfers.address, addr1.address, amount)).to.be.ok;
+        expect((await tokenA.balanceOf(testTransfers.address)).toNumber()).to.equal(5000 - amount);
         expect((await tokenA.balanceOf(addr1.address)).toNumber()).to.equal(currentAddr1Balance.add(ethers.BigNumber.from(amount)));
     })
 })

@@ -28,7 +28,7 @@ abstract contract Transfers is ITransfers {
         }
     }
 
-    function refundETH() public payable override {
+    function refundETH() external payable override {
         if (address(this).balance > 0) TransferHelper.safeTransferETH(msg.sender, address(this).balance);
     }
 

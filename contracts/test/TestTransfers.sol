@@ -8,6 +8,14 @@ contract TestTransfers is Transfers {
     constructor(address _WETH) Transfers(_WETH) {
     }
 
+    function testUnwrapWETH() public payable {
+        uint256 wethBal = IERC20(WETH).balanceOf(address(this));
+
+        if (wethBal > 0) {
+            IWETH(WETH).withdraw(wethBal);
+        }
+    }
+
     function testSend(address token, address sender, address to, uint256 amount) external {
         send(token, sender, to, amount);
     }
