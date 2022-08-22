@@ -18,4 +18,12 @@ You only need to fill in your address info.
 2. Open a new command prompt to the root folder in admin mode.
 3. Run ```npx hardhat --network localhost run scripts/deploy.ts``` to deploy.
 
-Don't commit any of the info you put in the secrets file.
+# Steps to Deploy To Contracts To Local Live Network with v1-core
+
+1. Follow instructions in v1-core readme to deploy locally.
+2. Fill in the details in [scripts/deployCore.ts](scripts/deployCore.ts) from 
+deploying v1-core logs.
+3. Run ```npx hardhat --network localhost run scripts/deployCore.ts```.
+
+
+Don't commit the secrets file.
