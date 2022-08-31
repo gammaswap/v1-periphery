@@ -311,6 +311,44 @@ describe("GammaPoolFactory", function () {
             expect(args.tokensHeldLen.toNumber()).to.equal(10);
         });
 
+        it("#rebalanceCollateral should return tokenId and length of tokens held 2", async function () {            
+            const RebalanceCollateralParams = {
+                cfmm: cfmm.address,
+                protocol: protocolId,
+                tokenId: tokenId,
+                deltas: [60, 12],
+                liquidity: 100,
+                to: owner.address,
+                deadline: ethers.constants.MaxUint256
+            }
+            
+            const res = await (await posMgr.rebalanceCollateral(RebalanceCollateralParams)).wait();
+            
+            const { args } = res.events[0]
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
+            expect(args.tokensHeldLen.toNumber()).to.equal(10);
+        });
+
+        it("#rebalanceCollateral should return tokenId and length of tokens held 3", async function () {            
+            const RebalanceCollateralParams = {
+                cfmm: cfmm.address,
+                protocol: protocolId,
+                tokenId: tokenId,
+                deltas: [41, 22],
+                liquidity: 200,
+                to: owner.address,
+                deadline: ethers.constants.MaxUint256
+            }
+            
+            const res = await (await posMgr.rebalanceCollateral(RebalanceCollateralParams)).wait();
+            
+            const { args } = res.events[0]
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
+            expect(args.tokensHeldLen.toNumber()).to.equal(10);
+        });
+
         it("#rebalanceCollateralWithLiquidity should return tokenId and length of tokens held", async function () {
             const RebalanceCollateralParams = {
                 cfmm: cfmm.address,
