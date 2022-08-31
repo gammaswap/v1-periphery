@@ -5,7 +5,7 @@ async function main() {
   const [owner] = await ethers.getSigners();
   await owner.sendTransaction({
     to: metamaskAddress,
-    value: ethers.utils.parseEther("100.0"), // Sends exactly 1.0 ether
+    value: ethers.utils.parseEther("100.0"), // Sends exactly 100.0 ether
   });
 }
 
