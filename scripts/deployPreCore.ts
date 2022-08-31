@@ -3,12 +3,6 @@ const UniswapV2FactoryJSON = require("@uniswap/v2-core/build/UniswapV2Factory.js
 import type { TestERC20 } from "../typechain/TestERC20";
 
 async function main() {
-  const GammaFactoryAddress = "<get this from v1core deploy logs>";
-
-  const COMPUTED_INIT_CODE_HASH =
-    "0x157cb49461412afba53e7bd9359b3da3e81a31825666371966e5354af6fe2693";
-    // This value come from v1-core. If this gives an error, then the hash may
-    // need to be updated.
   const [owner] = await ethers.getSigners();
   const TestERC20Contract = await ethers.getContractFactory("TestERC20");
   const tokenA = await TestERC20Contract.deploy("Test Token A", "TOKA");
@@ -19,6 +13,10 @@ async function main() {
   await tokenB.deployed();
   await tokenC.deployed();
   await WETH.deployed();
+  console.log("tokenA Address >> " + tokenA.address);
+  console.log("tokenB Address >> " + tokenB.address);
+  console.log("tokenC Address >> " + tokenC.address);
+  console.log("WETH Address >> " + WETH.address);
 
   const UniswapV2Factory = new ethers.ContractFactory(
     UniswapV2FactoryJSON.abi,
@@ -29,6 +27,11 @@ async function main() {
   const uniFactory = await UniswapV2Factory.deploy(owner.address);
   await uniFactory.deployed();
   console.log("UniswapV2Factory Address >> " + uniFactory.address);
+
+  const UNI_COMPUTED_INIT_CODE_HASH = ethers.utils.keccak256(
+    UniswapV2Factory.bytecode
+  );
+  console.log("uni factory hash >> " + UNI_COMPUTED_INIT_CODE_HASH)
 
   async function createPair(token1: TestERC20, token2: TestERC20) {
     await uniFactory.createPair(token1.address, token2.address);
@@ -43,18 +46,12 @@ async function main() {
     return uniPairAddress;
   }
 
-  const tokenABCfmmAddress = await createPair(tokenA, tokenB);
+  await createPair(tokenA, tokenB);
   await createPair(tokenA, tokenC);
   await createPair(tokenB, tokenC);
   await createPair(tokenA, WETH);
   await createPair(tokenB, WETH);
   await createPair(tokenC, WETH);
-
-  const PositionManager = await ethers.getContractFactory("PositionManager");
-  const positionManager = await PositionManager.deploy(GammaFactoryAddress,
-    WETH.address, COMPUTED_INIT_CODE_HASH);
-  await positionManager.deployed();
-  console.log("PositionManager Address >> ", positionManager.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
