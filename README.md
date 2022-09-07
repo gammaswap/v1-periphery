@@ -17,19 +17,7 @@ You only need to fill in your address info.
 1. Run ```npx hardhat node``` the root folder in admin mode.
 2. Open a new command prompt to the root folder in admin mode.
 3. Run ```npx hardhat --network localhost run scripts/deploy.ts``` to deploy.
-
-# Steps to Deploy To Contracts To Local Live Network with v1-core
-
-1. Run ```npx hardhat node``` the root folder in admin mode.
-2. Open a new command prompt to the root folder in admin mode.
-3. Run ```npx hardhat --network localhost run scripts/deployPreCore.ts```.
-4. Follow instructions in v1-core readme to deploy locally. You must copy an
-address from the deployPreCore script to v1-core's deploy script.
-5. Fill in the details in [scripts/deployPostCore.ts](scripts/deployPostCore.ts) 
-from deploying v1-core logs.
-6. Run ```npx hardhat --network localhost run scripts/deployPostCore.ts```.
-7. Optional: run ```npx hardhat --network localhost run scripts/supplyEth.ts```
-if you want to supply an outside wallet address. Enter the address into the
-script.
+4. Optional: Fill in the details of [supplyTokens.ts](supplyTokens.ts) and run
+to send tokens to your wallet.
 
 Don't commit the secrets file.

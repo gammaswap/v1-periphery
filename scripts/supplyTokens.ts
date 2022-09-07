@@ -1,8 +1,8 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  const tokenAaddr = "<from pre core logs>";
-  const tokenBaddr = "<from pre core logs>";
+  const tokenAaddr = "<from deploy logs>";
+  const tokenBaddr = "<from deploy logs>";
   const metamaskAddress = "<address to sent to>";
   
   const [owner] = await ethers.getSigners();
