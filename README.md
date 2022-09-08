@@ -17,7 +17,6 @@ You only need to fill in your address info.
 1. Run ```npx hardhat node``` the root folder in admin mode.
 2. Open a new command prompt to the root folder in admin mode.
 3. Run ```npx hardhat --network localhost run scripts/deploy.ts``` to deploy.
-4. Optional: Fill in the details of [supplyTokens.ts](supplyTokens.ts) and run
-to send tokens to your wallet.
+4. Import hardhat Account #0 pvt key to metamask, to access minted tokens.
 
 Don't commit the secrets file.
