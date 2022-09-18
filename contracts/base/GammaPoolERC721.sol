@@ -1,10 +1,8 @@
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts/token/ERC721/ERC721.sol';
+import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 
 contract GammaPoolERC721 is ERC721 {
-
-    //TODO: Implement ERC721 functions here with smaller error messages and instead use an IERC721 interface
 
     constructor(string memory name_, string memory symbol_) ERC721(name_, symbol_) {
     }

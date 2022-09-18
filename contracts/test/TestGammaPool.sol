@@ -1,11 +1,10 @@
 pragma solidity ^0.8.0;
 
-import '@openzeppelin/contracts/token/ERC20/ERC20.sol';
+import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
-import "../interfaces/IGammaPool.sol";
+import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "../interfaces/ISendTokensCallback.sol";
 import "./ITestGammaPoolFactory.sol";
-//import "hardhat/console.sol";
 
 contract TestGammaPool is IGammaPool, ERC20 {
 

@@ -9,13 +9,12 @@ interface IPositionManager  is ITransfers {
     event WithdrawNoPull(address indexed pool, uint256 assets);
     event DepositReserves(address indexed pool, uint256 reservesLen, uint256 shares);
     event WithdrawReserves(address indexed pool, uint256 reservesLen, uint256 assets);
-    event CreateLoan(address indexed pool, uint256 tokenId);
+    event CreateLoan(address indexed pool, address indexed owner, uint256 tokenId);
     event BorrowLiquidity(address indexed pool, uint256 tokenId, uint256 amountsLen);
     event RepayLiquidity(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint256 lpTokensPaid, uint256 amountsLen);
     event IncreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event DecreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event RebalanceCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
-    event RebalanceCollateralWithLiquidity(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
 
     struct DepositWithdrawParams {
         address cfmm;
@@ -97,5 +96,4 @@ interface IPositionManager  is ITransfers {
     function increaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint256[] memory tokensHeld);
     function decreaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint256[] memory tokensHeld);
     function rebalanceCollateral(RebalanceCollateralParams calldata params) external returns(uint256[] memory tokensHeld);
-    function rebalanceCollateralWithLiquidity(RebalanceCollateralParams calldata params) external returns(uint256[] memory tokensHeld);
 }

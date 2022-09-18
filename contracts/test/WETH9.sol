@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
-import '../interfaces/external/IWETH.sol';
+import "../interfaces/external/IWETH.sol";
 
 contract WETH9 is IWETH {
     string public name     = "Wrapped Ether";

@@ -1,6 +1,6 @@
 pragma solidity ^0.8.0;
 
-import "../libraries/PoolAddress.sol";
+import "@gammaswap/v1-core/contracts/libraries/AddressCalculator.sol";
 import "./TestGammaPool.sol";
 import "./ITestGammaPoolFactory.sol";
 
@@ -54,7 +54,7 @@ contract TestGammaPoolFactory is ITestGammaPoolFactory{
             protocolId: params.protocol,
             tokens: params.tokens,
             protocol: protocol });
-        bytes32 key = PoolAddress.getPoolKey(_params.cfmm, _params.protocolId);
+        bytes32 key = AddressCalculator.getGammaPoolKey(_params.cfmm, _params.protocolId);
         pool = address(new TestGammaPool{salt: key}());
         delete _params;
         getPool[key] = pool;

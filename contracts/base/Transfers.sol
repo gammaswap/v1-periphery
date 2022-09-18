@@ -1,10 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
-import '../interfaces/ITransfers.sol';
-import '../interfaces/external/IWETH.sol';
-import '../interfaces/external/IERC20.sol';
-import '../libraries/TransferHelper.sol';
+import "../interfaces/ITransfers.sol";
+import "../interfaces/external/IWETH.sol";
+import "../interfaces/external/IERC20.sol";
+import "../libraries/TransferHelper.sol";
 
 abstract contract Transfers is ITransfers {
 
@@ -15,12 +15,12 @@ abstract contract Transfers is ITransfers {
     }
 
     receive() external payable {
-        require(msg.sender == WETH, 'NOT_WETH');
+        require(msg.sender == WETH, "NOT_WETH");
     }
 
     function unwrapWETH(uint256 minAmt, address to) public payable override {
         uint256 wethBal = IERC20(WETH).balanceOf(address(this));
-        require(wethBal >= minAmt, 'wethBal < minAmt');
+        require(wethBal >= minAmt, "wethBal < minAmt");
 
         if (wethBal > 0) {
             IWETH(WETH).withdraw(wethBal);
@@ -34,7 +34,7 @@ abstract contract Transfers is ITransfers {
 
     function clearToken(address token, uint256 minAmt, address to) public payable override {
         uint256 tokenBal = IERC20(token).balanceOf(address(this));
-        require(tokenBal >= minAmt, 'tokenBal < minAmt');
+        require(tokenBal >= minAmt, "tokenBal < minAmt");
 
         if (tokenBal > 0) TransferHelper.safeTransfer(token, to, tokenBal);
     }

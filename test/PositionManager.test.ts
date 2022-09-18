@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { expect } from "chai";
 
-describe("GammaPoolFactory", function () {
+describe("PositionManager", function () {
     let TestERC20: any;
     let GammaPool: any;
     let GammaPoolFactory: any;
@@ -309,25 +309,6 @@ describe("GammaPoolFactory", function () {
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.tokensHeldLen.toNumber()).to.equal(10);
-        });
-
-        it("#rebalanceCollateralWithLiquidity should return tokenId and length of tokens held", async function () {
-            const RebalanceCollateralParams = {
-                cfmm: cfmm.address,
-                protocol: protocolId,
-                tokenId: tokenId,
-                deltas: [4, 2],
-                liquidity: 2,
-                to: owner.address,
-                deadline: ethers.constants.MaxUint256
-            }
-            
-            const res = await (await posMgr.rebalanceCollateralWithLiquidity(RebalanceCollateralParams)).wait();
-            
-            const { args } = res.events[0]
-            expect(args.pool).to.equal(gammaPool.address);
-            expect(args.tokenId.toNumber()).to.equal(tokenId);
-            expect(args.tokensHeldLen.toNumber()).to.equal(11);
         });
     });
 });
