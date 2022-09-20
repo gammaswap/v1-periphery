@@ -71,7 +71,7 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         (reserves, shares) = IGammaPool(gammaPool)
         .depositReserves(params.cfmm, params.amountsDesired, params.amountsMin,
             abi.encode(SendTokensCallbackData({cfmm: params.cfmm, protocol: params.protocol, payer: msg.sender})));
-        emit DepositReserves(gammaPool, reserves.length, shares);
+        emit DepositReserve(gammaPool, reserves.length, shares);
     }
 
     function withdrawReserves(WithdrawReservesParams calldata params) external virtual override isExpired(params.deadline) returns (uint256[] memory reserves, uint256 assets) {
@@ -81,7 +81,7 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         for (uint i = 0; i < reserves.length; i++) {
             require(reserves[i] >= params.amountsMin[i], "< min");
         }
-        emit WithdrawReserves(gammaPool, reserves.length, assets);
+        emit WithdrawReserve(gammaPool, reserves.length, assets);
     }
 
     // **** LONG GAMMA **** //

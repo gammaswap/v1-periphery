@@ -7,8 +7,8 @@ interface IPositionManager  is ITransfers {
 
     event DepositNoPull(address indexed pool, uint256 shares);
     event WithdrawNoPull(address indexed pool, uint256 assets);
-    event DepositReserves(address indexed pool, uint256 reservesLen, uint256 shares);
-    event WithdrawReserves(address indexed pool, uint256 reservesLen, uint256 assets);
+    event DepositReserve(address indexed pool, uint256 reservesLen, uint256 shares);
+    event WithdrawReserve(address indexed pool, uint256 reservesLen, uint256 assets);
     event CreateLoan(address indexed pool, address indexed owner, uint256 tokenId);
     event BorrowLiquidity(address indexed pool, uint256 tokenId, uint256 amountsLen);
     event RepayLiquidity(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint256 lpTokensPaid, uint256 amountsLen);
