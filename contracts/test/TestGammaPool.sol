@@ -161,8 +161,4 @@ contract TestGammaPool is IGammaPool, ERC20 {
     function rebalanceCollateral(uint256 tokenId, int256[] calldata deltas) external virtual override returns(uint256[] memory tokensHeld) {
         tokensHeld = new uint256[](10);
     }
-
-    function rebalanceCollateralWithLiquidity(uint256 tokenId, uint256 liquidity) external virtual override returns(uint256[] memory tokensHeld) {
-        tokensHeld = new uint256[](11);
-    }
 }
