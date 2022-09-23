@@ -670,9 +670,9 @@
     "@ethersproject/strings" "^5.6.1"
 
 "@gammaswap/v1-core@^0.1.2":
-  "integrity" "sha512-xus7CQwl4eDNpGzlxHJZ87YHswZ9bBrCBfgHB/cFzkTWHck6sKQvQIxB1oxW5VBYH6tAuurvP7p+1yBKqAxHYQ=="
-  "resolved" "https://npm.pkg.github.com/download/@gammaswap/v1-core/0.1.8/60b9377b463f384d98720eebbc40d3083618a6dd"
-  "version" "0.1.8"
+  "integrity" "sha512-a8HFWrICux/9oOmzl2dG4ianX1JL405tvmgNplQ/DZxorNZVN/p1fNzdRsqZqQxJmWYjTlsikUBA5WBpcylo6Q=="
+  "resolved" "https://npm.pkg.github.com/download/@gammaswap/v1-core/0.1.9/badeee717a44cfcaacde306ec6969d0c4042b0a1"
+  "version" "0.1.9"
   dependencies:
     "@openzeppelin/contracts" "^4.7.0"
 
