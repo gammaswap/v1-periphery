@@ -1,6 +1,7 @@
 import { ethers } from "hardhat";
 const UniswapV2FactoryJSON = require("@uniswap/v2-core/build/UniswapV2Factory.json");
 import type { TestERC20 } from "../typechain/TestERC20";
+const UniswapV2PairJSON = require("@uniswap/v2-core/build/UniswapV2Pair.json");
 
 async function main() {
   const [owner] = await ethers.getSigners();
@@ -43,7 +44,13 @@ async function main() {
     const token2Symbol = await token2.symbol();
     console.log(token1Symbol + "/" + token2Symbol + " uniPairAddress >> "
       + uniPairAddress);
-    return uniPairAddress;
+
+    // initial reserves
+    const pair = new ethers.Contract(uniPairAddress, UniswapV2PairJSON.abi, owner);
+    let amt = ethers.utils.parseEther("100");
+    await token1.transfer(uniPairAddress, amt);
+    await token2.transfer(uniPairAddress, amt);
+    await pair.mint(owner.address);
   }
 
   await createPair(tokenA, tokenB);
