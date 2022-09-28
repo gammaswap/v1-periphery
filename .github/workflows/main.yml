@@ -24,7 +24,7 @@ jobs:
           scope: '@gammaswap'
       - run: npm install
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GS_SECRET}}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_SECRET}}
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GS_SECRET}}
+          NODE_AUTH_TOKEN: ${{secrets.GITHUB_SECRET}}
