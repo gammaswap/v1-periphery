@@ -23,6 +23,8 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@gammaswap'
       - run: npm install
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.GS_SECRET}}
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GS_SECRET}}
