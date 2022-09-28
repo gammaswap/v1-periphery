@@ -13,7 +13,8 @@ jobs:
       - name: Step 2 - GitHub Action if statement (true)
         env: 
           WHO_TO_TRUST: ${{ secrets.SECRET_TOKEN }}
-        if:  env.WHO_TO_TRUST == 'TrustNo1'
+          WHO_TO_TRUST1: ${{ secrets.MY_TOKEN }}
+        if:  env.WHO_TO_TRUST == env.WHO_TO_TRUST1
         run: echo "I know what the secret token is!"
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
