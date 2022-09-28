@@ -14,9 +14,9 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 16
-          registry-url: https://npm.pkg.github.com/:_authToken=${{secrets.GIT_TOKEN}}
+          registry-url: https://npm.pkg.github.com/
           scope: '@gammaswap'
       - run: npm install
       - run: npm publish
         env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+          NODE_AUTH_TOKEN: ${{secrets.GIT_TOKEN}}
