@@ -9,13 +9,6 @@ jobs:
   publish-gpr:
     runs-on: ubuntu-latest
     steps:
-      - run: echo ${{secrets.MY_TOKEN}}
-      - name: Step 2 - GitHub Action if statement (true)
-        env: 
-          WHO_TO_TRUST2: ${{ secrets.SECRET_TOKEN }}
-          WHO_TO_TRUST1: ${{ secrets.GS_SECRET }}
-        if:  env.WHO_TO_TRUST1 == 'TrustNo1'
-        run: echo "I know what the secret token is!"
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
         with:
@@ -23,8 +16,6 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@gammaswap'
       - run: npm install
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GS_TOKEN}}
       - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GS_TOKEN}}
