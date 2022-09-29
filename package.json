@@ -10,6 +10,9 @@
   "engines": {
     "node": ">=16"
   },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/@gammaswap"
+  },
   "keywords": [
     "gammaswap",
     "ethereum",
