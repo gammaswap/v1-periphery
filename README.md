@@ -33,8 +33,5 @@ address from the deployPreCore script to v1-core's deploy script.
 5. Fill in the details in [scripts/deployPostCore.ts](scripts/deployPostCore.ts) 
 from deploying v1-core logs.
 6. Run ```npx hardhat --network localhost run scripts/deployPostCore.ts```.
-7. Optional: run ```npx hardhat --network localhost run scripts/supplyEth.ts```
-if you want to supply an outside wallet address. Enter the address into the
-script.
 
 Don't commit the secrets file.

@@ -2,15 +2,13 @@ import { ethers } from "hardhat";
 
 async function main() {
   const wethAddress = "<get this from deployPreCore deploy logs>";
-  const GammaFactoryAddress = "<get this from v1core deploy logs>";
-  const COMPUTED_INIT_CODE_HASH =
-    "0x157cb49461412afba53e7bd9359b3da3e81a31825666371966e5354af6fe2693";
-    // This value come from v1-core. If this gives an error, then the hash may
-    // need to be updated.
+  const GammaFactoryAddress = "<get this from v1core pre-strat deploy logs>";
 
   const PositionManager = await ethers.getContractFactory("PositionManager");
-  const positionManager = await PositionManager.deploy(GammaFactoryAddress,
-    wethAddress, COMPUTED_INIT_CODE_HASH);
+  const positionManager = await PositionManager.deploy(
+    GammaFactoryAddress,
+    wethAddress
+  );
   await positionManager.deployed();
   console.log("PositionManager Address >> ", positionManager.address);
 }
