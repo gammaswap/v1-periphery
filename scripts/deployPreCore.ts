@@ -29,11 +29,6 @@ async function main() {
   await uniFactory.deployed();
   console.log("UniswapV2Factory Address >> " + uniFactory.address);
 
-  const UNI_COMPUTED_INIT_CODE_HASH = ethers.utils.keccak256(
-    UniswapV2Factory.bytecode
-  );
-  console.log("uni factory hash >> " + UNI_COMPUTED_INIT_CODE_HASH)
-
   async function createPair(token1: TestERC20, token2: TestERC20) {
     await uniFactory.createPair(token1.address, token2.address);
     const uniPairAddress: string = await uniFactory.getPair(

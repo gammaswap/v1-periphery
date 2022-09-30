@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - package-abi
 
 jobs:
   publish-gpr:
@@ -16,6 +17,7 @@ jobs:
           registry-url: https://npm.pkg.github.com/
           scope: '@gammaswap'
       - run: npm install
+      - run: npx hardhat test
         env:
           NODE_AUTH_TOKEN: ${{secrets.GS_TOKEN}}
       - run: npm publish
