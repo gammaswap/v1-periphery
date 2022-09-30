@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - package-abi
 
 jobs:
   publish-gpr:
