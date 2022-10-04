@@ -1,8 +1,8 @@
-name: Compile/Test/Publish
+name: Compile/Test
 
 on:
   push:
-    branches:
+    branches-ignore:
       - main
 
 jobs:
@@ -19,6 +19,3 @@ jobs:
         env:
           NODE_AUTH_TOKEN: ${{secrets.GS_TOKEN}}
       - run: npx hardhat test
-      - run: npm publish
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GS_TOKEN}}
