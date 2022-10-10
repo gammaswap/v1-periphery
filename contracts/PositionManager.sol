@@ -69,7 +69,7 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
     function depositReserves(DepositReservesParams calldata params) external virtual override isExpired(params.deadline) returns(uint256[] memory reserves, uint256 shares) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocol);
         (reserves, shares) = IGammaPool(gammaPool)
-        .depositReserves(params.cfmm, params.amountsDesired, params.amountsMin,
+        .depositReserves(params.to, params.amountsDesired, params.amountsMin,
             abi.encode(SendTokensCallbackData({cfmm: params.cfmm, protocol: params.protocol, payer: msg.sender})));
         emit DepositReserve(gammaPool, reserves.length, shares);
     }
