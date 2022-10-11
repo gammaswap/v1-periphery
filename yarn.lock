@@ -669,10 +669,10 @@
     "@ethersproject/properties" "^5.6.0"
     "@ethersproject/strings" "^5.6.1"
 
-"@gammaswap/v1-core@^0.1.2":
-  "integrity" "sha512-a8HFWrICux/9oOmzl2dG4ianX1JL405tvmgNplQ/DZxorNZVN/p1fNzdRsqZqQxJmWYjTlsikUBA5WBpcylo6Q=="
-  "resolved" "https://npm.pkg.github.com/download/@gammaswap/v1-core/0.1.9/badeee717a44cfcaacde306ec6969d0c4042b0a1"
-  "version" "0.1.9"
+"@gammaswap/v1-core@^0.1.11":
+  "integrity" "sha512-ghHvxF+/131QPkqCKFH7B7PwyAF2SvplJBktf24KwXE+5g0g1po5xVlBb+hHR7rR1jXBpHKygc4gEDu9Nu/X9w=="
+  "resolved" "https://npm.pkg.github.com/download/@gammaswap/v1-core/0.1.12/e8c7a86938c6b92ad33efff4fa8d1c4e42d50a17"
+  "version" "0.1.12"
   dependencies:
     "@openzeppelin/contracts" "^4.7.0"
 
@@ -9268,10 +9268,10 @@
   "resolved" "https://registry.npmjs.org/solidity-comments-extractor/-/solidity-comments-extractor-0.0.7.tgz"
   "version" "0.0.7"
 
-"solidity-coverage@^0.7.21":
-  "integrity" "sha512-O8nuzJ9yXiKUx3NdzVvHrUW0DxoNVcGzq/I7NzewNO9EZE3wYAQ4l8BwcnV64r4aC/HB6Vnw/q2sF0BQHv/3fg=="
-  "resolved" "https://registry.npmjs.org/solidity-coverage/-/solidity-coverage-0.7.21.tgz"
-  "version" "0.7.21"
+"solidity-coverage@^0.7.22":
+  "integrity" "sha512-I6Zd5tsFY+gmj1FDIp6w7OrUePx6ZpMgKQZg7dWgPaQHePLi3Jk+iJ8lwZxsWEoNy2Lcv91rMxATWHqRaFdQpw=="
+  "resolved" "https://registry.npmjs.org/solidity-coverage/-/solidity-coverage-0.7.22.tgz"
+  "version" "0.7.22"
   dependencies:
     "@solidity-parser/parser" "^0.14.0"
     "@truffle/provider" "^0.2.24"
