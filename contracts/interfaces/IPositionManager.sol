@@ -15,6 +15,10 @@ interface IPositionManager  is ITransfers {
     event IncreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event DecreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event RebalanceCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
+    event PoolUpdated(uint256 lpTokenBalance, uint256 lpTokenBorrowed, uint256 lastBlockNumber, uint256 accFeeIndex,
+    uint256 lastFeeIndex, uint256 lpTokenBorrowedPlusInterest, uint256 lpInvariant, uint256 lpBorrowedInvariant);
+    event LoanCreated(address indexed caller, uint256 tokenId);
+    event LoanUpdated(uint256 indexed tokenId, uint256[] tokensHeld, uint256 heldLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
 
     struct DepositWithdrawParams {
         address cfmm;
