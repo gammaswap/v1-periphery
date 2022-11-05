@@ -249,7 +249,6 @@ describe("PositionManager", function () {
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.liquidityPaid.toNumber()).to.equal(24);
-            expect(args.lpTokensPaid.toNumber()).to.equal(25);
             expect(args.amountsLen.toNumber()).to.equal(9);
         });
 
