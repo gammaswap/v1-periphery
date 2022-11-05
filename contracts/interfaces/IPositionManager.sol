@@ -11,7 +11,7 @@ interface IPositionManager  is ITransfers {
     event WithdrawReserve(address indexed pool, uint256 reservesLen, uint256 assets);
     event CreateLoan(address indexed pool, address indexed owner, uint256 tokenId);
     event BorrowLiquidity(address indexed pool, uint256 tokenId, uint256 amountsLen);
-    event RepayLiquidity(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint256 lpTokensPaid, uint256 amountsLen);
+    event RepayLiquidity(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint256 amountsLen);
     event IncreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event DecreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event RebalanceCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
@@ -94,9 +94,9 @@ interface IPositionManager  is ITransfers {
     //Long Gamma
     function createLoan(address cfmm, uint24 protocol, address to, uint256 deadline) external returns(uint256 tokenId);
     function loan(address cfmm, uint24 protocol, uint256 tokenId) external view returns (uint256 id, address poolId,
-        uint256[] memory tokensHeld, uint256 liquidity, uint256 rateIndex, uint256 blockNum);
+        uint256[] memory tokensHeld, uint256 initLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
     function borrowLiquidity(BorrowLiquidityParams calldata params) external returns (uint256[] memory amounts);
-    function repayLiquidity(RepayLiquidityParams calldata params) external returns (uint256 liquidityPaid, uint256 lpTokensPaid, uint256[] memory amounts);
+    function repayLiquidity(RepayLiquidityParams calldata params) external returns (uint256 liquidityPaid, uint256[] memory amounts);
     function increaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint256[] memory tokensHeld);
     function decreaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint256[] memory tokensHeld);
     function rebalanceCollateral(RebalanceCollateralParams calldata params) external returns(uint256[] memory tokensHeld);

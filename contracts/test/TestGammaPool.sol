@@ -131,13 +131,13 @@ contract TestGammaPool is IGammaPool, ERC20 {
     }
 
     function loan(uint256 tokenId) external virtual override view returns (uint256 id, address poolId,
-        uint256[] memory tokensHeld, uint256 liquidity, uint256 rateIndex, uint256 blockNum) {
+        uint256[] memory tokensHeld, uint256 initLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex) {
         id = 20;
         poolId = cfmm;
         tokensHeld = new uint256[](5);
         liquidity = 21;
         rateIndex = 22;
-        blockNum = 23;
+        initLiquidity = 23;
     }
 
     function increaseCollateral(uint256 tokenId) external virtual override returns(uint256[] memory tokensHeld) {
@@ -152,9 +152,8 @@ contract TestGammaPool is IGammaPool, ERC20 {
         amounts = new uint256[](8);
     }
 
-    function repayLiquidity(uint256 tokenId, uint256 liquidity) external virtual override returns(uint256 liquidityPaid, uint256 lpTokensPaid, uint256[] memory amounts) {
+    function repayLiquidity(uint256 tokenId, uint256 liquidity) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
         liquidityPaid = 24;
-        lpTokensPaid = 25;
         amounts = new uint256[](9);
     }
 

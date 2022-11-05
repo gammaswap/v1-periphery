@@ -93,7 +93,7 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
     }
 
     function loan(address cfmm, uint24 protocol, uint256 tokenId) external virtual override view returns (uint256 id, address poolId, uint256[] memory tokensHeld,
-        uint256 liquidity, uint256 rateIndex, uint256 blockNum) {
+        uint256 initLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex) {
         return IGammaPool(getGammaPoolAddress(cfmm, protocol)).loan(tokenId);
     }
 
@@ -103,10 +103,10 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         emit BorrowLiquidity(gammaPool, params.tokenId, amounts.length);
     }
 
-    function repayLiquidity(RepayLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint256 lpTokensPaid, uint256[] memory amounts) {
+    function repayLiquidity(RepayLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint256[] memory amounts) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocol);
-        (liquidityPaid, lpTokensPaid, amounts) = IGammaPool(gammaPool).repayLiquidity(params.tokenId, params.liquidity);
-        emit RepayLiquidity(gammaPool, params.tokenId, liquidityPaid, lpTokensPaid, amounts.length);
+        (liquidityPaid, amounts) = IGammaPool(gammaPool).repayLiquidity(params.tokenId, params.liquidity);
+        emit RepayLiquidity(gammaPool, params.tokenId, liquidityPaid, amounts.length);
     }
 
     function increaseCollateral(AddRemoveCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint256[] memory tokensHeld) {
