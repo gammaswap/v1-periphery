@@ -126,6 +126,10 @@ contract TestGammaPool is IGammaPool, ERC20 {
     }
 
     //Long Gamma
+    function getCFMMPrice() external virtual override view returns(uint256 price) {
+        return 1;
+    }
+
     function createLoan() external virtual override returns(uint256 tokenId) {
         tokenId = 19;
     }

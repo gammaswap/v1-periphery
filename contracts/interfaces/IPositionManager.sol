@@ -19,6 +19,7 @@ interface IPositionManager  is ITransfers {
     uint256 lastFeeIndex, uint256 lpTokenBorrowedPlusInterest, uint256 lpInvariant, uint256 lpBorrowedInvariant);
     event LoanCreated(address indexed caller, uint256 tokenId);
     event LoanUpdated(uint256 indexed tokenId, uint256[] tokensHeld, uint256 heldLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
+    event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint256[] tokensHeld, uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint256 lastPx);
 
     struct DepositWithdrawParams {
         address cfmm;
@@ -93,8 +94,8 @@ interface IPositionManager  is ITransfers {
 
     //Long Gamma
     function createLoan(address cfmm, uint24 protocol, address to, uint256 deadline) external returns(uint256 tokenId);
-    function loan(address cfmm, uint24 protocol, uint256 tokenId) external view returns (uint256 id, address poolId,
-        uint256[] memory tokensHeld, uint256 initLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
+    //function loan(address cfmm, uint24 protocol, uint256 tokenId) external view returns (uint256 id, address poolId,
+    //    uint256[] memory tokensHeld, uint256 initLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
     function borrowLiquidity(BorrowLiquidityParams calldata params) external returns (uint256[] memory amounts);
     function repayLiquidity(RepayLiquidityParams calldata params) external returns (uint256 liquidityPaid, uint256[] memory amounts);
     function increaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint256[] memory tokensHeld);
