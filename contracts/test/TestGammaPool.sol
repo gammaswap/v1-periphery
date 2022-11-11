@@ -33,70 +33,19 @@ contract TestGammaPool is IGammaPool, ERC20 {
         return tokens_;
     }
 
-    function tokenBalances() external virtual override view returns(uint256[] memory){
-        return new uint256[](1);
+
+    function getPoolBalances() external virtual override view returns(uint256[] memory tokenBalances, uint256 lpTokenBalance, uint256 lpTokenBorrowed,
+        uint256 lpTokenBorrowedPlusInterest, uint256 lpTokenTotal, uint256 borrowedInvariant, uint256 lpInvariant, uint256 totalInvariant) {
+        return(new uint256[](1), 1, 2, 3, 4, 5, 6, 7);
     }
 
-    function lpTokenBalance() external virtual override view returns(uint256){
-        return 1;
+    function getCFMMBalances() external virtual override view returns(uint256[] memory cfmmReserves, uint256 cfmmInvariant, uint256 cfmmTotalSupply) {
+        return(new uint256[](2), 12, 13);
     }
 
-    function lpTokenBorrowed() external virtual override view returns(uint256){
-        return 2;
-    }
 
-    function lpTokenBorrowedPlusInterest() external virtual override view returns(uint256){
-        return 3;
-    }
-
-    function lpTokenTotal() external virtual override view returns(uint256){
-        return 4;
-    }
-
-    function borrowedInvariant() external virtual override view returns(uint256){
-        return 5;
-    }
-
-    function lpInvariant() external virtual override view returns(uint256){
-        return 6;
-
-    }
-
-    function totalInvariant() external virtual override view returns(uint256){
-        return 7;
-
-    }
-
-    function cfmmReserves() external virtual override view returns(uint256[] memory){
-        return new uint256[](2);
-    }
-
-    function borrowRate() external virtual override view returns(uint256){
-        return 8;
-    }
-
-    function accFeeIndex() external virtual override view returns(uint256){
-        return 9;
-    }
-
-    function lastFeeIndex() external virtual override view returns(uint256){
-        return 10;
-    }
-
-    function lastCFMMFeeIndex() external virtual override view returns(uint256){
-        return 11;
-    }
-
-    function lastCFMMInvariant() external virtual override view returns(uint256){
-        return 12;
-    }
-
-    function lastCFMMTotalSupply() external virtual override view returns(uint256){
-        return 13;
-    }
-
-    function lastBlockNumber() external virtual override view returns(uint256){
-        return 14;
+    function getRates() external virtual override view returns(uint256 borrowRate, uint256 accFeeIndex, uint256 lastFeeIndex, uint256 lastCFMMFeeIndex, uint256 lastBlockNumber) {
+        return(8, 9, 10, 11, 14);
     }
 
     function testSendTokensCallback(address posAddr, address[] calldata tokens, uint256[] calldata amounts, address payee, bytes calldata data) external virtual {
@@ -163,5 +112,13 @@ contract TestGammaPool is IGammaPool, ERC20 {
 
     function rebalanceCollateral(uint256 tokenId, int256[] calldata deltas) external virtual override returns(uint256[] memory tokensHeld) {
         tokensHeld = new uint256[](10);
+    }
+
+    function liquidate(uint256 tokenId, bool isRebalance, int256[] calldata deltas) external override virtual returns(uint256[] memory refund) {
+        return new uint256[](2);
+    }
+
+    function liquidateWithLP(uint256 tokenId) external override virtual returns(uint256[] memory refund) {
+        return new uint256[](2);
     }
 }
