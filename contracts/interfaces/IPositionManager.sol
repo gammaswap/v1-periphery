@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-pragma solidity ^0.8.0;
+pragma solidity 0.8.4;
 
 import "./ITransfers.sol";
 
@@ -94,8 +94,6 @@ interface IPositionManager  is ITransfers {
 
     //Long Gamma
     function createLoan(address cfmm, uint24 protocol, address to, uint256 deadline) external returns(uint256 tokenId);
-    //function loan(address cfmm, uint24 protocol, uint256 tokenId) external view returns (uint256 id, address poolId,
-    //    uint256[] memory tokensHeld, uint256 initLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
     function borrowLiquidity(BorrowLiquidityParams calldata params) external returns (uint256[] memory amounts);
     function repayLiquidity(RepayLiquidityParams calldata params) external returns (uint256 liquidityPaid, uint256[] memory amounts);
     function increaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint256[] memory tokensHeld);

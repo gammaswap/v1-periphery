@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity 0.8.4;
 
 import "@gammaswap/v1-core/contracts/libraries/AddressCalculator.sol";
 import "./TestGammaPool.sol";

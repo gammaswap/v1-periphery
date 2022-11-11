@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-pragma solidity ^0.8.0;
+pragma solidity 0.8.4;
 pragma abicoder v2;
 
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
@@ -11,6 +11,10 @@ import "./base/Transfers.sol";
 import "./base/GammaPoolERC721.sol";
 
 contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, GammaPoolERC721 {
+
+    error Forbidden();
+    error Expired();
+    error MinWithdrawal();
 
     address public owner;
 
@@ -27,11 +31,15 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
     }
 
     function checkAuthorization(uint256 tokenId) internal view {
-        require(_isApprovedOrOwner(msg.sender, tokenId), "FORBIDDEN");
+        if(!_isApprovedOrOwner(msg.sender, tokenId)) {
+            revert Forbidden();
+        }
     }
 
     function checkDeadline(uint256 deadline) internal view {
-        require(deadline >= block.timestamp, "EXPIRED");
+        if(deadline < block.timestamp) {
+            revert Expired();
+        }
     }
 
     constructor(address _factory, address _WETH) GammaPoolERC721("PosMgr", "PM-V1") Transfers(_WETH) {
@@ -45,7 +53,9 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
 
     function sendTokensCallback(address[] calldata tokens, uint256[] calldata amounts, address payee, bytes calldata data) external virtual override {
         SendTokensCallbackData memory decoded = abi.decode(data, (SendTokensCallbackData));
-        require(msg.sender == getGammaPoolAddress(decoded.cfmm, decoded.protocol), "FORBIDDEN");
+        if(msg.sender != getGammaPoolAddress(decoded.cfmm, decoded.protocol)) {
+            revert Forbidden();
+        }
 
         for(uint i = 0; i < tokens.length; i++) {
             if(amounts[i] > 0) send(tokens[i], decoded.payer, payee, amounts[i]);
@@ -80,7 +90,9 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         send(gammaPool, msg.sender, gammaPool, params.amount); // send gs tokens to pool
         (reserves, assets) = IGammaPool(gammaPool).withdrawReserves(params.to);
         for (uint i = 0; i < reserves.length; i++) {
-            require(reserves[i] >= params.amountsMin[i], "< min");
+            if(reserves[i] < params.amountsMin[i]) {
+                revert MinWithdrawal();
+            }
         }
         emit WithdrawReserve(gammaPool, reserves.length, assets);
     }
