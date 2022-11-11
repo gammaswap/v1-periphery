@@ -1,30 +1,41 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-pragma solidity ^0.8.0;
+pragma solidity 0.8.4;
+
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 library TransferHelper {
 
-    bytes4 private constant TRANSFER = bytes4(keccak256(bytes("transfer(address,uint256)")));
-    bytes4 private constant TRANSFER_FROM = bytes4(keccak256(bytes("transferFrom(address,address,uint256)")));
-    bytes4 private constant APPROVE = bytes4(keccak256(bytes("approve(address,uint256)")));
+    error STF_Fail();
+    error ST_Fail();
+    error SA_Fail();
+    error STE_Fail();
 
-    function safeTransferFrom(address token, address from, address to, uint256 value) internal {
+    function safeTransferFrom(IERC20 token, address from, address to, uint256 value) internal {
         (bool success, bytes memory data) =
-        token.call(abi.encodeWithSelector(TRANSFER_FROM, from, to, value));
-        require(success && (data.length == 0 || abi.decode(data, (bool))), "STF");
+        address(token).call(abi.encodeWithSelector(token.transferFrom.selector, from, to, value));
+        if(!(success && (data.length == 0 || abi.decode(data, (bool))))) {
+            revert STF_Fail();
+        }
     }
 
-    function safeTransfer(address token, address to, uint256 value) internal {
-        (bool success, bytes memory data) = token.call(abi.encodeWithSelector(TRANSFER, to, value));
-        require(success && (data.length == 0 || abi.decode(data, (bool))), "ST");
+    function safeTransfer(IERC20 token, address to, uint256 value) internal {
+        (bool success, bytes memory data) = address(token).call(abi.encodeWithSelector(token.transfer.selector, to, value));
+        if(!(success && (data.length == 0 || abi.decode(data, (bool))))) {
+            revert ST_Fail();
+        }
     }
 
-    function safeApprove(address token, address to, uint256 value) internal {
-        (bool success, bytes memory data) = token.call(abi.encodeWithSelector(APPROVE, to, value));
-        require(success && (data.length == 0 || abi.decode(data, (bool))), "SA");
+    function safeApprove(IERC20 token, address to, uint256 value) internal {
+        (bool success, bytes memory data) = address(token).call(abi.encodeWithSelector(token.approve.selector, to, value));
+        if(!(success && (data.length == 0 || abi.decode(data, (bool))))) {
+            revert SA_Fail();
+        }
     }
 
     function safeTransferETH(address to, uint256 value) internal {
         (bool success, ) = to.call{value: value}(new bytes(0));
-        require(success, "STE");
+        if(!success) {
+            revert STE_Fail();
+        }
     }
 }

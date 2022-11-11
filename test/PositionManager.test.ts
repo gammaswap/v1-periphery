@@ -95,7 +95,7 @@ describe("PositionManager", function () {
             
             const res = posMgr.sendTokensCallback(tokens, amounts, payee, data)
             
-            await expect(res).to.be.revertedWith("FORBIDDEN");
+            await expect(res).to.be.revertedWith("Forbidden");
         })
 
         it("#sendTokensCallback should change balances of tokens", async function () {
