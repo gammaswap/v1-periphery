@@ -14,7 +14,7 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
 
     error Forbidden();
     error Expired();
-    error MinWithdrawal();
+    error AmountsMin();
 
     address public owner;
 
@@ -56,9 +56,13 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         if(msg.sender != getGammaPoolAddress(decoded.cfmm, decoded.protocol)) {
             revert Forbidden();
         }
+        sendTokens(tokens, amounts, decoded.payer, payee);
+    }
 
-        for(uint i = 0; i < tokens.length; i++) {
-            if(amounts[i] > 0) send(tokens[i], decoded.payer, payee, amounts[i]);
+    function sendTokens(address[] memory tokens, uint256[] calldata amounts, address payer, address payee) internal virtual {
+        uint256 len = tokens.length;
+        for (uint i = 0; i < len; i++) {
+            if (amounts[i] > 0 ) send(tokens[i], payer, payee, amounts[i]);
         }
     }
 
@@ -89,11 +93,7 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocol);
         send(gammaPool, msg.sender, gammaPool, params.amount); // send gs tokens to pool
         (reserves, assets) = IGammaPool(gammaPool).withdrawReserves(params.to);
-        for (uint i = 0; i < reserves.length; i++) {
-            if(reserves[i] < params.amountsMin[i]) {
-                revert MinWithdrawal();
-            }
-        }
+        checkAmountsMin(reserves, params.amountsMin);
         emit WithdrawReserve(gammaPool, reserves.length, assets);
     }
 
@@ -107,6 +107,15 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         emit LoanUpdate(tokenId, gammaPool, owner, tokensHeld, liquidity, lpTokens, initLiquidity, IGammaPool(gammaPool).getCFMMPrice());
     }
 
+    function checkAmountsMin(uint256[] memory amounts, uint256[] memory amountsMin) internal virtual pure {
+        uint256 len = amounts.length;
+        for (uint24 i = 0; i < len; i++) {
+            if(amounts[i] < amountsMin[i]) {
+                revert AmountsMin();
+            }
+        }
+    }
+
     function createLoan(address cfmm, uint24 protocol, address to, uint256 deadline) external virtual override isExpired(deadline) returns(uint256 tokenId) {
         address gammaPool = getGammaPoolAddress(cfmm, protocol);
         tokenId = IGammaPool(gammaPool).createLoan();
@@ -118,6 +127,7 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
     function borrowLiquidity(BorrowLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256[] memory amounts) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocol);
         amounts = IGammaPool(gammaPool).borrowLiquidity(params.tokenId, params.lpTokens);
+        checkAmountsMin(amounts, params.minBorrowed);
         emit BorrowLiquidity(gammaPool, params.tokenId, amounts.length);
         logLoan(gammaPool, params.tokenId, msg.sender);
     }
@@ -125,16 +135,14 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
     function repayLiquidity(RepayLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint256[] memory amounts) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocol);
         (liquidityPaid, amounts) = IGammaPool(gammaPool).repayLiquidity(params.tokenId, params.liquidity);
+        checkAmountsMin(amounts, params.minRepaid);
         emit RepayLiquidity(gammaPool, params.tokenId, liquidityPaid, amounts.length);
         logLoan(gammaPool, params.tokenId, msg.sender);
     }
 
     function increaseCollateral(AddRemoveCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint256[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocol);
-        address[] memory _tokens = IGammaPool(gammaPool).tokens();
-        for (uint i = 0; i < _tokens.length; i++) {
-            if (params.amounts[i] > 0 ) send(_tokens[i], msg.sender, gammaPool, params.amounts[i]);
-        }
+        sendTokens(IGammaPool(gammaPool).tokens(), params.amounts, msg.sender, gammaPool);
         tokensHeld = IGammaPool(gammaPool).increaseCollateral(params.tokenId);
         emit IncreaseCollateral(gammaPool, params.tokenId, tokensHeld.length);
         logLoan(gammaPool, params.tokenId, msg.sender);
@@ -150,6 +158,7 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
     function rebalanceCollateral(RebalanceCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint256[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocol);
         tokensHeld = IGammaPool(gammaPool).rebalanceCollateral(params.tokenId, params.deltas);
+        checkAmountsMin(tokensHeld, params.minCollateral);
         emit RebalanceCollateral(gammaPool, params.tokenId, tokensHeld.length);
         logLoan(gammaPool, params.tokenId, msg.sender);
     }

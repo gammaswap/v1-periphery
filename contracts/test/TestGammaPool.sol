@@ -107,16 +107,16 @@ contract TestGammaPool is IGammaPool, ERC20 {
     }
 
     function borrowLiquidity(uint256 tokenId, uint256 lpTokens) external virtual override returns(uint256[] memory amounts) {
-        amounts = new uint256[](8);
+        amounts = new uint256[](2);
     }
 
     function repayLiquidity(uint256 tokenId, uint256 liquidity) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
         liquidityPaid = 24;
-        amounts = new uint256[](9);
+        amounts = new uint256[](2);
     }
 
     function rebalanceCollateral(uint256 tokenId, int256[] calldata deltas) external virtual override returns(uint256[] memory tokensHeld) {
-        tokensHeld = new uint256[](10);
+        tokensHeld = new uint256[](2);
     }
 
     function liquidate(uint256 tokenId, bool isRebalance, int256[] calldata deltas) external override virtual returns(uint256[] memory refund) {
