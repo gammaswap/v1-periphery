@@ -1,3 +1,4 @@
+// SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity 0.8.4;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
@@ -19,30 +20,34 @@ contract TestGammaPool is IGammaPool, ERC20 {
     address public tester;
     address public owner;
 
-    constructor() ERC20("TestGammaPool","TGP-V1"){
+    constructor() ERC20("TestGammaPool","TGP-V1") {
+    }
+
+    function initialize(InitializeParameters calldata params) external virtual override {
         factory = msg.sender;
-        (cfmm, protocolId, tokens_, protocol) = ITestGammaPoolFactory(msg.sender).parameters();
+        cfmm = params.cfmm;
+        protocolId = params.protocolId;
+        tokens_ = params.tokens;
+        protocol = params.protocol;
         longStrategy = ITestGammaPoolFactory(msg.sender).longStrategy();
         shortStrategy = ITestGammaPoolFactory(msg.sender).shortStrategy();
         tester = ITestGammaPoolFactory(msg.sender).tester();
         owner = msg.sender;
-        _mint(tester, 100000 * (10 ** 18));//mint to tester
+        _mint(tester, 100000 * (10 ** 18));
     }
 
     function tokens() external virtual override view returns(address[] memory){
         return tokens_;
     }
 
-
     function getPoolBalances() external virtual override view returns(uint256[] memory tokenBalances, uint256 lpTokenBalance, uint256 lpTokenBorrowed,
-        uint256 lpTokenBorrowedPlusInterest, uint256 lpTokenTotal, uint256 borrowedInvariant, uint256 lpInvariant, uint256 totalInvariant) {
-        return(new uint256[](1), 1, 2, 3, 4, 5, 6, 7);
+        uint256 lpTokenBorrowedPlusInterest, uint256 borrowedInvariant, uint256 lpInvariant) {
+        return(new uint256[](1), 1, 2, 3, 4, 5);
     }
 
     function getCFMMBalances() external virtual override view returns(uint256[] memory cfmmReserves, uint256 cfmmInvariant, uint256 cfmmTotalSupply) {
         return(new uint256[](2), 12, 13);
     }
-
 
     function getRates() external virtual override view returns(uint256 borrowRate, uint256 accFeeIndex, uint256 lastFeeIndex, uint256 lastCFMMFeeIndex, uint256 lastBlockNumber) {
         return(8, 9, 10, 11, 14);

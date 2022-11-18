@@ -39,20 +39,18 @@ describe("PositionManager", function () {
         tokenB = await TestERC20.deploy("Test Token B", "TOKB");
         cfmm = await TestERC20.deploy("CFMM LP Token", "LP_CFMM");
         WETH = await TestERC20.deploy("WETH", "WETH");
+
+        const implementation = await GammaPool.deploy();
+
         //address _feeToSetter, address _longStrategy, address _shortStrategy, address _protocol
-        factory = await GammaPoolFactory.deploy(owner.address, addr1.address, addr2.address, addr3.address);
+        factory = await GammaPoolFactory.deploy(owner.address, addr1.address, addr2.address, addr3.address, implementation.address);
 
         // We can interact with the contract by calling `hardhatToken.method()`
         await tokenA.deployed();
         await tokenB.deployed();
         await factory.deployed();
 
-        const COMPUTED_INIT_CODE_HASH = ethers.utils.keccak256(
-            GammaPool.bytecode
-        );
-
-        //address _factory, address _WETH, bytes32 _initCodeHash
-        posMgr = await TestPositionManager.deploy(factory.address, WETH.address, COMPUTED_INIT_CODE_HASH);
+        posMgr = await TestPositionManager.deploy(factory.address, WETH.address);
 
         await posMgr.deployed();
 
@@ -62,7 +60,7 @@ describe("PositionManager", function () {
             tokens: [tokenA.address, tokenB.address]
         };
 
-        const res = await (await factory.createPool(createPoolParams)).wait();
+        const res = await (await factory.createPool2(createPoolParams)).wait();
 
         const { args } = res.events[1];
         gammaPoolAddr = args.pool;
@@ -113,19 +111,20 @@ describe("PositionManager", function () {
                 cfmm: cfmm.address,
                 protocol: protocolId,
             }
+
             const tokens = [tokenA.address, tokenB.address];
             const amounts =  [90000, 1000];
             const payee = addr1.address;
             const data = ethers.utils.defaultAbiCoder.encode(["tuple(address payer, address cfmm, uint24 protocol)"],[sendTokensCallback]);
-            
-            const res = await gammaPool.testSendTokensCallback(posMgr.address, tokens, amounts, payee, data)
+
+            (await gammaPool.testSendTokensCallback(posMgr.address, tokens, amounts, payee, data)).wait();
 
             const newBalancePayer_A = await tokenA.balanceOf(owner.address);
             const newBalancePayer_B = await tokenB.balanceOf(owner.address);
-            
+
             const newBalancePayee_A = await tokenA.balanceOf(addr1.address);
             const newBalancePayee_B = await tokenB.balanceOf(addr1.address);
-                        
+
             await expect(prevBalancePayer_A.toString()).to.not.be.equal(newBalancePayer_A.toString());
             await expect(prevBalancePayee_A.toString()).to.not.be.equal(newBalancePayee_A.toString());
 
