@@ -131,6 +131,67 @@ describe("PositionManager", function () {
             await expect(prevBalancePayer_B.toString()).to.not.be.equal(newBalancePayer_B.toString());
             await expect(prevBalancePayee_B.toString()).to.not.be.equal(newBalancePayee_B.toString());
         })
+
+
+        it("#checkMinAmounts should revert when Amounts < AmountsMin", async function () {
+            const amounts =  [90000, 1000];
+            const amountsMin =  [90000, 1001];
+            await expect(posMgr.testCheckAmountsMin(amounts, amountsMin)).to.be.revertedWith("AmountsMin");
+
+            const amounts0 =  [90000, 1000];
+            const amountsMin0 =  [90001, 1000];
+            await expect(posMgr.testCheckAmountsMin(amounts0, amountsMin0)).to.be.revertedWith("AmountsMin");
+
+            const amounts1 =  [90000, 1000];
+            const amountsMin1 =  [90001, 1001];
+            await expect(posMgr.testCheckAmountsMin(amounts1, amountsMin1)).to.be.revertedWith("AmountsMin");
+
+            const amounts2 =  [1, 1];
+            const amountsMin2 =  [1, 2];
+            await expect(posMgr.testCheckAmountsMin(amounts2, amountsMin2)).to.be.revertedWith("AmountsMin");
+
+            const amounts3 =  [0, 1];
+            const amountsMin3 =  [1, 1];
+            await expect(posMgr.testCheckAmountsMin(amounts3, amountsMin3)).to.be.revertedWith("AmountsMin");
+
+            const amounts4 =  [1, 0];
+            const amountsMin4 =  [1, 1];
+            await expect(posMgr.testCheckAmountsMin(amounts4, amountsMin4)).to.be.revertedWith("AmountsMin");
+
+            const amounts5 =  [0, 0];
+            const amountsMin5 =  [1, 1];
+            await expect(posMgr.testCheckAmountsMin(amounts5, amountsMin5)).to.be.revertedWith("AmountsMin");
+        });
+
+        it("#checkMinAmounts should not revert when Amounts >= AmountsMin", async function () {
+            const amounts =  [90000, 1000];
+            const amountsMin =  [90000, 1000];
+            posMgr.testCheckAmountsMin(amounts, amountsMin);
+
+            const amounts0 =  [90001, 1000];
+            const amountsMin0 =  [90000, 1000];
+            posMgr.testCheckAmountsMin(amounts0, amountsMin0);
+
+            const amounts1 =  [90000, 1001];
+            const amountsMin1 =  [90000, 1000];
+            posMgr.testCheckAmountsMin(amounts1, amountsMin1);
+
+            const amounts2 =  [90001, 1001];
+            const amountsMin2 =  [90000, 1000];
+            posMgr.testCheckAmountsMin(amounts2, amountsMin2);
+
+            const amounts3 =  [1, 1];
+            const amountsMin3 =  [1, 1];
+            posMgr.testCheckAmountsMin(amounts3, amountsMin3);
+
+            const amounts4 =  [1, 1];
+            const amountsMin4 =  [0, 0];
+            posMgr.testCheckAmountsMin(amounts4, amountsMin4);
+
+            const amounts5 =  [0, 0];
+            const amountsMin5 =  [0, 0];
+            posMgr.testCheckAmountsMin(amounts5, amountsMin5);
+        });
     });
 
     // You can nest describe calls to create subsections.
@@ -222,6 +283,7 @@ describe("PositionManager", function () {
                 tokenId: tokenId,
                 lpTokens: 1,
                 to: owner.address,
+                minBorrowed: [0,0],
                 deadline: ethers.constants.MaxUint256
             }
             
@@ -239,6 +301,7 @@ describe("PositionManager", function () {
                 tokenId: tokenId,
                 liquidity: 1,
                 to: owner.address,
+                minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256
             }
             
@@ -248,7 +311,7 @@ describe("PositionManager", function () {
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.liquidityPaid.toNumber()).to.equal(24);
-            expect(args.amountsLen.toNumber()).to.equal(9);
+            expect(args.amountsLen.toNumber()).to.equal(2);
         });
 
         it("#increaseCollateral should return tokenId and length of tokens held", async function () {
@@ -298,6 +361,7 @@ describe("PositionManager", function () {
                 deltas: [4, 2],
                 liquidity: 1,
                 to: owner.address,
+                minCollateral: [0,0],
                 deadline: ethers.constants.MaxUint256
             }
             
@@ -306,7 +370,7 @@ describe("PositionManager", function () {
             const { args } = res.events[0]
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
-            expect(args.tokensHeldLen.toNumber()).to.equal(10);
+            expect(args.tokensHeldLen.toNumber()).to.equal(2);
         });
     });
 });

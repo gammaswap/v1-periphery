@@ -54,6 +54,7 @@ interface IPositionManager  is ITransfers {
         uint256 lpTokens;
         address to;
         uint256 deadline;
+        uint256[] minBorrowed;
     }
 
     struct RepayLiquidityParams {
@@ -63,6 +64,7 @@ interface IPositionManager  is ITransfers {
         uint256 liquidity;
         address to;
         uint256 deadline;
+        uint256[] minRepaid;
     }
 
     struct AddRemoveCollateralParams {
@@ -81,7 +83,8 @@ interface IPositionManager  is ITransfers {
         int256[] deltas;
         uint256 liquidity;
         address to;
-        uint deadline;
+        uint256 deadline;
+        uint256[] minCollateral;
     }
 
     function factory() external view returns (address);
