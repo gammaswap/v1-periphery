@@ -40,17 +40,11 @@ describe("PositionManager", function () {
         cfmm = await TestERC20.deploy("CFMM LP Token", "LP_CFMM");
         WETH = await TestERC20.deploy("WETH", "WETH");
 
-        //address _feeToSetter, address _longStrategy, address _shortStrategy, address _protocol
         factory = await GammaPoolFactory.deploy(owner.address);
 
         const implementation = await GammaPool.deploy(1, factory.address, addr1.address, addr2.address, addr3.address);
 
         factory.addProtocol(implementation.address);
-
-        // We can interact with the contract by calling `hardhatToken.method()`
-        /*await tokenA.deployed();
-        await tokenB.deployed();
-        await factory.deployed();/**/
 
         posMgr = await TestPositionManager.deploy(factory.address, WETH.address);
 
@@ -332,10 +326,11 @@ describe("PositionManager", function () {
     // You can nest describe calls to create subsections.
     describe("Long Gamma Functions", function () {
         it("#createLoan should return tokenId", async function () {
-            const res = await (await posMgr.createLoan(cfmm.address, 1, owner.address, ethers.constants.MaxUint256)).wait();
+            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
             
             const { args } = res.events[1];
             expect(args.pool).to.equal(gammaPool.address);
+            expect(args.owner).to.equal(owner.address);
             expect(args.tokenId.toNumber()).to.equal(19);
         });
 
@@ -352,9 +347,10 @@ describe("PositionManager", function () {
             
             const res = await (await posMgr.borrowLiquidity(BorrowLiquidityParams)).wait();
             
-            const { args } = res.events[0]
+            const { args } = res.events[0];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
+            expect(args.amountsLen.toNumber()).to.equal(2);
         });
 
         it("#repayLiquidity should return tokenId, paid liquidity, paid lp tokens and length of amounts array", async function () {
@@ -370,7 +366,7 @@ describe("PositionManager", function () {
             
             const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
             
-            const { args } = res.events[0]
+            const { args } = res.events[0];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.liquidityPaid.toNumber()).to.equal(24);
@@ -410,7 +406,7 @@ describe("PositionManager", function () {
             
             const res = await (await posMgr.decreaseCollateral(AddRemoveCollateralParams)).wait();
             
-            const { args } = res.events[0]
+            const { args } = res.events[0];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.tokensHeldLen.toNumber()).to.equal(7);
@@ -430,10 +426,110 @@ describe("PositionManager", function () {
             
             const res = await (await posMgr.rebalanceCollateral(RebalanceCollateralParams)).wait();
             
-            const { args } = res.events[0]
+            const { args } = res.events[0];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.tokensHeldLen.toNumber()).to.equal(2);
+        });
+
+        it("#createLoanBorrowAndRebalance should return tokenId, tokensHeld, amounts. No deltas", async function () {
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+
+            const CreateLoanBorrowAndRebalanceParams = {
+                protocolId: protocolId,
+                cfmm: cfmm.address,
+                to: owner.address,
+                lpTokens: 1,
+                deadline: ethers.constants.MaxUint256,
+                amounts: [100,10],
+                minBorrowed: [0,0],
+                deltas: [],
+                minCollateral: []
+            }
+
+            const res = await (await posMgr.createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams)).wait();
+
+            expect(res.events[1].event).to.equal("CreateLoan");
+            const args0 = res.events[1].args;
+            expect(args0.pool).to.equal(gammaPool.address);
+            expect(args0.owner).to.equal(owner.address);
+            expect(args0.tokenId.toNumber()).to.equal(19);
+
+            expect(res.events[4].event).to.equal("IncreaseCollateral");
+            const args1 = res.events[4].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(19);
+            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+
+            expect(res.events[5].event).to.equal("BorrowLiquidity");
+            const args2 = res.events[5].args;
+            expect(args2.pool).to.equal(gammaPool.address);
+            expect(args2.tokenId.toNumber()).to.equal(19);
+            expect(args2.amountsLen.toNumber()).to.equal(2);
+
+            expect(res.events[6].event).to.equal("LoanUpdate");
+            const args3 = res.events[6].args;
+            expect(args3.poolId).to.equal(gammaPool.address);
+            expect(args3.owner).to.equal(owner.address);
+            expect(args3.tokensHeld.length).to.equal(5);
+            expect(args3.liquidity.toNumber()).to.equal(21);
+            expect(args3.lpTokens.toNumber()).to.equal(22);
+            expect(args3.initLiquidity.toNumber()).to.equal(24);
+            expect(args3.lastPx.toNumber()).to.equal(1);
+        });
+
+        it("#createLoanBorrowAndRebalance should return tokenId, tokensHeld, amounts. Has deltas", async function () {
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+
+            const CreateLoanBorrowAndRebalanceParams = {
+                protocolId: protocolId,
+                cfmm: cfmm.address,
+                to: owner.address,
+                lpTokens: 1,
+                deadline: ethers.constants.MaxUint256,
+                amounts: [100,10],
+                minBorrowed: [0,0],
+                deltas: [4,2],
+                minCollateral: [0,0]
+            }
+
+            const res = await (await posMgr.createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams)).wait();
+
+            expect(res.events[1].event).to.equal("CreateLoan");
+            const args0 = res.events[1].args;
+            expect(args0.pool).to.equal(gammaPool.address);
+            expect(args0.owner).to.equal(owner.address);
+            expect(args0.tokenId.toNumber()).to.equal(19);
+
+            expect(res.events[4].event).to.equal("IncreaseCollateral");
+            const args1 = res.events[4].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(19);
+            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+
+            expect(res.events[5].event).to.equal("BorrowLiquidity");
+            const args2 = res.events[5].args;
+            expect(args2.pool).to.equal(gammaPool.address);
+            expect(args2.tokenId.toNumber()).to.equal(19);
+            expect(args2.amountsLen.toNumber()).to.equal(2);
+
+            expect(res.events[6].event).to.equal("RebalanceCollateral");
+            const args3 = res.events[6].args;
+            expect(args3.pool).to.equal(gammaPool.address);
+            expect(args3.tokenId.toNumber()).to.equal(19);
+            expect(args3.tokensHeldLen.toNumber()).to.equal(2);
+
+            expect(res.events[7].event).to.equal("LoanUpdate");
+            const args4 = res.events[7].args;
+            expect(args4.poolId).to.equal(gammaPool.address);
+            expect(args4.owner).to.equal(owner.address);
+            expect(args4.tokensHeld.length).to.equal(5);
+            expect(args4.liquidity.toNumber()).to.equal(21);
+            expect(args4.lpTokens.toNumber()).to.equal(22);
+            expect(args4.initLiquidity.toNumber()).to.equal(24);
+            expect(args4.lastPx.toNumber()).to.equal(1);
         });
     });
 });
