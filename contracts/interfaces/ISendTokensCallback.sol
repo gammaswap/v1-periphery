@@ -6,7 +6,7 @@ interface ISendTokensCallback {
     struct SendTokensCallbackData {
         address payer;
         address cfmm;
-        uint24 protocol;
+        uint16 protocolId;
     }
 
     function sendTokensCallback(address[] calldata tokens, uint256[] calldata amounts, address payee, bytes calldata data) external;

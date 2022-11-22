@@ -18,12 +18,12 @@ interface IPositionManager  is ITransfers {
     event PoolUpdated(uint256 lpTokenBalance, uint256 lpTokenBorrowed, uint256 lastBlockNumber, uint256 accFeeIndex,
     uint256 lastFeeIndex, uint256 lpTokenBorrowedPlusInterest, uint256 lpInvariant, uint256 lpBorrowedInvariant);
     event LoanCreated(address indexed caller, uint256 tokenId);
-    event LoanUpdated(uint256 indexed tokenId, uint256[] tokensHeld, uint256 heldLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
-    event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint256[] tokensHeld, uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint256 lastPx);
+    event LoanUpdated(uint256 indexed tokenId, uint128[] tokensHeld, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
+    event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld, uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint256 lastPx);
 
     struct DepositWithdrawParams {
         address cfmm;
-        uint24 protocol;
+        uint16 protocolId;
         uint256 lpTokens;
         address to;
         uint256 deadline;
@@ -34,13 +34,13 @@ interface IPositionManager  is ITransfers {
         uint256[] amountsDesired;
         uint256[] amountsMin;
         address to;
-        uint24 protocol;
+        uint16 protocolId;
         uint256 deadline;
     }
 
     struct WithdrawReservesParams {
         address cfmm;
-        uint24 protocol;
+        uint16 protocolId;
         uint256 amount;
         uint256[] amountsMin;
         address to;
@@ -49,7 +49,7 @@ interface IPositionManager  is ITransfers {
 
     struct BorrowLiquidityParams {
         address cfmm;
-        uint24 protocol;
+        uint16 protocolId;
         uint256 tokenId;
         uint256 lpTokens;
         address to;
@@ -59,7 +59,7 @@ interface IPositionManager  is ITransfers {
 
     struct RepayLiquidityParams {
         address cfmm;
-        uint24 protocol;
+        uint16 protocolId;
         uint256 tokenId;
         uint256 liquidity;
         address to;
@@ -69,7 +69,7 @@ interface IPositionManager  is ITransfers {
 
     struct AddRemoveCollateralParams {
         address cfmm;
-        uint24 protocol;
+        uint16 protocolId;
         uint256 tokenId;
         uint256[] amounts;
         address to;
@@ -78,13 +78,13 @@ interface IPositionManager  is ITransfers {
 
     struct RebalanceCollateralParams {
         address cfmm;
-        uint24 protocol;
+        uint16 protocolId;
         uint256 tokenId;
         int256[] deltas;
         uint256 liquidity;
         address to;
         uint256 deadline;
-        uint256[] minCollateral;
+        uint128[] minCollateral;
     }
 
     function factory() external view returns (address);
@@ -96,10 +96,10 @@ interface IPositionManager  is ITransfers {
     function withdrawReserves(WithdrawReservesParams calldata params) external returns (uint256[] memory reserves, uint256 assets);
 
     //Long Gamma
-    function createLoan(address cfmm, uint24 protocol, address to, uint256 deadline) external returns(uint256 tokenId);
+    function createLoan(address cfmm, uint16 protocolId, address to, uint256 deadline) external returns(uint256 tokenId);
     function borrowLiquidity(BorrowLiquidityParams calldata params) external returns (uint256[] memory amounts);
     function repayLiquidity(RepayLiquidityParams calldata params) external returns (uint256 liquidityPaid, uint256[] memory amounts);
-    function increaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint256[] memory tokensHeld);
-    function decreaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint256[] memory tokensHeld);
-    function rebalanceCollateral(RebalanceCollateralParams calldata params) external returns(uint256[] memory tokensHeld);
+    function increaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
+    function decreaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
+    function rebalanceCollateral(RebalanceCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
 }

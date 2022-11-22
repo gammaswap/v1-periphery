@@ -10,27 +10,27 @@ import "./ITestGammaPoolFactory.sol";
 contract TestGammaPool is IGammaPool, ERC20 {
 
     address public override cfmm;
-    uint24 public override protocolId;
-    address public override protocol;
     address[] public tokens_;
-    address public override factory;
-    address public override longStrategy;
-    address public override shortStrategy;
+    uint16 immutable public override protocolId;
+    address immutable public override factory;
+    address immutable public override longStrategy;
+    address immutable public override shortStrategy;
+    address immutable public override liquidationStrategy;
 
     address public tester;
     address public owner;
 
-    constructor() ERC20("TestGammaPool","TGP-V1") {
+    constructor(uint16 _protocolId, address _factory, address _longStrategy, address _shortStrategy, address _liquidationStrategy) ERC20("TestGammaPool","TGP-V1") {
+        protocolId = _protocolId;
+        factory = _factory;
+        longStrategy = _longStrategy;
+        shortStrategy = _shortStrategy;
+        liquidationStrategy = _liquidationStrategy;
     }
 
-    function initialize(InitializeParameters calldata params) external virtual override {
-        factory = msg.sender;
-        cfmm = params.cfmm;
-        protocolId = params.protocolId;
-        tokens_ = params.tokens;
-        protocol = params.protocol;
-        longStrategy = ITestGammaPoolFactory(msg.sender).longStrategy();
-        shortStrategy = ITestGammaPoolFactory(msg.sender).shortStrategy();
+    function initialize(address _cfmm, address[] calldata _tokens) external virtual override {
+        cfmm = _cfmm;
+        tokens_ = _tokens;
         tester = ITestGammaPoolFactory(msg.sender).tester();
         owner = msg.sender;
         _mint(tester, 100000 * (10 ** 18));
@@ -40,13 +40,13 @@ contract TestGammaPool is IGammaPool, ERC20 {
         return tokens_;
     }
 
-    function getPoolBalances() external virtual override view returns(uint256[] memory tokenBalances, uint256 lpTokenBalance, uint256 lpTokenBorrowed,
+    function getPoolBalances() external virtual override view returns(uint128[] memory tokenBalances, uint256 lpTokenBalance, uint256 lpTokenBorrowed,
         uint256 lpTokenBorrowedPlusInterest, uint256 borrowedInvariant, uint256 lpInvariant) {
-        return(new uint256[](1), 1, 2, 3, 4, 5);
+        return(new uint128[](1), 1, 2, 3, 4, 5);
     }
 
-    function getCFMMBalances() external virtual override view returns(uint256[] memory cfmmReserves, uint256 cfmmInvariant, uint256 cfmmTotalSupply) {
-        return(new uint256[](2), 12, 13);
+    function getCFMMBalances() external virtual override view returns(uint128[] memory cfmmReserves, uint256 cfmmInvariant, uint256 cfmmTotalSupply) {
+        return(new uint128[](2), 12, 13);
     }
 
     function getRates() external virtual override view returns(uint256 borrowRate, uint256 accFeeIndex, uint256 lastFeeIndex, uint256 lastCFMMFeeIndex, uint256 lastBlockNumber) {
@@ -89,21 +89,14 @@ contract TestGammaPool is IGammaPool, ERC20 {
     }
 
     function loan(uint256 tokenId) external virtual override view returns (uint256 id, address poolId,
-        uint256[] memory tokensHeld, uint256 initLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex) {
+        uint128[] memory tokensHeld, uint256 initLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex) {
         id = 20;
         poolId = cfmm;
-        tokensHeld = new uint256[](5);
+        tokensHeld = new uint128[](5);
         liquidity = 21;
-        rateIndex = 22;
-        initLiquidity = 23;
-    }
-
-    function increaseCollateral(uint256 tokenId) external virtual override returns(uint256[] memory tokensHeld) {
-        tokensHeld = new uint256[](6);
-    }
-
-    function decreaseCollateral(uint256 tokenId, uint256[] calldata amounts, address to) external virtual override returns(uint256[] memory tokensHeld) {
-        tokensHeld = new uint256[](7);
+        lpTokens = 22;
+        rateIndex = 23;
+        initLiquidity = 24;
     }
 
     function borrowLiquidity(uint256 tokenId, uint256 lpTokens) external virtual override returns(uint256[] memory amounts) {
@@ -115,8 +108,16 @@ contract TestGammaPool is IGammaPool, ERC20 {
         amounts = new uint256[](2);
     }
 
-    function rebalanceCollateral(uint256 tokenId, int256[] calldata deltas) external virtual override returns(uint256[] memory tokensHeld) {
-        tokensHeld = new uint256[](2);
+    function increaseCollateral(uint256 tokenId) external virtual override returns(uint128[] memory tokensHeld) {
+        tokensHeld = new uint128[](6);
+    }
+
+    function decreaseCollateral(uint256 tokenId, uint256[] calldata amounts, address to) external virtual override returns(uint128[] memory tokensHeld) {
+        tokensHeld = new uint128[](7);
+    }
+
+    function rebalanceCollateral(uint256 tokenId, int256[] calldata deltas) external virtual override returns(uint128[] memory tokensHeld) {
+        tokensHeld = new uint128[](2);
     }
 
     function liquidate(uint256 tokenId, bool isRebalance, int256[] calldata deltas) external override virtual returns(uint256[] memory refund) {
@@ -125,5 +126,9 @@ contract TestGammaPool is IGammaPool, ERC20 {
 
     function liquidateWithLP(uint256 tokenId) external override virtual returns(uint256[] memory refund) {
         return new uint256[](2);
+    }
+
+    function validateCFMM(address[] calldata _tokens, address _cfmm) external override view returns(address[] memory tokens) {
+        return new address[](2);
     }
 }

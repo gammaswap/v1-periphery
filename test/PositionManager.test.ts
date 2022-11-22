@@ -40,15 +40,17 @@ describe("PositionManager", function () {
         cfmm = await TestERC20.deploy("CFMM LP Token", "LP_CFMM");
         WETH = await TestERC20.deploy("WETH", "WETH");
 
-        const implementation = await GammaPool.deploy();
-
         //address _feeToSetter, address _longStrategy, address _shortStrategy, address _protocol
-        factory = await GammaPoolFactory.deploy(owner.address, addr1.address, addr2.address, addr3.address, implementation.address);
+        factory = await GammaPoolFactory.deploy(owner.address);
+
+        const implementation = await GammaPool.deploy(1, factory.address, addr1.address, addr2.address, addr3.address);
+
+        factory.addProtocol(implementation.address);
 
         // We can interact with the contract by calling `hardhatToken.method()`
-        await tokenA.deployed();
+        /*await tokenA.deployed();
         await tokenB.deployed();
-        await factory.deployed();
+        await factory.deployed();/**/
 
         posMgr = await TestPositionManager.deploy(factory.address, WETH.address);
 
@@ -56,11 +58,11 @@ describe("PositionManager", function () {
 
         const createPoolParams = {
             cfmm: cfmm.address,
-            protocol: 1,
+            protocolId: 1,
             tokens: [tokenA.address, tokenB.address]
         };
 
-        const res = await (await factory.createPool2(createPoolParams)).wait();
+        const res = await (await factory.createPool(createPoolParams.protocolId, createPoolParams.cfmm ,createPoolParams.tokens)).wait();
 
         const { args } = res.events[1];
         gammaPoolAddr = args.pool;
@@ -133,64 +135,125 @@ describe("PositionManager", function () {
         })
 
 
-        it("#checkMinAmounts should revert when Amounts < AmountsMin", async function () {
+        it("#checkMinReserves should revert when Amounts < AmountsMin", async function () {
             const amounts =  [90000, 1000];
             const amountsMin =  [90000, 1001];
-            await expect(posMgr.testCheckAmountsMin(amounts, amountsMin)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.testCheckMinReserves(amounts, amountsMin)).to.be.revertedWith("AmountsMin");
 
             const amounts0 =  [90000, 1000];
             const amountsMin0 =  [90001, 1000];
-            await expect(posMgr.testCheckAmountsMin(amounts0, amountsMin0)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.testCheckMinReserves(amounts0, amountsMin0)).to.be.revertedWith("AmountsMin");
 
             const amounts1 =  [90000, 1000];
             const amountsMin1 =  [90001, 1001];
-            await expect(posMgr.testCheckAmountsMin(amounts1, amountsMin1)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.testCheckMinReserves(amounts1, amountsMin1)).to.be.revertedWith("AmountsMin");
 
             const amounts2 =  [1, 1];
             const amountsMin2 =  [1, 2];
-            await expect(posMgr.testCheckAmountsMin(amounts2, amountsMin2)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.testCheckMinReserves(amounts2, amountsMin2)).to.be.revertedWith("AmountsMin");
 
             const amounts3 =  [0, 1];
             const amountsMin3 =  [1, 1];
-            await expect(posMgr.testCheckAmountsMin(amounts3, amountsMin3)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.testCheckMinReserves(amounts3, amountsMin3)).to.be.revertedWith("AmountsMin");
 
             const amounts4 =  [1, 0];
             const amountsMin4 =  [1, 1];
-            await expect(posMgr.testCheckAmountsMin(amounts4, amountsMin4)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.testCheckMinReserves(amounts4, amountsMin4)).to.be.revertedWith("AmountsMin");
 
             const amounts5 =  [0, 0];
             const amountsMin5 =  [1, 1];
-            await expect(posMgr.testCheckAmountsMin(amounts5, amountsMin5)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.testCheckMinReserves(amounts5, amountsMin5)).to.be.revertedWith("AmountsMin");
         });
 
-        it("#checkMinAmounts should not revert when Amounts >= AmountsMin", async function () {
+        it("#checkMinReserves should not revert when Amounts >= AmountsMin", async function () {
             const amounts =  [90000, 1000];
             const amountsMin =  [90000, 1000];
-            posMgr.testCheckAmountsMin(amounts, amountsMin);
+            posMgr.testCheckMinReserves(amounts, amountsMin);
 
             const amounts0 =  [90001, 1000];
             const amountsMin0 =  [90000, 1000];
-            posMgr.testCheckAmountsMin(amounts0, amountsMin0);
+            posMgr.testCheckMinReserves(amounts0, amountsMin0);
 
             const amounts1 =  [90000, 1001];
             const amountsMin1 =  [90000, 1000];
-            posMgr.testCheckAmountsMin(amounts1, amountsMin1);
+            posMgr.testCheckMinReserves(amounts1, amountsMin1);
 
             const amounts2 =  [90001, 1001];
             const amountsMin2 =  [90000, 1000];
-            posMgr.testCheckAmountsMin(amounts2, amountsMin2);
+            posMgr.testCheckMinReserves(amounts2, amountsMin2);
 
             const amounts3 =  [1, 1];
             const amountsMin3 =  [1, 1];
-            posMgr.testCheckAmountsMin(amounts3, amountsMin3);
+            posMgr.testCheckMinReserves(amounts3, amountsMin3);
 
             const amounts4 =  [1, 1];
             const amountsMin4 =  [0, 0];
-            posMgr.testCheckAmountsMin(amounts4, amountsMin4);
+            posMgr.testCheckMinReserves(amounts4, amountsMin4);
 
             const amounts5 =  [0, 0];
             const amountsMin5 =  [0, 0];
-            posMgr.testCheckAmountsMin(amounts5, amountsMin5);
+            posMgr.testCheckMinReserves(amounts5, amountsMin5);
+        });
+
+
+        it("#checkMinCollateral should revert when Amounts < AmountsMin", async function () {
+            const amounts =  [90000, 1000];
+            const amountsMin =  [90000, 1001];
+            await expect(posMgr.testCheckMinCollateral(amounts, amountsMin)).to.be.revertedWith("AmountsMin");
+
+            const amounts0 =  [90000, 1000];
+            const amountsMin0 =  [90001, 1000];
+            await expect(posMgr.testCheckMinCollateral(amounts0, amountsMin0)).to.be.revertedWith("AmountsMin");
+
+            const amounts1 =  [90000, 1000];
+            const amountsMin1 =  [90001, 1001];
+            await expect(posMgr.testCheckMinCollateral(amounts1, amountsMin1)).to.be.revertedWith("AmountsMin");
+
+            const amounts2 =  [1, 1];
+            const amountsMin2 =  [1, 2];
+            await expect(posMgr.testCheckMinCollateral(amounts2, amountsMin2)).to.be.revertedWith("AmountsMin");
+
+            const amounts3 =  [0, 1];
+            const amountsMin3 =  [1, 1];
+            await expect(posMgr.testCheckMinCollateral(amounts3, amountsMin3)).to.be.revertedWith("AmountsMin");
+
+            const amounts4 =  [1, 0];
+            const amountsMin4 =  [1, 1];
+            await expect(posMgr.testCheckMinCollateral(amounts4, amountsMin4)).to.be.revertedWith("AmountsMin");
+
+            const amounts5 =  [0, 0];
+            const amountsMin5 =  [1, 1];
+            await expect(posMgr.testCheckMinCollateral(amounts5, amountsMin5)).to.be.revertedWith("AmountsMin");
+        });
+
+        it("#checkMinCollateral should not revert when Amounts >= AmountsMin", async function () {
+            const amounts =  [90000, 1000];
+            const amountsMin =  [90000, 1000];
+            posMgr.testCheckMinCollateral(amounts, amountsMin);
+
+            const amounts0 =  [90001, 1000];
+            const amountsMin0 =  [90000, 1000];
+            posMgr.testCheckMinCollateral(amounts0, amountsMin0);
+
+            const amounts1 =  [90000, 1001];
+            const amountsMin1 =  [90000, 1000];
+            posMgr.testCheckMinCollateral(amounts1, amountsMin1);
+
+            const amounts2 =  [90001, 1001];
+            const amountsMin2 =  [90000, 1000];
+            posMgr.testCheckMinCollateral(amounts2, amountsMin2);
+
+            const amounts3 =  [1, 1];
+            const amountsMin3 =  [1, 1];
+            posMgr.testCheckMinCollateral(amounts3, amountsMin3);
+
+            const amounts4 =  [1, 1];
+            const amountsMin4 =  [0, 0];
+            posMgr.testCheckMinCollateral(amounts4, amountsMin4);
+
+            const amounts5 =  [0, 0];
+            const amountsMin5 =  [0, 0];
+            posMgr.testCheckMinCollateral(amounts5, amountsMin5);
         });
     });
 
@@ -201,7 +264,7 @@ describe("PositionManager", function () {
             
             const DepositWithdrawParams =  {
                 cfmm: cfmm.address,
-                protocol: protocolId,
+                protocolId: protocolId,
                 lpTokens: 1,
                 to: addr4.address,
                 deadline: ethers.constants.MaxUint256
@@ -217,7 +280,7 @@ describe("PositionManager", function () {
         it("#withdrawNoPull should return assets", async function () {
             const DepositWithdrawParams =  {
                 cfmm: cfmm.address,
-                protocol: protocolId,
+                protocolId: protocolId,
                 lpTokens: 1,
                 to: owner.address,
                 deadline: ethers.constants.MaxUint256
@@ -236,7 +299,7 @@ describe("PositionManager", function () {
                 amountsDesired: [10000, 100],
                 amountsMin: [1000, 10],
                 to: addr4.address,
-                protocol: protocolId,
+                protocolId: protocolId,
                 deadline: ethers.constants.MaxUint256
             }
             const res = await (await posMgr.depositReserves(DepositReservesParams)).wait();
@@ -250,7 +313,7 @@ describe("PositionManager", function () {
         it("#withdrawReserves should return assets and lenght of reserves", async function () {            
             const WithdrawReservesParams =  {
                 cfmm: cfmm.address,
-                protocol: protocolId,
+                protocolId: protocolId,
                 amount: 1000,
                 amountsMin: [100, 200, 300],
                 to: owner.address,
@@ -279,7 +342,7 @@ describe("PositionManager", function () {
         it("#borrowLiquidity should return tokenId", async function () {
             const BorrowLiquidityParams = {
                 cfmm: cfmm.address,
-                protocol: protocolId,
+                protocolId: protocolId,
                 tokenId: tokenId,
                 lpTokens: 1,
                 to: owner.address,
@@ -297,7 +360,7 @@ describe("PositionManager", function () {
         it("#repayLiquidity should return tokenId, paid liquidity, paid lp tokens and length of amounts array", async function () {
             const RepayLiquidityParams = {
                 cfmm: cfmm.address,
-                protocol: protocolId,
+                protocolId: protocolId,
                 tokenId: tokenId,
                 liquidity: 1,
                 to: owner.address,
@@ -320,7 +383,7 @@ describe("PositionManager", function () {
             
             const AddRemoveCollateralParams = {
                 cfmm: cfmm.address,
-                protocol: protocolId,
+                protocolId: protocolId,
                 tokenId: tokenId,
                 amounts: [100,10],
                 to: owner.address,
@@ -338,7 +401,7 @@ describe("PositionManager", function () {
         it("#decreaseCollateral should return tokenId and length of tokens held", async function () {
             const AddRemoveCollateralParams = {
                 cfmm: cfmm.address,
-                protocol: protocolId,
+                protocolId: protocolId,
                 tokenId: tokenId,
                 amounts: [100,10],
                 to: owner.address,
@@ -356,7 +419,7 @@ describe("PositionManager", function () {
         it("#rebalanceCollateral should return tokenId and length of tokens held", async function () {            
             const RebalanceCollateralParams = {
                 cfmm: cfmm.address,
-                protocol: protocolId,
+                protocolId: protocolId,
                 tokenId: tokenId,
                 deltas: [4, 2],
                 liquidity: 1,
