@@ -13,8 +13,11 @@ contract TestPositionManager is PositionManager {
         _safeMint(to, tokenId);
     }
 
-    function testCheckAmountsMin(uint256[] memory amounts, uint256[] memory amountsMin) external virtual pure {
-        checkAmountsMin(amounts, amountsMin);
+    function testCheckMinReserves(uint256[] memory amounts, uint256[] memory amountsMin) external virtual pure {
+        checkMinReserves(amounts, amountsMin);
     }
 
+    function testCheckMinCollateral(uint128[] memory amounts, uint128[] memory amountsMin) external virtual pure {
+        checkMinCollateral(amounts, amountsMin);
+    }
 }
