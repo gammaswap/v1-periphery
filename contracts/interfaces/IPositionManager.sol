@@ -47,18 +47,6 @@ interface IPositionManager  is ITransfers {
         uint256[] amountsMin;
     }
 
-    struct CreateLoanBorrowAndRebalanceParams {
-        uint16 protocolId;
-        address cfmm;
-        address to;
-        uint256 lpTokens;
-        uint256 deadline;
-        uint256[] amounts;
-        uint256[] minBorrowed;
-        int256[] deltas;
-        uint128[] minCollateral;
-    }
-
     struct BorrowLiquidityParams {
         uint16 protocolId;
         address cfmm;
@@ -98,6 +86,44 @@ interface IPositionManager  is ITransfers {
         uint128[] minCollateral;
     }
 
+    struct CreateLoanBorrowAndRebalanceParams {
+        uint16 protocolId;
+        address cfmm;
+        address to;
+        uint256 lpTokens;
+        uint256 deadline;
+        uint256[] amounts;
+        uint256[] minBorrowed;
+        int256[] deltas;
+        uint128[] minCollateral;
+    }
+
+    struct BorrowAndRebalanceParams {
+        uint16 protocolId;
+        address cfmm;
+        uint256 tokenId;
+        uint256 lpTokens;
+        uint256 deadline;
+        uint256[] amounts;
+        uint256[] minBorrowed;
+        int256[] deltas;
+        uint128[] minCollateral;
+    }
+
+    struct RebalanceRepayAndWithdrawParams {
+        uint16 protocolId;
+        address cfmm;
+        address to;
+        uint256 tokenId;
+        uint256 liquidity;
+        uint256 deadline;
+        uint256[] amounts;
+        uint256[] withdraw;
+        uint256[] minRepaid;
+        int256[] deltas;
+        uint128[] minCollateral;
+    }
+
     function factory() external view returns (address);
 
     //Short Gamma
@@ -107,11 +133,13 @@ interface IPositionManager  is ITransfers {
     function withdrawReserves(WithdrawReservesParams calldata params) external returns (uint256[] memory reserves, uint256 assets);
 
     //Long Gamma
-    function createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams calldata params) external virtual returns(uint256 tokenId, uint128[] memory tokensHeld, uint256[] memory amounts);
     function createLoan(uint16 protocolId, address cfmm, address to, uint256 deadline) external returns(uint256 tokenId);
     function borrowLiquidity(BorrowLiquidityParams calldata params) external returns (uint256[] memory amounts);
     function repayLiquidity(RepayLiquidityParams calldata params) external returns (uint256 liquidityPaid, uint256[] memory amounts);
     function increaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
     function decreaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
     function rebalanceCollateral(RebalanceCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
+    function createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams calldata params) external virtual returns(uint256 tokenId, uint128[] memory tokensHeld, uint256[] memory amounts);
+    function borrowAndRebalance(BorrowAndRebalanceParams calldata params) external virtual returns(uint128[] memory tokensHeld, uint256[] memory amounts);
+    function rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams calldata params) external virtual returns(uint128[] memory tokensHeld, uint256 liquidityPaid, uint256[] memory amounts);
 }
