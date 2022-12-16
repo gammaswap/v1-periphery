@@ -220,6 +220,9 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         if(params.deltas.length != 0) {
             tokensHeld = rebalanceCollateral(gammaPool, params.tokenId, params.deltas, params.minCollateral);
         }
+        if(params.withdraw.length != 0) {
+            tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw);
+        }
         logLoan(gammaPool, params.tokenId, msg.sender);
     }
 
