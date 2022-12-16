@@ -537,10 +537,12 @@ describe("PositionManager", function () {
             const BorrowAndRebalanceParams = {
                 protocolId: protocolId,
                 cfmm: cfmm.address,
+                to: owner.address,
                 tokenId: 1,
                 lpTokens: 1,
                 deadline: ethers.constants.MaxUint256,
                 amounts: [100,10],
+                withdraw: [],
                 minBorrowed: [0,0],
                 deltas: [],
                 minCollateral: []
@@ -571,6 +573,55 @@ describe("PositionManager", function () {
             expect(args3.lastPx.toNumber()).to.equal(1);
         });
 
+        it("#borrowAndRebalance should return tokensHeld, amounts. No deltas, withdraws", async function () {
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+
+            const BorrowAndRebalanceParams = {
+                protocolId: protocolId,
+                cfmm: cfmm.address,
+                to: owner.address,
+                tokenId: 1,
+                lpTokens: 1,
+                deadline: ethers.constants.MaxUint256,
+                amounts: [100, 10],
+                withdraw: [2, 2],
+                minBorrowed: [0, 0],
+                deltas: [],
+                minCollateral: []
+            }
+
+            const res = await (await posMgr.borrowAndRebalance(BorrowAndRebalanceParams)).wait();
+
+            expect(res.events[2].event).to.equal("IncreaseCollateral");
+            const args1 = res.events[2].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(1);
+            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+
+            expect(res.events[3].event).to.equal("BorrowLiquidity");
+            const args2 = res.events[3].args;
+            expect(args2.pool).to.equal(gammaPool.address);
+            expect(args2.tokenId.toNumber()).to.equal(1);
+            expect(args2.amountsLen.toNumber()).to.equal(2);
+
+            expect(res.events[4].event).to.equal("DecreaseCollateral");
+            const args3 = res.events[4].args;
+            expect(args3.pool).to.equal(gammaPool.address);
+            expect(args3.tokenId.toNumber()).to.equal(1);
+            expect(args3.tokensHeldLen.toNumber()).to.equal(7);
+
+            expect(res.events[5].event).to.equal("LoanUpdate");
+            const args4 = res.events[5].args;
+            expect(args4.poolId).to.equal(gammaPool.address);
+            expect(args4.owner).to.equal(owner.address);
+            expect(args4.tokensHeld.length).to.equal(5);
+            expect(args4.liquidity.toNumber()).to.equal(21);
+            expect(args4.lpTokens.toNumber()).to.equal(22);
+            expect(args4.initLiquidity.toNumber()).to.equal(24);
+            expect(args4.lastPx.toNumber()).to.equal(1);
+        });
+
         it("#borrowAndRebalance should return tokensHeld, amounts. Has deltas", async function () {
             await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
@@ -578,10 +629,12 @@ describe("PositionManager", function () {
             const BorrowAndRebalanceParams = {
                 protocolId: protocolId,
                 cfmm: cfmm.address,
+                to: owner.address,
                 tokenId: 1,
                 lpTokens: 1,
                 deadline: ethers.constants.MaxUint256,
                 amounts: [100,10],
+                withdraw: [],
                 minBorrowed: [0,0],
                 deltas: [4,2],
                 minCollateral: [0,0]
@@ -616,7 +669,6 @@ describe("PositionManager", function () {
             expect(args4.lpTokens.toNumber()).to.equal(22);
             expect(args4.initLiquidity.toNumber()).to.equal(24);
             expect(args4.lastPx.toNumber()).to.equal(1);
-
         });
 
         it("#rebalanceRepayAndWithdraw should return tokensHeld, liquidityPaid, amounts. No deltas, No Withdraw", async function () {

@@ -101,10 +101,12 @@ interface IPositionManager  is ITransfers {
     struct BorrowAndRebalanceParams {
         uint16 protocolId;
         address cfmm;
+        address to;
         uint256 tokenId;
         uint256 lpTokens;
         uint256 deadline;
         uint256[] amounts;
+        uint256[] withdraw;
         uint256[] minBorrowed;
         int256[] deltas;
         uint128[] minCollateral;
