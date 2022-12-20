@@ -16,7 +16,7 @@ interface IPositionManager  is ITransfers {
     event DecreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event RebalanceCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event PoolUpdated(uint256 lpTokenBalance, uint256 lpTokenBorrowed, uint256 lastBlockNumber, uint256 accFeeIndex,
-    uint256 lastFeeIndex, uint256 lpTokenBorrowedPlusInterest, uint256 lpInvariant, uint256 lpBorrowedInvariant);
+      uint256 lpTokenBorrowedPlusInterest, uint256 lpInvariant, uint256 lpBorrowedInvariant);
     event LoanCreated(address indexed caller, uint256 tokenId);
     event LoanUpdated(uint256 indexed tokenId, uint128[] tokensHeld, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
     event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld, uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint256 lastPx);
