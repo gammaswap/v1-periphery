@@ -11,6 +11,7 @@ contract TestGammaPool is IGammaPool, ERC20 {
 
     address public override cfmm;
     address[] public tokens_;
+    uint8[] public decimals_;
     uint16 immutable public override protocolId;
     address immutable public override factory;
     address immutable public override longStrategy;
@@ -28,9 +29,10 @@ contract TestGammaPool is IGammaPool, ERC20 {
         liquidationStrategy = _liquidationStrategy;
     }
 
-    function initialize(address _cfmm, address[] calldata _tokens) external virtual override {
+    function initialize(address _cfmm, address[] calldata _tokens, uint8[] calldata _decimals) external virtual override {
         cfmm = _cfmm;
         tokens_ = _tokens;
+        decimals_ = _decimals;
         tester = ITestGammaPoolFactory(msg.sender).tester();
         owner = msg.sender;
         _mint(tester, 100000 * (10 ** 18));
@@ -49,8 +51,31 @@ contract TestGammaPool is IGammaPool, ERC20 {
         return(new uint128[](2), 12, 13);
     }
 
-    function getRates() external virtual override view returns(uint256 borrowRate, uint256 accFeeIndex, uint256 lastFeeIndex, uint256 lastCFMMFeeIndex, uint256 lastBlockNumber) {
-        return(8, 9, 10, 11, 14);
+    function getRates() external virtual override view returns(uint256 accFeeIndex, uint256 lastBlockNumber) {
+        return(9, 14);
+    }
+
+    function getPoolData() external virtual override view returns(PoolData memory data) {
+        data.protocolId = protocolId;
+        data.longStrategy = longStrategy;
+        data.shortStrategy = shortStrategy;
+        data.liquidationStrategy = liquidationStrategy;
+        data.cfmm = cfmm;
+        data.LAST_BLOCK_NUMBER = 14;
+        data.factory = factory;
+        data.LP_TOKEN_BALANCE = 1;
+        data.LP_TOKEN_BORROWED = 2;
+        data.LP_TOKEN_BORROWED_PLUS_INTEREST = 3;
+        data.BORROWED_INVARIANT = 4;
+        data.LP_INVARIANT = 5;
+        data.accFeeIndex = 9;
+        data.lastCFMMInvariant = 12;
+        data.lastCFMMTotalSupply = 13;
+        data.totalSupply = totalSupply();
+        data.decimals = decimals_;
+        data.tokens = tokens_;
+        data.TOKEN_BALANCE = new uint128[](1);
+        data.CFMM_RESERVES = new uint128[](2);
     }
 
     function testSendTokensCallback(address posAddr, address[] calldata tokens, uint256[] calldata amounts, address payee, bytes calldata data) external virtual {
@@ -128,7 +153,11 @@ contract TestGammaPool is IGammaPool, ERC20 {
         return new uint256[](2);
     }
 
-    function validateCFMM(address[] calldata _tokens, address _cfmm) external override view returns(address[] memory tokens) {
-        return new address[](2);
+    function batchLiquidations(uint256[] calldata tokenIds) external override virtual returns(uint256[] memory refund) {
+        return new uint256[](2);
+    }
+
+    function validateCFMM(address[] calldata _tokens, address _cfmm) external override view returns(address[] memory tokens, uint8[] memory decimals) {
+        return (new address[](2), new uint8[](2));
     }
 }
