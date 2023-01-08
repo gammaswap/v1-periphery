@@ -78,20 +78,20 @@ contract TestGammaPool is IGammaPool, ERC20 {
         data.CFMM_RESERVES = new uint128[](2);
     }
 
-    function testSendTokensCallback(address posAddr, address[] calldata tokens, uint256[] calldata amounts, address payee, bytes calldata data) external virtual {
-        ISendTokensCallback(posAddr).sendTokensCallback(tokens, amounts, payee, data);
+    function testSendTokensCallback(address posAddr, address[] calldata _tokens, uint256[] calldata amounts, address payee, bytes calldata data) external virtual {
+        ISendTokensCallback(posAddr).sendTokensCallback(_tokens, amounts, payee, data);
     }
 
     //Short Gamma
-    function depositNoPull(address to) external virtual override returns(uint256 shares) {
+    function depositNoPull(address) external virtual override returns(uint256 shares) {
         shares = 15;
     }
 
-    function withdrawNoPull(address to) external virtual override returns(uint256 assets) {
+    function withdrawNoPull(address) external virtual override returns(uint256 assets) {
         assets = 16;
     }
 
-    function withdrawReserves(address to) external virtual override returns (uint256[] memory reserves, uint256 assets) {
+    function withdrawReserves(address) external virtual override returns (uint256[] memory reserves, uint256 assets) {
         reserves = new uint256[](3);
         reserves[0] = 200;
         reserves[1] = 300;
@@ -99,21 +99,21 @@ contract TestGammaPool is IGammaPool, ERC20 {
         assets = 17;
     }
 
-    function depositReserves(address to, uint256[] calldata amountsDesired, uint256[] calldata amountsMin, bytes calldata data) external virtual override returns(uint256[] memory reserves, uint256 shares) {
+    function depositReserves(address, uint256[] calldata, uint256[] calldata, bytes calldata) external virtual override returns(uint256[] memory reserves, uint256 shares) {
         reserves = new uint256[](4);
         shares = 18;
     }
 
     //Long Gamma
-    function getCFMMPrice() external virtual override view returns(uint256 price) {
-        return 1;
+    function getLatestCFMMReserves() external virtual override view returns(uint256[] memory cfmmReserves) {
+        return new uint256[](2);
     }
 
     function createLoan() external virtual override returns(uint256 tokenId) {
         tokenId = 19;
     }
 
-    function loan(uint256 tokenId) external virtual override view returns (uint256 id, address poolId,
+    function loan(uint256) external virtual override view returns (uint256 id, address poolId,
         uint128[] memory tokensHeld, uint256 initLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex) {
         id = 20;
         poolId = cfmm;
@@ -124,40 +124,46 @@ contract TestGammaPool is IGammaPool, ERC20 {
         initLiquidity = 24;
     }
 
-    function borrowLiquidity(uint256 tokenId, uint256 lpTokens) external virtual override returns(uint256[] memory amounts) {
+    function borrowLiquidity(uint256, uint256) external virtual override returns(uint256[] memory amounts) {
         amounts = new uint256[](2);
     }
 
-    function repayLiquidity(uint256 tokenId, uint256 liquidity) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
+    function repayLiquidity(uint256, uint256) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
         liquidityPaid = 24;
         amounts = new uint256[](2);
     }
 
-    function increaseCollateral(uint256 tokenId) external virtual override returns(uint128[] memory tokensHeld) {
+    function increaseCollateral(uint256) external virtual override returns(uint128[] memory tokensHeld) {
         tokensHeld = new uint128[](6);
     }
 
-    function decreaseCollateral(uint256 tokenId, uint256[] calldata amounts, address to) external virtual override returns(uint128[] memory tokensHeld) {
+    function decreaseCollateral(uint256, uint256[] calldata, address) external virtual override returns(uint128[] memory tokensHeld) {
         tokensHeld = new uint128[](7);
     }
 
-    function rebalanceCollateral(uint256 tokenId, int256[] calldata deltas) external virtual override returns(uint128[] memory tokensHeld) {
+    function rebalanceCollateral(uint256, int256[] calldata) external virtual override returns(uint128[] memory tokensHeld) {
         tokensHeld = new uint128[](2);
     }
 
-    function liquidate(uint256 tokenId, bool isRebalance, int256[] calldata deltas) external override virtual returns(uint256[] memory refund) {
+    function liquidate(uint256, int256[] calldata) external override virtual returns(uint256[] memory refund) {
         return new uint256[](2);
     }
 
-    function liquidateWithLP(uint256 tokenId) external override virtual returns(uint256[] memory refund) {
+    function liquidateWithLP(uint256) external override virtual returns(uint256[] memory refund) {
         return new uint256[](2);
     }
 
-    function batchLiquidations(uint256[] calldata tokenIds) external override virtual returns(uint256[] memory refund) {
+    function batchLiquidations(uint256[] calldata) external override virtual returns(uint256[] memory refund) {
         return new uint256[](2);
     }
 
-    function validateCFMM(address[] calldata _tokens, address _cfmm) external override view returns(address[] memory tokens, uint8[] memory decimals) {
+    function validateCFMM(address[] calldata, address) external override pure returns(address[] memory, uint8[] memory) {
         return (new address[](2), new uint8[](2));
+    }
+
+    function skim(address) external override {
+    }
+
+    function sync() external override {
     }
 }

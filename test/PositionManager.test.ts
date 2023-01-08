@@ -474,7 +474,9 @@ describe("PositionManager", function () {
             expect(args3.liquidity.toNumber()).to.equal(21);
             expect(args3.lpTokens.toNumber()).to.equal(22);
             expect(args3.initLiquidity.toNumber()).to.equal(24);
-            expect(args3.lastPx.toNumber()).to.equal(1);
+            expect(args3.cfmmReserves.length).to.equal(2);
+            expect(args3.cfmmReserves[0]).to.equal(0);
+            expect(args3.cfmmReserves[1]).to.equal(0);
         });
 
         it("#createLoanBorrowAndRebalance should return tokenId, tokensHeld, amounts. Has deltas", async function () {
@@ -527,7 +529,9 @@ describe("PositionManager", function () {
             expect(args4.liquidity.toNumber()).to.equal(21);
             expect(args4.lpTokens.toNumber()).to.equal(22);
             expect(args4.initLiquidity.toNumber()).to.equal(24);
-            expect(args4.lastPx.toNumber()).to.equal(1);
+            expect(args4.cfmmReserves.length).to.equal(2);
+            expect(args4.cfmmReserves[0]).to.equal(0);
+            expect(args4.cfmmReserves[1]).to.equal(0);
         });
 
         it("#borrowAndRebalance should return tokensHeld, amounts. No deltas", async function () {
@@ -570,7 +574,9 @@ describe("PositionManager", function () {
             expect(args3.liquidity.toNumber()).to.equal(21);
             expect(args3.lpTokens.toNumber()).to.equal(22);
             expect(args3.initLiquidity.toNumber()).to.equal(24);
-            expect(args3.lastPx.toNumber()).to.equal(1);
+            expect(args3.cfmmReserves.length).to.equal(2);
+            expect(args3.cfmmReserves[0]).to.equal(0);
+            expect(args3.cfmmReserves[1]).to.equal(0);
         });
 
         it("#borrowAndRebalance should return tokensHeld, amounts. No deltas, withdraws", async function () {
@@ -619,7 +625,9 @@ describe("PositionManager", function () {
             expect(args4.liquidity.toNumber()).to.equal(21);
             expect(args4.lpTokens.toNumber()).to.equal(22);
             expect(args4.initLiquidity.toNumber()).to.equal(24);
-            expect(args4.lastPx.toNumber()).to.equal(1);
+            expect(args4.cfmmReserves.length).to.equal(2);
+            expect(args4.cfmmReserves[0]).to.equal(0);
+            expect(args4.cfmmReserves[1]).to.equal(0);
         });
 
         it("#borrowAndRebalance should return tokensHeld, amounts. Has deltas", async function () {
@@ -668,7 +676,9 @@ describe("PositionManager", function () {
             expect(args4.liquidity.toNumber()).to.equal(21);
             expect(args4.lpTokens.toNumber()).to.equal(22);
             expect(args4.initLiquidity.toNumber()).to.equal(24);
-            expect(args4.lastPx.toNumber()).to.equal(1);
+            expect(args4.cfmmReserves.length).to.equal(2);
+            expect(args4.cfmmReserves[0]).to.equal(0);
+            expect(args4.cfmmReserves[1]).to.equal(0);
         });
 
         it("#rebalanceRepayAndWithdraw should return tokensHeld, liquidityPaid, amounts. No deltas, No Withdraw", async function () {
@@ -712,7 +722,9 @@ describe("PositionManager", function () {
             expect(args3.liquidity.toNumber()).to.equal(21);
             expect(args3.lpTokens.toNumber()).to.equal(22);
             expect(args3.initLiquidity.toNumber()).to.equal(24);
-            expect(args3.lastPx.toNumber()).to.equal(1);
+            expect(args3.cfmmReserves.length).to.equal(2);
+            expect(args3.cfmmReserves[0]).to.equal(0);
+            expect(args3.cfmmReserves[1]).to.equal(0);
         });
 
         it("#rebalanceRepayAndWithdraw should return tokensHeld, liquidityPaid, amounts. No deltas, Has Withdraw", async function () {
@@ -762,7 +774,9 @@ describe("PositionManager", function () {
             expect(args4.liquidity.toNumber()).to.equal(21);
             expect(args4.lpTokens.toNumber()).to.equal(22);
             expect(args4.initLiquidity.toNumber()).to.equal(24);
-            expect(args4.lastPx.toNumber()).to.equal(1);
+            expect(args4.cfmmReserves.length).to.equal(2);
+            expect(args4.cfmmReserves[0]).to.equal(0);
+            expect(args4.cfmmReserves[1]).to.equal(0);
         });
 
         it("#rebalanceRepayAndWithdraw should return tokensHeld, liquidityPaid, amounts. Has deltas, No Withdraw", async function () {
@@ -812,7 +826,9 @@ describe("PositionManager", function () {
             expect(args4.liquidity.toNumber()).to.equal(21);
             expect(args4.lpTokens.toNumber()).to.equal(22);
             expect(args4.initLiquidity.toNumber()).to.equal(24);
-            expect(args4.lastPx.toNumber()).to.equal(1);
+            expect(args4.cfmmReserves.length).to.equal(2);
+            expect(args4.cfmmReserves[0]).to.equal(0);
+            expect(args4.cfmmReserves[1]).to.equal(0);
         });
 
         it("#rebalanceRepayAndWithdraw should return tokenId, tokensHeld, amounts. Has deltas, Has Withdraw", async function () {
@@ -868,7 +884,9 @@ describe("PositionManager", function () {
             expect(args5.liquidity.toNumber()).to.equal(21);
             expect(args5.lpTokens.toNumber()).to.equal(22);
             expect(args5.initLiquidity.toNumber()).to.equal(24);
-            expect(args5.lastPx.toNumber()).to.equal(1);
+            expect(args5.cfmmReserves.length).to.equal(2);
+            expect(args5.cfmmReserves[0]).to.equal(0);
+            expect(args5.cfmmReserves[1]).to.equal(0);
         });
 
         it("#rebalanceRepayAndWithdraw should return tokenId, tokensHeld, amounts. No Deposit, Has deltas, Has Withdraw", async function () {
@@ -917,8 +935,10 @@ describe("PositionManager", function () {
             expect(args5.tokensHeld.length).to.equal(5);
             expect(args5.liquidity.toNumber()).to.equal(21);
             expect(args5.lpTokens.toNumber()).to.equal(22);
-            expect(args5.initLiquidity.toNumber()).to.equal(24);
-            expect(args5.lastPx.toNumber()).to.equal(1);
+            expect(args5.initLiquidity.toNumber()).to.equal(24)
+            expect(args5.cfmmReserves.length).to.equal(2);
+            expect(args5.cfmmReserves[0]).to.equal(0);
+            expect(args5.cfmmReserves[1]).to.equal(0);
         });
     });
 });

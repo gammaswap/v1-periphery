@@ -21,22 +21,22 @@ contract TestGammaPoolFactory is AbstractGammaPoolFactory {
         tester = msg.sender;
     }
 
-    function getProtocol(uint16 protocolId) external virtual override view returns(address) {
+    function getProtocol(uint16) external virtual override view returns(address) {
         return implementation;
     }
 
-    function isProtocolRestricted(uint16 protocolId) external virtual override view returns(bool) {
+    function isProtocolRestricted(uint16) external virtual override view returns(bool) {
         return false;
     }
 
-    function setIsProtocolRestricted(uint16 protocolId, bool isRestricted) external virtual override {
+    function setIsProtocolRestricted(uint16, bool) external virtual override {
     }
 
     function addProtocol(address _protocol) external virtual override {
         implementation = _protocol;
     }
 
-    function removeProtocol(uint16 protocolId) external virtual override {
+    function removeProtocol(uint16) external virtual override {
         implementation = address(0);
     }
 
