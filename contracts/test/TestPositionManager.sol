@@ -21,7 +21,7 @@ contract TestPositionManager is PositionManager {
         checkMinCollateral(amounts, amountsMin);
     }
 
-    function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
+    function tokenURI(uint256) public view virtual override returns (string memory) {
         return "";
     }
 

@@ -338,7 +338,6 @@ describe("PositionManager", function () {
                 protocolId: protocolId,
                 tokenId: tokenId,
                 lpTokens: 1,
-                to: owner.address,
                 minBorrowed: [0,0],
                 deadline: ethers.constants.MaxUint256
             }
@@ -357,7 +356,6 @@ describe("PositionManager", function () {
                 protocolId: protocolId,
                 tokenId: tokenId,
                 liquidity: 1,
-                to: owner.address,
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256
             }
@@ -417,7 +415,6 @@ describe("PositionManager", function () {
                 tokenId: tokenId,
                 deltas: [4, 2],
                 liquidity: 1,
-                to: owner.address,
                 minCollateral: [0,0],
                 deadline: ethers.constants.MaxUint256
             }

@@ -50,7 +50,6 @@ interface IPositionManager  is ITransfers {
     struct BorrowLiquidityParams {
         uint16 protocolId;
         address cfmm;
-        address to;
         uint256 tokenId;
         uint256 lpTokens;
         uint256 deadline;
@@ -60,7 +59,6 @@ interface IPositionManager  is ITransfers {
     struct RepayLiquidityParams {
         uint16 protocolId;
         address cfmm;
-        address to;
         uint256 tokenId;
         uint256 liquidity;
         uint256 deadline;
@@ -79,7 +77,6 @@ interface IPositionManager  is ITransfers {
     struct RebalanceCollateralParams {
         uint16 protocolId;
         address cfmm;
-        address to;
         uint256 tokenId;
         uint256 deadline;
         int256[] deltas;
@@ -141,7 +138,7 @@ interface IPositionManager  is ITransfers {
     function increaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
     function decreaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
     function rebalanceCollateral(RebalanceCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
-    function createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams calldata params) external virtual returns(uint256 tokenId, uint128[] memory tokensHeld, uint256[] memory amounts);
-    function borrowAndRebalance(BorrowAndRebalanceParams calldata params) external virtual returns(uint128[] memory tokensHeld, uint256[] memory amounts);
-    function rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams calldata params) external virtual returns(uint128[] memory tokensHeld, uint256 liquidityPaid, uint256[] memory amounts);
+    function createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams calldata params) external returns(uint256 tokenId, uint128[] memory tokensHeld, uint256[] memory amounts);
+    function borrowAndRebalance(BorrowAndRebalanceParams calldata params) external returns(uint128[] memory tokensHeld, uint256[] memory amounts);
+    function rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams calldata params) external returns(uint128[] memory tokensHeld, uint256 liquidityPaid, uint256[] memory amounts);
 }
