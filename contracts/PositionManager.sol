@@ -100,7 +100,7 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         uint256 liquidity;
         uint256 lpTokens;
         (, ,  tokensHeld, initLiquidity, liquidity, lpTokens, ) = IGammaPool(gammaPool).loan(tokenId);
-        emit LoanUpdate(tokenId, gammaPool, owner, tokensHeld, liquidity, lpTokens, initLiquidity, IGammaPool(gammaPool).getCFMMPrice());
+        emit LoanUpdate(tokenId, gammaPool, owner, tokensHeld, liquidity, lpTokens, initLiquidity, IGammaPool(gammaPool).getLatestCFMMReserves());
     }
 
     function checkMinReserves(uint256[] memory amounts, uint256[] memory amountsMin) internal virtual pure {

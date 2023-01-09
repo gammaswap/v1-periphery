@@ -15,11 +15,16 @@ interface IPositionManager  is ITransfers {
     event IncreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event DecreaseCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event RebalanceCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
+    event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld,
+        uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint256[] cfmmReserves);
+
     event PoolUpdated(uint256 lpTokenBalance, uint256 lpTokenBorrowed, uint256 lastBlockNumber, uint256 accFeeIndex,
-      uint256 lpTokenBorrowedPlusInterest, uint256 lpInvariant, uint256 lpBorrowedInvariant);
+        uint256 lpTokenBorrowedPlusInterest, uint256 lpInvariant, uint256 borrowedInvariant);
     event LoanCreated(address indexed caller, uint256 tokenId);
     event LoanUpdated(uint256 indexed tokenId, uint128[] tokensHeld, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
-    event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld, uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint256 lastPx);
+
+    event Deposit(address indexed caller, address indexed to, uint256 assets, uint256 shares);
+    event Withdraw(address indexed caller, address indexed to, address indexed from, uint256 assets, uint256 shares);
 
     struct DepositWithdrawParams {
         uint16 protocolId;
@@ -50,7 +55,6 @@ interface IPositionManager  is ITransfers {
     struct BorrowLiquidityParams {
         uint16 protocolId;
         address cfmm;
-        address to;
         uint256 tokenId;
         uint256 lpTokens;
         uint256 deadline;
@@ -60,7 +64,6 @@ interface IPositionManager  is ITransfers {
     struct RepayLiquidityParams {
         uint16 protocolId;
         address cfmm;
-        address to;
         uint256 tokenId;
         uint256 liquidity;
         uint256 deadline;
@@ -79,7 +82,6 @@ interface IPositionManager  is ITransfers {
     struct RebalanceCollateralParams {
         uint16 protocolId;
         address cfmm;
-        address to;
         uint256 tokenId;
         uint256 deadline;
         int256[] deltas;
@@ -141,7 +143,7 @@ interface IPositionManager  is ITransfers {
     function increaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
     function decreaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
     function rebalanceCollateral(RebalanceCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
-    function createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams calldata params) external virtual returns(uint256 tokenId, uint128[] memory tokensHeld, uint256[] memory amounts);
-    function borrowAndRebalance(BorrowAndRebalanceParams calldata params) external virtual returns(uint128[] memory tokensHeld, uint256[] memory amounts);
-    function rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams calldata params) external virtual returns(uint128[] memory tokensHeld, uint256 liquidityPaid, uint256[] memory amounts);
+    function createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams calldata params) external returns(uint256 tokenId, uint128[] memory tokensHeld, uint256[] memory amounts);
+    function borrowAndRebalance(BorrowAndRebalanceParams calldata params) external returns(uint128[] memory tokensHeld, uint256[] memory amounts);
+    function rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams calldata params) external returns(uint128[] memory tokensHeld, uint256 liquidityPaid, uint256[] memory amounts);
 }
