@@ -499,10 +499,10 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@gammaswap/v1-core@^0.2.4":
-  version "0.2.4"
-  resolved "https://npm.pkg.github.com/download/@gammaswap/v1-core/0.2.4/22044da55ba381c003276063e7918763388a2023#22044da55ba381c003276063e7918763388a2023"
-  integrity sha512-d689Gj6n8AD91n8IfEXUgwC4xFjxq7B3IyibAtPZVQP750GAv0qf/r7tpbulnV8+cmg7DhH3stZRf/EReUf6DQ==
+"@gammaswap/v1-core@^0.2.5":
+  version "0.2.5"
+  resolved "https://npm.pkg.github.com/download/@gammaswap/v1-core/0.2.5/35be08f112205c591eec4357a5ed8d4d3f2e3a00#35be08f112205c591eec4357a5ed8d4d3f2e3a00"
+  integrity sha512-n7nyldQc/XkoPCU/LLA7QbkaQaMlBWvuklE3AUNtSKmhU6UV7/F6ulckXYxnlMOXow9i99U47tSyVExdFkoCaw==
   dependencies:
     "@openzeppelin/contracts" "^4.7.0"
 
