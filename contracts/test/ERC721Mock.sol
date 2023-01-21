@@ -1,11 +1,25 @@
 // SPDX-License-Identifier: MIT
-
 pragma solidity 0.8.4;
 
 import "../base/GammaPoolERC721.sol";
 
 contract ERC721Mock is GammaPoolERC721 {
-    constructor (string memory name, string memory symbol) GammaPoolERC721(name, symbol) { }
+    string private _name;
+
+    string private _symbol;
+
+    constructor (string memory name_, string memory symbol_) {
+        _name = name_;
+        _symbol = symbol_;
+    }
+
+    function name() public view virtual override returns (string memory) {
+        return _name;
+    }
+
+    function symbol() public view virtual override returns (string memory) {
+        return _symbol;
+    }
 
     function baseURI() public view returns (string memory) {
         return _baseURI();

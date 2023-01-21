@@ -15,6 +15,9 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
     error Expired();
     error AmountsMin();
 
+    string constant private _name = "PositionManager";
+    string constant private _symbol = "PM-V1";
+
     address public immutable override factory;
 
     modifier isAuthorizedForToken(uint256 tokenId) {
@@ -39,8 +42,22 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         }
     }
 
-    constructor(address _factory, address _WETH) GammaPoolERC721("PosMgr", "PM-V1") Transfers(_WETH) {
+    constructor(address _factory, address _WETH) Transfers(_WETH) {
         factory = _factory;
+    }
+
+    /**
+     * @dev See {IERC721Metadata-name}.
+     */
+    function name() public view virtual override returns (string memory) {
+        return _name;
+    }
+
+    /**
+     * @dev See {IERC721Metadata-symbol}.
+     */
+    function symbol() public view virtual override returns (string memory) {
+        return _symbol;
     }
 
     function getGammaPoolAddress(address cfmm, uint16 protocolId) internal virtual view returns(address) {
