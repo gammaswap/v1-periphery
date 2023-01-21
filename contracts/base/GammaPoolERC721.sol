@@ -31,10 +31,10 @@ contract GammaPoolERC721 is Context, ERC165, IERC721, IERC721Metadata  {
     error ERC721ApproveToCaller();
 
     // Token name
-    string private _name;
+    string immutable private _name;
 
     // Token symbol
-    string private _symbol;
+    string immutable private _symbol;
 
     // Mapping from token ID to owner address
     mapping(uint256 => address) private _owners;
