@@ -71,6 +71,13 @@ describe("PositionManager", function () {
     });
 
     describe("Base Functions", function () {
+        it("deployment", async function() {
+            expect(await posMgr.name()).to.be.equal("PositionManager");
+            expect(await posMgr.symbol()).to.be.equal("PM-V1");
+            expect(await posMgr.factory()).to.be.equal(factory.address);
+            expect(await posMgr.WETH()).to.be.equal(WETH.address);
+        })
+
         it("#sendTokensCallback should revert with FORBIDDEN when calling outside Gamma Pool", async function () {
             await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens

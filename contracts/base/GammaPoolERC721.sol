@@ -14,7 +14,7 @@ import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
  * the Metadata extension, but not including the Enumerable extension, which is available separately as
  * {ERC721Enumerable}.
  */
-contract GammaPoolERC721 is Context, ERC165, IERC721, IERC721Metadata  {
+abstract contract GammaPoolERC721 is Context, ERC165, IERC721, IERC721Metadata  {
 
     using Address for address;
     using Strings for uint256;
@@ -30,12 +30,6 @@ contract GammaPoolERC721 is Context, ERC165, IERC721, IERC721Metadata  {
     error ERC721TransferToZeroAddress();
     error ERC721ApproveToCaller();
 
-    // Token name
-    string private _name;
-
-    // Token symbol
-    string private _symbol;
-
     // Mapping from token ID to owner address
     mapping(uint256 => address) private _owners;
 
@@ -47,15 +41,6 @@ contract GammaPoolERC721 is Context, ERC165, IERC721, IERC721Metadata  {
 
     // Mapping from owner to operator approvals
     mapping(address => mapping(address => bool)) private _operatorApprovals;
-
-
-    /**
-     * @dev Initializes the contract by setting a `name` and a `symbol` to the token collection.
-     */
-    constructor(string memory name_, string memory symbol_) {
-        _name = name_;
-        _symbol = symbol_;
-    }
 
     function isForbidden(uint256 tokenId) internal virtual view {
         if(!_isApprovedOrOwner(_msgSender(), tokenId)) {
@@ -140,20 +125,6 @@ contract GammaPoolERC721 is Context, ERC165, IERC721, IERC721Metadata  {
     }
 
     /**
-     * @dev See {IERC721Metadata-name}.
-     */
-    function name() public view virtual override returns (string memory) {
-        return _name;
-    }
-
-    /**
-     * @dev See {IERC721Metadata-symbol}.
-     */
-    function symbol() public view virtual override returns (string memory) {
-        return _symbol;
-    }
-
-    /**
      * @dev See {IERC721Metadata-tokenURI}.
      */
     function tokenURI(uint256 tokenId) public view virtual override returns (string memory) {
@@ -171,7 +142,6 @@ contract GammaPoolERC721 is Context, ERC165, IERC721, IERC721Metadata  {
     function _baseURI() internal view virtual returns (string memory) {
         return "";
     }
-
 
     /**
      * @dev See {IERC721-getApproved}.

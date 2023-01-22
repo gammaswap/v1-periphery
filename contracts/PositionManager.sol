@@ -1,6 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity 0.8.4;
-pragma abicoder v2;
 
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "@gammaswap/v1-core/contracts/libraries/AddressCalculator.sol";
@@ -14,6 +13,9 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
     error Forbidden();
     error Expired();
     error AmountsMin();
+
+    string constant private _name = "PositionManager";
+    string constant private _symbol = "PM-V1";
 
     address public immutable override factory;
 
@@ -39,8 +41,22 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
         }
     }
 
-    constructor(address _factory, address _WETH) GammaPoolERC721("PosMgr", "PM-V1") Transfers(_WETH) {
+    constructor(address _factory, address _WETH) Transfers(_WETH) {
         factory = _factory;
+    }
+
+    /**
+     * @dev See {IERC721Metadata-name}.
+     */
+    function name() public view virtual override returns (string memory) {
+        return _name;
+    }
+
+    /**
+     * @dev See {IERC721Metadata-symbol}.
+     */
+    function symbol() public view virtual override returns (string memory) {
+        return _symbol;
     }
 
     function getGammaPoolAddress(address cfmm, uint16 protocolId) internal virtual view returns(address) {
@@ -57,8 +73,11 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
 
     function sendTokens(address[] memory tokens, uint256[] calldata amounts, address payer, address payee) internal virtual {
         uint256 len = tokens.length;
-        for (uint i = 0; i < len; i++) {
+        for (uint256 i; i < len;) {
             if (amounts[i] > 0 ) send(tokens[i], payer, payee, amounts[i]);
+            unchecked {
+                ++i;
+            }
         }
     }
 
@@ -105,18 +124,24 @@ contract PositionManager is IPositionManager, ISendTokensCallback, Transfers, Ga
 
     function checkMinReserves(uint256[] memory amounts, uint256[] memory amountsMin) internal virtual pure {
         uint256 len = amounts.length;
-        for (uint256 i = 0; i < len; i++) {
+        for (uint256 i; i < len;) {
             if(amounts[i] < amountsMin[i]) {
                 revert AmountsMin();
+            }
+            unchecked {
+                ++i;
             }
         }
     }
 
     function checkMinCollateral(uint128[] memory amounts, uint128[] memory amountsMin) internal virtual pure {
         uint256 len = amounts.length;
-        for (uint256 i = 0; i < len; i++) {
+        for (uint256 i; i < len;) {
             if(amounts[i] < amountsMin[i]) {
                 revert AmountsMin();
+            }
+            unchecked {
+                ++i;
             }
         }
     }
