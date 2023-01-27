@@ -1,9 +1,14 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity 0.8.4;
 
+import "@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol";
 import "./ITransfers.sol";
 
-interface IPositionManager  is ITransfers {
+/// @title PositionManager Interface
+/// @author Daniel D. Alcarraz
+/// @notice Interface for PositionManager contract
+/// @dev Interface also defines all GammaPool events through inheritance of IGammaPoolEvents
+interface IPositionManager is IGammaPoolEvents, ITransfers {
 
     event DepositNoPull(address indexed pool, uint256 shares);
     event WithdrawNoPull(address indexed pool, uint256 assets);
@@ -17,14 +22,6 @@ interface IPositionManager  is ITransfers {
     event RebalanceCollateral(address indexed pool, uint256 tokenId, uint256 tokensHeldLen);
     event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld,
         uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint256[] cfmmReserves);
-
-    event PoolUpdated(uint256 lpTokenBalance, uint256 lpTokenBorrowed, uint256 lastBlockNumber, uint256 accFeeIndex,
-        uint256 lpTokenBorrowedPlusInterest, uint256 lpInvariant, uint256 borrowedInvariant);
-    event LoanCreated(address indexed caller, uint256 tokenId);
-    event LoanUpdated(uint256 indexed tokenId, uint128[] tokensHeld, uint256 liquidity, uint256 lpTokens, uint256 rateIndex);
-
-    event Deposit(address indexed caller, address indexed to, uint256 assets, uint256 shares);
-    event Withdraw(address indexed caller, address indexed to, address indexed from, uint256 assets, uint256 shares);
 
     struct DepositWithdrawParams {
         uint16 protocolId;
@@ -128,6 +125,7 @@ interface IPositionManager  is ITransfers {
         uint128[] minCollateral;
     }
 
+    /// @return factory - factory contract that creates all GammaPools this PositionManager interacts with
     function factory() external view returns (address);
 
     //Short Gamma

@@ -8,6 +8,11 @@ contract TestTransfers is Transfers {
     constructor(address _WETH) Transfers(_WETH) {
     }
 
+
+    function getGammaPoolAddress(address cfmm, uint16) internal virtual override view returns(address) {
+        return cfmm;
+    }
+
     function testUnwrapWETH() public payable {
         uint256 wethBal = IERC20(WETH).balanceOf(address(this));
 

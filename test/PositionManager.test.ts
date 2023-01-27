@@ -78,7 +78,7 @@ describe("PositionManager", function () {
             expect(await posMgr.WETH()).to.be.equal(WETH.address);
         })
 
-        it("#sendTokensCallback should revert with FORBIDDEN when calling outside Gamma Pool", async function () {
+        it("#sendTokensCallback should revert with NotGammaPool when calling outside Gamma Pool", async function () {
             await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             
@@ -94,7 +94,7 @@ describe("PositionManager", function () {
             
             const res = posMgr.sendTokensCallback(tokens, amounts, payee, data)
             
-            await expect(res).to.be.revertedWith("Forbidden");
+            await expect(res).to.be.revertedWith("NotGammaPool");
         })
 
         it("#sendTokensCallback should change balances of tokens", async function () {

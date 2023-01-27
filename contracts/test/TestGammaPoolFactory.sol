@@ -53,7 +53,7 @@ contract TestGammaPoolFactory is AbstractGammaPoolFactory {
 
         allPools.push(pool);
 
-        emit PoolCreated(pool, cfmm, protocolId, address(0), allPools.length);
+        emit PoolCreated(pool, cfmm, protocolId, address(0), tokens, allPools.length);
     }
 
     function allPoolsLength() external virtual override view returns (uint256){
