@@ -4,7 +4,7 @@ pragma solidity 0.8.4;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
-import "../interfaces/ISendTokensCallback.sol";
+import "@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol";
 import "./ITestGammaPoolFactory.sol";
 
 contract TestGammaPool is IGammaPool, ERC20 {
@@ -124,7 +124,8 @@ contract TestGammaPool is IGammaPool, ERC20 {
         initLiquidity = 24;
     }
 
-    function borrowLiquidity(uint256, uint256) external virtual override returns(uint256[] memory amounts) {
+    function borrowLiquidity(uint256, uint256) external virtual override returns(uint256 liquidityBorrowed, uint256[] memory amounts) {
+        liquidityBorrowed = 23;
         amounts = new uint256[](2);
     }
 
@@ -145,16 +146,16 @@ contract TestGammaPool is IGammaPool, ERC20 {
         tokensHeld = new uint128[](2);
     }
 
-    function liquidate(uint256, int256[] calldata) external override virtual returns(uint256[] memory refund) {
-        return new uint256[](2);
+    function liquidate(uint256, int256[] calldata) external override virtual returns(uint256 loanLiquidity, uint256[] memory refund) {
+        return (1, new uint256[](2));
     }
 
-    function liquidateWithLP(uint256) external override virtual returns(uint256[] memory refund) {
-        return new uint256[](2);
+    function liquidateWithLP(uint256) external override virtual returns(uint256 loanLiquidity, uint256[] memory refund) {
+        return (2, new uint256[](2));
     }
 
-    function batchLiquidations(uint256[] calldata) external override virtual returns(uint256[] memory refund) {
-        return new uint256[](2);
+    function batchLiquidations(uint256[] calldata) external override virtual returns(uint256 totalLoanLiquidity, uint256 totalCollateral, uint256[] memory refund) {
+        return (3, 4, new uint256[](2));
     }
 
     function validateCFMM(address[] calldata, address) external override pure returns(address[] memory, uint8[] memory) {

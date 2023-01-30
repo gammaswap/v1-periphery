@@ -42,6 +42,9 @@ abstract contract GammaPoolERC721 is Context, ERC165, IERC721, IERC721Metadata  
     // Mapping from owner to operator approvals
     mapping(address => mapping(address => bool)) private _operatorApprovals;
 
+    /**
+     * @dev Revert ERC721 transaction if msg.sender is not authorized perform ERC721 transaction
+     */
     function isForbidden(uint256 tokenId) internal virtual view {
         if(!_isApprovedOrOwner(_msgSender(), tokenId)) {
             revert ERC721Forbidden();

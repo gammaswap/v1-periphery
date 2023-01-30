@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { expect } from "chai";
 
-describe("Transfer", function () {
+describe("Transfers", function () {
     let owner: any;
     let addr1: any;
     let TestTransfers: any;
@@ -52,7 +52,7 @@ describe("Transfer", function () {
 
     it("#clearToken", async function () {
         expect((await tokenA.balanceOf(testTransfers.address)).toNumber()).to.equal(5000);
-        expect(await testTransfers.clearToken(tokenA.address, 1000, addr1.address)).to.be.ok;
+        expect(await testTransfers.clearToken(tokenA.address, addr1.address, 1000)).to.be.ok;
         expect((await tokenA.balanceOf(testTransfers.address)).toNumber()).to.equal(0);
         expect((await tokenA.balanceOf(addr1.address)).toNumber()).to.equal(5000);
     })

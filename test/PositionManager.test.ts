@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { expect } from "chai";
 
-describe("PositionManager", function () {
+describe.only("PositionManager", function () {
     let TestERC20: any;
     let GammaPool: any;
     let GammaPoolFactory: any;
@@ -78,7 +78,7 @@ describe("PositionManager", function () {
             expect(await posMgr.WETH()).to.be.equal(WETH.address);
         })
 
-        it("#sendTokensCallback should revert with FORBIDDEN when calling outside Gamma Pool", async function () {
+        it("#sendTokensCallback should revert with NotGammaPool when calling outside Gamma Pool", async function () {
             await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             
@@ -94,7 +94,7 @@ describe("PositionManager", function () {
             
             const res = posMgr.sendTokensCallback(tokens, amounts, payee, data)
             
-            await expect(res).to.be.revertedWith("Forbidden");
+            await expect(res).to.be.revertedWith("NotGammaPool");
         })
 
         it("#sendTokensCallback should change balances of tokens", async function () {
@@ -305,11 +305,11 @@ describe("PositionManager", function () {
             
             const { args } = res.events[0];
             expect(args.pool).to.equal(gammaPool.address);
-            expect(args.reservesLen).to.equal(4);
+            expect(args.reserves.length).to.equal(4);
             expect(args.shares.toNumber()).to.equal(18);
         });
 
-        it("#withdrawReserves should return assets and lenght of reserves", async function () {            
+        it("#withdrawReserves should return assets and lenght of reserves", async function () {
             const WithdrawReservesParams =  {
                 cfmm: cfmm.address,
                 protocolId: protocolId,
@@ -323,7 +323,10 @@ describe("PositionManager", function () {
 
             const { args } = res.events[1];
             expect(args.pool).to.equal(gammaPool.address);
-            expect(args.reservesLen).to.equal(3);
+            expect(args.reserves.length).to.equal(3);
+            expect(args.reserves[0]).to.equal(200);
+            expect(args.reserves[1]).to.equal(300);
+            expect(args.reserves[2]).to.equal(400);
             expect(args.assets.toNumber()).to.equal(17);
         });
     });
@@ -354,7 +357,8 @@ describe("PositionManager", function () {
             const { args } = res.events[0];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
-            expect(args.amountsLen.toNumber()).to.equal(2);
+            expect(args.liquidityBorrowed).to.equal(23);
+            expect(args.amounts.length).to.equal(2);
         });
 
         it("#repayLiquidity should return tokenId, paid liquidity, paid lp tokens and length of amounts array", async function () {
@@ -372,14 +376,14 @@ describe("PositionManager", function () {
             const { args } = res.events[0];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
-            expect(args.liquidityPaid.toNumber()).to.equal(24);
-            expect(args.amountsLen.toNumber()).to.equal(2);
+            expect(args.liquidityPaid).to.equal(24);
+            expect(args.amounts.length).to.equal(2);
         });
 
         it("#increaseCollateral should return tokenId and length of tokens held", async function () {
-            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256); // must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256); // must approve before sending tokens
+
             const AddRemoveCollateralParams = {
                 cfmm: cfmm.address,
                 protocolId: protocolId,
@@ -394,7 +398,7 @@ describe("PositionManager", function () {
             const { args } = res.events[2];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
-            expect(args.tokensHeldLen.toNumber()).to.equal(6);
+            expect(args.tokensHeld.length).to.equal(6);
         });
 
         it("#decreaseCollateral should return tokenId and length of tokens held", async function () {
@@ -412,10 +416,10 @@ describe("PositionManager", function () {
             const { args } = res.events[0];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
-            expect(args.tokensHeldLen.toNumber()).to.equal(7);
+            expect(args.tokensHeld.length).to.equal(7);
         });
 
-        it("#rebalanceCollateral should return tokenId and length of tokens held", async function () {            
+        it("#rebalanceCollateral should return tokenId and length of tokens held", async function () {
             const RebalanceCollateralParams = {
                 cfmm: cfmm.address,
                 protocolId: protocolId,
@@ -431,12 +435,12 @@ describe("PositionManager", function () {
             const { args } = res.events[0];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
-            expect(args.tokensHeldLen.toNumber()).to.equal(2);
+            expect(args.tokensHeld.length).to.equal(2);
         });
 
         it("#createLoanBorrowAndRebalance should return tokenId, tokensHeld, amounts. No deltas", async function () {
-            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256); // must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256); // must approve before sending tokens
 
             const CreateLoanBorrowAndRebalanceParams = {
                 protocolId: protocolId,
@@ -462,13 +466,14 @@ describe("PositionManager", function () {
             const args1 = res.events[4].args;
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(19);
-            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+            expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[5].event).to.equal("BorrowLiquidity");
             const args2 = res.events[5].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(19);
-            expect(args2.amountsLen.toNumber()).to.equal(2);
+            expect(args2.liquidityBorrowed).to.equal(23);
+            expect(args2.amounts.length).to.equal(2);
 
             expect(res.events[6].event).to.equal("LoanUpdate");
             const args3 = res.events[6].args;
@@ -484,8 +489,8 @@ describe("PositionManager", function () {
         });
 
         it("#createLoanBorrowAndRebalance should return tokenId, tokensHeld, amounts. Has deltas", async function () {
-            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256); // must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256); // must approve before sending tokens
 
             const CreateLoanBorrowAndRebalanceParams = {
                 protocolId: protocolId,
@@ -511,19 +516,20 @@ describe("PositionManager", function () {
             const args1 = res.events[4].args;
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(19);
-            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+            expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[5].event).to.equal("BorrowLiquidity");
             const args2 = res.events[5].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(19);
-            expect(args2.amountsLen.toNumber()).to.equal(2);
+            expect(args2.liquidityBorrowed).to.equal(23);
+            expect(args2.amounts.length).to.equal(2);
 
             expect(res.events[6].event).to.equal("RebalanceCollateral");
             const args3 = res.events[6].args;
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(19);
-            expect(args3.tokensHeldLen.toNumber()).to.equal(2);
+            expect(args3.tokensHeld.length).to.equal(2);
 
             expect(res.events[7].event).to.equal("LoanUpdate");
             const args4 = res.events[7].args;
@@ -562,13 +568,14 @@ describe("PositionManager", function () {
             const args1 = res.events[2].args;
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+            expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[3].event).to.equal("BorrowLiquidity");
             const args2 = res.events[3].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.amountsLen.toNumber()).to.equal(2);
+            expect(args2.liquidityBorrowed).to.equal(23);
+            expect(args2.amounts.length).to.equal(2);
 
             expect(res.events[4].event).to.equal("LoanUpdate");
             const args3 = res.events[4].args;
@@ -607,19 +614,20 @@ describe("PositionManager", function () {
             const args1 = res.events[2].args;
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+            expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[3].event).to.equal("BorrowLiquidity");
             const args2 = res.events[3].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.amountsLen.toNumber()).to.equal(2);
+            expect(args2.liquidityBorrowed).to.equal(23);
+            expect(args2.amounts.length).to.equal(2);
 
             expect(res.events[4].event).to.equal("DecreaseCollateral");
             const args3 = res.events[4].args;
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.tokensHeldLen.toNumber()).to.equal(7);
+            expect(args3.tokensHeld.length).to.equal(7);
 
             expect(res.events[5].event).to.equal("LoanUpdate");
             const args4 = res.events[5].args;
@@ -658,19 +666,20 @@ describe("PositionManager", function () {
             const args1 = res.events[2].args;
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+            expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[3].event).to.equal("BorrowLiquidity");
             const args2 = res.events[3].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.amountsLen.toNumber()).to.equal(2);
+            expect(args2.liquidityBorrowed).to.equal(23);
+            expect(args2.amounts.length).to.equal(2);
 
             expect(res.events[4].event).to.equal("RebalanceCollateral");
             const args3 = res.events[4].args;
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.tokensHeldLen.toNumber()).to.equal(2);
+            expect(args3.tokensHeld.length).to.equal(2);
 
             expect(res.events[5].event).to.equal("LoanUpdate");
             const args4 = res.events[5].args;
@@ -709,14 +718,14 @@ describe("PositionManager", function () {
             const args1 = res.events[2].args;
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+            expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[3].event).to.equal("RepayLiquidity");
             const args2 = res.events[3].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(1);
             expect(args2.liquidityPaid.toNumber()).to.equal(24);
-            expect(args2.amountsLen.toNumber()).to.equal(2);
+            expect(args2.amounts.length).to.equal(2);
 
             expect(res.events[4].event).to.equal("LoanUpdate");
             const args3 = res.events[4].args;
@@ -755,20 +764,20 @@ describe("PositionManager", function () {
             const args1 = res.events[2].args;
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+            expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[3].event).to.equal("RepayLiquidity");
             const args2 = res.events[3].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(1);
             expect(args2.liquidityPaid.toNumber()).to.equal(24);
-            expect(args2.amountsLen.toNumber()).to.equal(2);
+            expect(args2.amounts.length).to.equal(2);
 
             expect(res.events[4].event).to.equal("DecreaseCollateral");
             const args3 = res.events[4].args;
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.tokensHeldLen.toNumber()).to.equal(7);
+            expect(args3.tokensHeld.length).to.equal(7);
 
             expect(res.events[5].event).to.equal("LoanUpdate");
             const args4 = res.events[5].args;
@@ -807,20 +816,20 @@ describe("PositionManager", function () {
             const args1 = res.events[2].args;
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+            expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[3].event).to.equal("RebalanceCollateral");
             const args2 = res.events[3].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.tokensHeldLen.toNumber()).to.equal(2);
+            expect(args2.tokensHeld.length).to.equal(2);
 
             expect(res.events[4].event).to.equal("RepayLiquidity");
             const args3 = res.events[4].args;
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
             expect(args3.liquidityPaid.toNumber()).to.equal(24);
-            expect(args3.amountsLen.toNumber()).to.equal(2);
+            expect(args3.amounts.length).to.equal(2);
 
             expect(res.events[5].event).to.equal("LoanUpdate");
             const args4 = res.events[5].args;
@@ -859,26 +868,26 @@ describe("PositionManager", function () {
             const args1 = res.events[2].args;
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeldLen.toNumber()).to.equal(6);
+            expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[3].event).to.equal("RebalanceCollateral");
             const args2 = res.events[3].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.tokensHeldLen.toNumber()).to.equal(2);
+            expect(args2.tokensHeld.length).to.equal(2);
 
             expect(res.events[4].event).to.equal("RepayLiquidity");
             const args3 = res.events[4].args;
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
             expect(args3.liquidityPaid.toNumber()).to.equal(24);
-            expect(args3.amountsLen.toNumber()).to.equal(2);
+            expect(args3.amounts.length).to.equal(2);
 
             expect(res.events[5].event).to.equal("DecreaseCollateral");
             const args4 = res.events[5].args;
             expect(args4.pool).to.equal(gammaPool.address);
             expect(args4.tokenId.toNumber()).to.equal(1);
-            expect(args4.tokensHeldLen.toNumber()).to.equal(7);
+            expect(args4.tokensHeld.length).to.equal(7);
 
             expect(res.events[6].event).to.equal("LoanUpdate");
             const args5 = res.events[6].args;
@@ -917,20 +926,20 @@ describe("PositionManager", function () {
             const args2 = res.events[0].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.tokensHeldLen.toNumber()).to.equal(2);
+            expect(args2.tokensHeld.length).to.equal(2);
 
             expect(res.events[1].event).to.equal("RepayLiquidity");
             const args3 = res.events[1].args;
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
             expect(args3.liquidityPaid.toNumber()).to.equal(24);
-            expect(args3.amountsLen.toNumber()).to.equal(2);
+            expect(args3.amounts.length).to.equal(2);
 
             expect(res.events[2].event).to.equal("DecreaseCollateral");
             const args4 = res.events[2].args;
             expect(args4.pool).to.equal(gammaPool.address);
             expect(args4.tokenId.toNumber()).to.equal(1);
-            expect(args4.tokensHeldLen.toNumber()).to.equal(7);
+            expect(args4.tokensHeld.length).to.equal(7);
 
             expect(res.events[3].event).to.equal("LoanUpdate");
             const args5 = res.events[3].args;
