@@ -385,6 +385,26 @@ describe("PositionManager", function () {
             expect(args.amounts.length).to.equal(2);
         });
 
+        it("#repayLiquidity should return tokenId, paid liquidity, paid lp tokens and length of amounts array with fees", async function () {
+            const RepayLiquidityParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolId,
+                tokenId: tokenId,
+                liquidity: 1,
+                minRepaid: [0,0],
+                deadline: ethers.constants.MaxUint256,
+                fees: [0,0],
+            }
+
+            const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
+
+            const { args } = res.events[0];
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
+            expect(args.liquidityPaid).to.equal(26);
+            expect(args.amounts.length).to.equal(2);
+        });
+
         it("#increaseCollateral should return tokenId and length of tokens held", async function () {
             await tokenA.approve(posMgr.address, ethers.constants.MaxUint256); // must approve before sending tokens
             await tokenB.approve(posMgr.address, ethers.constants.MaxUint256); // must approve before sending tokens
@@ -715,7 +735,7 @@ describe("PositionManager", function () {
                 minRepaid: [0,0],
                 deltas: [],
                 minCollateral: [],
-                fees: []
+                fees: [1,1]
             }
 
             const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
@@ -730,7 +750,7 @@ describe("PositionManager", function () {
             const args2 = res.events[3].args;
             expect(args2.pool).to.equal(gammaPool.address);
             expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.liquidityPaid.toNumber()).to.equal(24);
+            expect(args2.liquidityPaid.toNumber()).to.equal(28);
             expect(args2.amounts.length).to.equal(2);
 
             expect(res.events[4].event).to.equal("LoanUpdate");
@@ -815,7 +835,7 @@ describe("PositionManager", function () {
                 minRepaid: [0,0],
                 deltas: [4,2],
                 minCollateral: [0,0],
-                fees: []
+                fees: [0,1]
             }
 
             const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
@@ -836,7 +856,7 @@ describe("PositionManager", function () {
             const args3 = res.events[4].args;
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.liquidityPaid.toNumber()).to.equal(24);
+            expect(args3.liquidityPaid.toNumber()).to.equal(27);
             expect(args3.amounts.length).to.equal(2);
 
             expect(res.events[5].event).to.equal("LoanUpdate");
@@ -868,7 +888,7 @@ describe("PositionManager", function () {
                 minRepaid: [0,0],
                 deltas: [4,2],
                 minCollateral: [0,0],
-                fees: []
+                fees: [3,5]
             }
 
             const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
@@ -889,7 +909,7 @@ describe("PositionManager", function () {
             const args3 = res.events[4].args;
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.liquidityPaid.toNumber()).to.equal(24);
+            expect(args3.liquidityPaid.toNumber()).to.equal(34);
             expect(args3.amounts.length).to.equal(2);
 
             expect(res.events[5].event).to.equal("DecreaseCollateral");
@@ -927,7 +947,7 @@ describe("PositionManager", function () {
                 minRepaid: [0,0],
                 deltas: [4,2],
                 minCollateral: [0,0],
-                fees: []
+                fees: [0,1,10]
             }
 
             const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
@@ -942,7 +962,7 @@ describe("PositionManager", function () {
             const args3 = res.events[1].args;
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.liquidityPaid.toNumber()).to.equal(24);
+            expect(args3.liquidityPaid.toNumber()).to.equal(27);
             expect(args3.amounts.length).to.equal(2);
 
             expect(res.events[2].event).to.equal("DecreaseCollateral");

@@ -129,8 +129,8 @@ contract TestGammaPool is IGammaPool, ERC20 {
         amounts = new uint256[](2);
     }
 
-    function repayLiquidity(uint256, uint256, uint256[] calldata) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
-        liquidityPaid = 24;
+    function repayLiquidity(uint256, uint256, uint256[] calldata fees) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
+        liquidityPaid = 24 + fees.length + (fees.length == 2 ? fees[0] + fees[1] : 0);
         amounts = new uint256[](2);
     }
 
