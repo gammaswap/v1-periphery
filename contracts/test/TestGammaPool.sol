@@ -51,8 +51,8 @@ contract TestGammaPool is IGammaPool, ERC20 {
         return(new uint128[](2), 12, 13);
     }
 
-    function getRates() external virtual override view returns(uint256 accFeeIndex, uint256 lastBlockNumber) {
-        return(9, 14);
+    function getRates() external virtual override view returns(uint256 accFeeIndex, uint256 lastCFMMFeeIndex, uint256 lastBlockNumber) {
+        return(9, 91, 14);
     }
 
     function getPoolData() external virtual override view returns(PoolData memory data) {
@@ -129,7 +129,7 @@ contract TestGammaPool is IGammaPool, ERC20 {
         amounts = new uint256[](2);
     }
 
-    function repayLiquidity(uint256, uint256) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
+    function repayLiquidity(uint256, uint256, uint256[] calldata) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
         liquidityPaid = 24;
         amounts = new uint256[](2);
     }
@@ -146,7 +146,7 @@ contract TestGammaPool is IGammaPool, ERC20 {
         tokensHeld = new uint128[](2);
     }
 
-    function liquidate(uint256, int256[] calldata) external override virtual returns(uint256 loanLiquidity, uint256[] memory refund) {
+    function liquidate(uint256, int256[] calldata, uint256[] calldata) external override virtual returns(uint256 loanLiquidity, uint256[] memory refund) {
         return (1, new uint256[](2));
     }
 
@@ -158,7 +158,7 @@ contract TestGammaPool is IGammaPool, ERC20 {
         return (3, 4, new uint256[](2));
     }
 
-    function validateCFMM(address[] calldata, address) external override pure returns(address[] memory, uint8[] memory) {
+    function validateCFMM(address[] calldata, address, bytes calldata) external override pure returns(address[] memory, uint8[] memory) {
         return (new address[](2), new uint8[](2));
     }
 

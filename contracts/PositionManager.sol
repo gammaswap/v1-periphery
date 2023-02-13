@@ -213,10 +213,11 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
     /// @param tokenId - id to identify the loan in the GammaPool
     /// @param liquidity - desired liquidity to pay
     /// @param minRepaid - minimum amount of expected collateral to have used as payment. Used for slippage control
+    /// @param fees - fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
     /// @return liquidityPaid - actual liquidity debt paid
     /// @return amounts - reserve tokens used to pay liquidity debt
-    function repayLiquidity(address gammaPool, uint256 tokenId, uint256 liquidity, uint256[] calldata minRepaid) internal virtual returns (uint256 liquidityPaid, uint256[] memory amounts) {
-        (liquidityPaid, amounts) = IGammaPool(gammaPool).repayLiquidity(tokenId, liquidity);
+    function repayLiquidity(address gammaPool, uint256 tokenId, uint256 liquidity, uint256[] calldata minRepaid, uint256[] calldata fees) internal virtual returns (uint256 liquidityPaid, uint256[] memory amounts) {
+        (liquidityPaid, amounts) = IGammaPool(gammaPool).repayLiquidity(tokenId, liquidity, fees);
         checkMinReserves(amounts, minRepaid);
         emit RepayLiquidity(gammaPool, tokenId, liquidityPaid, amounts);
     }
@@ -240,7 +241,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
     /// @dev See {IPositionManager-repayLiquidity}.
     function repayLiquidity(RepayLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint256[] memory amounts) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
-        (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.minRepaid);
+        (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.minRepaid, params.fees);
         logLoan(gammaPool, params.tokenId, msg.sender);
     }
 
@@ -309,7 +310,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
             tokensHeld = rebalanceCollateral(gammaPool, params.tokenId, params.deltas, params.minCollateral);
         }
         if(params.liquidity != 0) {
-            (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.minRepaid);
+            (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.minRepaid, params.fees);
         }
         if(params.withdraw.length != 0) {
             tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw);

@@ -148,6 +148,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev minimum amounts of reserve tokens expected to have been used to repay the liquidity debt. Slippage protection
         uint256[] minRepaid;
+        /// @dev fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
+        uint256[] fees;
     }
 
     /// @dev Struct parameters for `increaseCollateral` and `decreaseCollateral` function.
@@ -254,6 +256,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         int256[] deltas;
         /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
         uint128[] minCollateral;
+        /// @dev fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
+        uint256[] fees;
     }
 
     /// @return factory - factory contract that creates all GammaPools this PositionManager interacts with
