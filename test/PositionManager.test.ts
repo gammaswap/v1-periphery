@@ -1,7 +1,7 @@
 import { ethers } from "hardhat";
 import { expect } from "chai";
 
-describe.only("PositionManager", function () {
+describe("PositionManager", function () {
     let TestERC20: any;
     let GammaPool: any;
     let GammaPoolFactory: any;
@@ -54,7 +54,11 @@ describe.only("PositionManager", function () {
             tokens: [tokenA.address, tokenB.address]
         };
 
-        const res = await (await factory.createPool(createPoolParams.protocolId, createPoolParams.cfmm ,createPoolParams.tokens)).wait();
+        const data = ethers.utils.defaultAbiCoder.encode(
+            [],
+            []
+        );
+        const res = await (await factory.createPool(createPoolParams.protocolId, createPoolParams.cfmm ,createPoolParams.tokens, data)).wait();
 
         const { args } = res.events[1];
         gammaPoolAddr = args.pool;
@@ -368,7 +372,8 @@ describe.only("PositionManager", function () {
                 tokenId: tokenId,
                 liquidity: 1,
                 minRepaid: [0,0],
-                deadline: ethers.constants.MaxUint256
+                deadline: ethers.constants.MaxUint256,
+                fees: [],
             }
             
             const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
@@ -709,7 +714,8 @@ describe.only("PositionManager", function () {
                 withdraw: [],
                 minRepaid: [0,0],
                 deltas: [],
-                minCollateral: []
+                minCollateral: [],
+                fees: []
             }
 
             const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
@@ -755,7 +761,8 @@ describe.only("PositionManager", function () {
                 withdraw: [100,10],
                 minRepaid: [0,0],
                 deltas: [],
-                minCollateral: [0, 0]
+                minCollateral: [0, 0],
+                fees: []
             }
 
             const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
@@ -807,7 +814,8 @@ describe.only("PositionManager", function () {
                 withdraw: [],
                 minRepaid: [0,0],
                 deltas: [4,2],
-                minCollateral: [0,0]
+                minCollateral: [0,0],
+                fees: []
             }
 
             const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
@@ -859,7 +867,8 @@ describe.only("PositionManager", function () {
                 withdraw: [100,10],
                 minRepaid: [0,0],
                 deltas: [4,2],
-                minCollateral: [0,0]
+                minCollateral: [0,0],
+                fees: []
             }
 
             const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
@@ -917,7 +926,8 @@ describe.only("PositionManager", function () {
                 withdraw: [100,10],
                 minRepaid: [0,0],
                 deltas: [4,2],
-                minCollateral: [0,0]
+                minCollateral: [0,0],
+                fees: []
             }
 
             const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
