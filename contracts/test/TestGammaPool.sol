@@ -29,7 +29,7 @@ contract TestGammaPool is IGammaPool, ERC20 {
         liquidationStrategy = _liquidationStrategy;
     }
 
-    function initialize(address _cfmm, address[] calldata _tokens, uint8[] calldata _decimals) external virtual override {
+    function initialize(address _cfmm, address[] calldata _tokens, uint8[] calldata _decimals, bytes calldata) external virtual override {
         cfmm = _cfmm;
         tokens_ = _tokens;
         decimals_ = _decimals;

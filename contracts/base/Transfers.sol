@@ -6,7 +6,7 @@ import "../interfaces/ITransfers.sol";
 import "../interfaces/external/IWETH.sol";
 
 /// @title Transfers abstract contract implementation of ITransfers
-/// @author Daniel D. Alcarraz
+/// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Clears tokens and Ether from PositionManager and simplifies token transfer functions
 /// @dev PositionManager is not supposed to hold any tokens or Ether
 abstract contract Transfers is ITransfers {

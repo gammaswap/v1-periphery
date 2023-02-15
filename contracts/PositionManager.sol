@@ -8,7 +8,7 @@ import "./base/Transfers.sol";
 import "./base/GammaPoolERC721.sol";
 
 /// @title PositionManager, concrete implementation of IPositionManager
-/// @author Daniel D. Alcarraz
+/// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Periphery contract used to aggregate function calls to a GammaPool and give NFT (ERC721) functionality to loans
 /// @notice Loans created through PositionManager become NFTs and can only be managed through PositionManager
 /// @dev PositionManager is owner of loan and user is owner of NFT that represents loan in a GammaPool

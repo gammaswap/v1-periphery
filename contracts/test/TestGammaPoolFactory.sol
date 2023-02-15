@@ -40,14 +40,14 @@ contract TestGammaPoolFactory is AbstractGammaPoolFactory {
         implementation = address(0);
     }
 
-    function createPool(uint16 protocolId, address cfmm, address[] calldata tokens, bytes calldata) external virtual override returns(address pool){
+    function createPool(uint16 protocolId, address cfmm, address[] calldata tokens, bytes calldata _data) external virtual override returns(address pool){
         bytes32 key = AddressCalculator.getGammaPoolKey(cfmm, protocolId);
 
         uint8[] memory decimals = new uint8[](2);
         decimals[0] = 18;
         decimals[1] = 18;
         pool = cloneDeterministic(implementation, key);
-        IGammaPool(pool).initialize(cfmm, tokens, decimals);
+        IGammaPool(pool).initialize(cfmm, tokens, decimals, _data);
 
         getPool[key] = pool;
 
