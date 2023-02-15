@@ -5,7 +5,7 @@ import "@gammaswap/v1-core/contracts/interfaces/IRefunds.sol";
 import "@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol";
 
 /// @title Interface for Transfers abstract contract
-/// @author Daniel D. Alcarraz
+/// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Interface used to send tokens and clear tokens and Ether from a contract
 interface ITransfers is ISendTokensCallback, IRefunds {
 

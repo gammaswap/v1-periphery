@@ -4,7 +4,7 @@ pragma solidity 0.8.4;
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 /// @title Wrapped Ether interface
-/// @author Daniel D. Alcarraz
+/// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Used to interact with Wrapped Ether contract
 /// @dev Only defines functions we
 interface IWETH is IERC20 {

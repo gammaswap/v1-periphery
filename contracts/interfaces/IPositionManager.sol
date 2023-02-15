@@ -5,7 +5,7 @@ import "@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol";
 import "./ITransfers.sol";
 
 /// @title Interface for PositionManager
-/// @author Daniel D. Alcarraz
+/// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Defines external functions and events emitted by PositionManager
 /// @dev Interface also defines all GammaPool events through inheritance of IGammaPoolEvents
 interface IPositionManager is IGammaPoolEvents, ITransfers {
