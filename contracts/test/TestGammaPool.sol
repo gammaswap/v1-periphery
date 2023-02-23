@@ -1,13 +1,12 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity 0.8.17;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol";
 import "./ITestGammaPoolFactory.sol";
+import "./TERC20.sol";
 
-contract TestGammaPool is IGammaPool, ERC20 {
+contract TestGammaPool is IGammaPool, TERC20 {
 
     address public override cfmm;
     address[] public tokens_;
@@ -21,7 +20,7 @@ contract TestGammaPool is IGammaPool, ERC20 {
     address public tester;
     address public owner;
 
-    constructor(uint16 _protocolId, address _factory, address _longStrategy, address _shortStrategy, address _liquidationStrategy) ERC20("TestGammaPool","TGP-V1") {
+    constructor(uint16 _protocolId, address _factory, address _longStrategy, address _shortStrategy, address _liquidationStrategy) TERC20("TestGammaPool","TGP-V1") {
         protocolId = _protocolId;
         factory = _factory;
         longStrategy = _longStrategy;
