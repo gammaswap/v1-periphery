@@ -70,7 +70,7 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     event RepayLiquidity(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint256[] amounts);
 
     event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld,
-        uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint256[] cfmmReserves);
+        uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint128[] cfmmReserves);
 
     /// @dev Struct parameters for `depositNoPull` and `withdrawNoPull` functions. Depositing/Withdrawing CFMM LP tokens
     struct DepositWithdrawParams {

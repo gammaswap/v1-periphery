@@ -103,11 +103,11 @@ contract TestGammaPool is IGammaPool, TERC20 {
         shares = 18;
     }
 
-    //Long Gamma
-    function getLatestCFMMReserves() external virtual override view returns(uint256[] memory cfmmReserves) {
-        return new uint256[](2);
+    function getLatestCFMMReserves() external virtual override view returns(uint128[] memory cfmmReserves) {
+        return new uint128[](2);
     }
 
+    //Long Gamma
     function createLoan() external virtual override returns(uint256 tokenId) {
         tokenId = 19;
     }
