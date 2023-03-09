@@ -54,6 +54,10 @@ contract TestGammaPool is IGammaPool, TERC20 {
         return(9, 91, 14);
     }
 
+    function getLatestCFMMBalances() external virtual override view returns(uint128[] memory cfmmReserves, uint256 cfmmInvariant, uint256 cfmmTotalSupply) {
+        return(new uint128[](2), 2, 3);
+    }
+
     function getPoolData() external virtual override view returns(PoolData memory data) {
         data.protocolId = protocolId;
         data.longStrategy = longStrategy;
