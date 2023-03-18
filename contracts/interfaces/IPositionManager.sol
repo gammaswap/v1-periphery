@@ -2,6 +2,7 @@
 pragma solidity >=0.8.0;
 
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol";
+import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "./ITransfers.sol";
 
 /// @title Interface for PositionManager
@@ -260,8 +261,22 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256[] fees;
     }
 
+    /// @dev Struct to store loan reference information for a user
+    struct LoanInfo {
+        /// @dev GammaPool address of loan
+        address poolId;
+        /// @dev tokenId identifier of loan
+        uint256 tokenId;
+    }
+
     /// @return factory - factory contract that creates all GammaPools this PositionManager interacts with
     function factory() external view returns (address);
+
+    /// @return _loans - loans belonging to user for specific gammaPool
+    function getLoansByOwnerInPool(address owner, address gammaPool, uint256 start, uint256 end) external view returns(IGammaPool.LoanData[] memory _loans);
+
+    /// @return _loans - loans belonging to user
+    function getLoansByOwner(address owner, uint256 start, uint256 end) external view returns(IGammaPool.LoanData[] memory _loans);
 
     // Short Gamma
 

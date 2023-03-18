@@ -24,6 +24,9 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
     /// @dev See {IPositionManager-factory}.
     address public immutable override factory;
 
+    mapping(address => LoanInfo[]) private loansByOwner;
+    mapping(address => mapping(address => uint256[])) private loansByOwnerInPool;
+
     modifier isAuthorizedForToken(uint256 tokenId) {
         checkAuthorization(tokenId);
         _;
@@ -65,6 +68,51 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
         return _symbol;
     }
 
+    /// @dev See {IPositionManager-getLoansByOwnerInPool}.
+    function getLoansByOwnerInPool(address owner, address gammaPool, uint256 start, uint256 end) external virtual override view returns(IGammaPool.LoanData[] memory _loans) {
+        uint256[] storage _tokenIds = loansByOwnerInPool[owner][gammaPool];
+        if(start > end || _tokenIds.length == 0) {
+            return new IGammaPool.LoanData[](0);
+        }
+        uint256 lastIdx = _tokenIds.length - 1;
+        if(start <= lastIdx) {
+            uint256 _start = start;
+            uint256 _end = lastIdx < end ? lastIdx : end;
+            uint256 _size = _end - _start + 1;
+            _loans = new IGammaPool.LoanData[](_size);
+            uint256 k = 0;
+            for(uint256 i = _start; i <= _end;) {
+                _loans[k] = IGammaPool(gammaPool).loan(_tokenIds[i]);
+                unchecked {
+                    k++;
+                    i++;
+                }
+            }
+        }
+    }
+
+    /// @dev See {IPositionManager-getLoansByOwner}.
+    function getLoansByOwner(address owner, uint256 start, uint256 end) external view returns(IGammaPool.LoanData[] memory _loans) {
+        LoanInfo[] storage _loanInfoList = loansByOwner[owner];
+        if(start > end || _loanInfoList.length == 0) {
+            return new IGammaPool.LoanData[](0);
+        }
+        uint256 lastIdx = _loanInfoList.length - 1;
+        if(start <= lastIdx) {
+            uint256 _start = start;
+            uint256 _end = lastIdx < end ? lastIdx : end;
+            uint256 _size = _end - _start + 1;
+            _loans = new IGammaPool.LoanData[](_size);
+            uint256 k = 0;
+            for(uint256 i = _start; i <= _end;) {
+                _loans[k] = IGammaPool(_loanInfoList[i].poolId).loan(_loanInfoList[i].tokenId);
+                unchecked {
+                    k++;
+                    i++;
+                }
+            }
+        }
+    }
 
     /// @dev See {ITransfers-getGammaPoolAddress}.
     function getGammaPoolAddress(address cfmm, uint16 protocolId) internal virtual override view returns(address) {
@@ -110,12 +158,8 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
     // **** LONG GAMMA **** //
 
     function logLoan(address gammaPool, uint256 tokenId, address owner) internal virtual {
-        uint128[] memory tokensHeld;
-        uint256 initLiquidity;
-        uint256 liquidity;
-        uint256 lpTokens;
-        (, ,  tokensHeld, initLiquidity, liquidity, lpTokens, ) = IGammaPool(gammaPool).loan(tokenId);
-        emit LoanUpdate(tokenId, gammaPool, owner, tokensHeld, liquidity, lpTokens, initLiquidity, IGammaPool(gammaPool).getLatestCFMMReserves());
+        IGammaPool.LoanData memory _loanData = IGammaPool(gammaPool).loan(tokenId);
+        emit LoanUpdate(tokenId, gammaPool, owner, _loanData.tokensHeld, _loanData.liquidity, _loanData.lpTokens, _loanData.initLiquidity, IGammaPool(gammaPool).getLatestCFMMReserves());
     }
 
     /// @notice Slippage protection for uint256[] array. If amounts < amountsMin, less was obtained than expected
@@ -158,6 +202,8 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
     function createLoan(address gammaPool, address to) internal virtual returns(uint256 tokenId) {
         tokenId = IGammaPool(gammaPool).createLoan();
         _safeMint(to, tokenId);
+        loansByOwnerInPool[to][gammaPool].push(tokenId);
+        loansByOwner[to].push(LoanInfo({ poolId: gammaPool, tokenId: tokenId }));
         emit CreateLoan(gammaPool, to, tokenId);
     }
 
