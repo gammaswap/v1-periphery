@@ -17,9 +17,15 @@ describe("PositionManager", function () {
     let addr4: any;
     let posMgr: any;
     let gammaPool: any;
+    let gammaPool2: any;
+    let gammaPool3: any;
     let cfmm: any;
+    let cfmm2: any;
+    let cfmm3: any;
     let protocolId: any;
     let gammaPoolAddr: any;
+    let gammaPoolAddr2: any;
+    let gammaPoolAddr3: any;
     let tokenId: any;
 
     // `beforeEach` will run before each test, re-deploying the contract every
@@ -38,6 +44,8 @@ describe("PositionManager", function () {
         tokenA = await TestERC20.deploy("Test Token A", "TOKA");
         tokenB = await TestERC20.deploy("Test Token B", "TOKB");
         cfmm = await TestERC20.deploy("CFMM LP Token", "LP_CFMM");
+        cfmm2 = await TestERC20.deploy("CFMM2 LP Token", "LP_CFMM2");
+        cfmm3 = await TestERC20.deploy("CFMM3 LP Token", "LP_CFMM3");
         WETH = await TestERC20.deploy("WETH", "WETH");
 
         factory = await GammaPoolFactory.deploy(owner.address);
@@ -59,16 +67,32 @@ describe("PositionManager", function () {
             []
         );
         const res = await (await factory.createPool(createPoolParams.protocolId, createPoolParams.cfmm ,createPoolParams.tokens, data)).wait();
+        const res2 = await (await factory.createPool(createPoolParams.protocolId, cfmm2.address ,createPoolParams.tokens, data)).wait();
+        const res3 = await (await factory.createPool(createPoolParams.protocolId, cfmm3.address ,createPoolParams.tokens, data)).wait();
 
         const { args } = res.events[1];
         gammaPoolAddr = args.pool;
+
+        gammaPoolAddr2 = res2.events[1].args.pool;
+        gammaPoolAddr3 = res3.events[1].args.pool;
+
         protocolId = args.protocolId;
 
         gammaPool = await GammaPool.attach(
             gammaPoolAddr // The deployed contract address
         );
         await gammaPool.approve(posMgr.address, ethers.constants.MaxUint256);
-        
+
+        gammaPool2 = await GammaPool.attach(
+            gammaPoolAddr2 // The deployed contract address
+        );
+        await gammaPool2.approve(posMgr.address, ethers.constants.MaxUint256);
+
+        gammaPool3 = await GammaPool.attach(
+            gammaPoolAddr3 // The deployed contract address
+        );
+        await gammaPool3.approve(posMgr.address, ethers.constants.MaxUint256);
+
         const { events } = await (await posMgr.createTestLoan(owner.address)).wait();
         tokenId = events[0].args.tokenId;
         
@@ -339,11 +363,58 @@ describe("PositionManager", function () {
     describe("Long Gamma Functions", function () {
         it("#createLoan should return tokenId", async function () {
             const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
-            
+
+            const latestBlock = await ethers.provider.getBlock("latest");
+            const num = latestBlock.number * 100;
+            const expTokenId = num + 19;
+
             const { args } = res.events[1];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.owner).to.equal(owner.address);
-            expect(args.tokenId.toNumber()).to.equal(19);
+            expect(args.tokenId.toNumber()).to.equal(expTokenId);
+
+            const res1 = await posMgr.getLoansByOwnerInPool(owner.address, gammaPool.address, 0, 10);
+            expect(res1.length).to.equal(1);
+            expect(res1[0].tokenId.toNumber()).to.equal(25);
+
+            await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
+
+            const res2 = await posMgr.getLoansByOwnerInPool(owner.address, gammaPool.address, 0, 10);
+            expect(res2.length).to.equal(4);
+
+            const res3 = await posMgr.getLoansByOwnerInPool(addr1.address, gammaPool.address, 0, 10);
+            expect(res3.length).to.equal(0);
+
+            await (await posMgr.createLoan(1, cfmm.address, addr1.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm.address, addr1.address, ethers.constants.MaxUint256)).wait();
+
+            const res4 = await posMgr.getLoansByOwnerInPool(addr1.address, gammaPool.address, 0, 10);
+            expect(res4.length).to.equal(2);
+
+            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, ethers.constants.MaxUint256)).wait();
+
+            const res5 = await posMgr.getLoansByOwnerInPool(addr1.address, gammaPool2.address, 0, 10);
+            expect(res5.length).to.equal(5);
+
+            const res6 = await posMgr.getLoansByOwnerInPool(addr1.address, gammaPool2.address, 0, 2);
+            expect(res6.length).to.equal(3);
+
+            const res7 = await posMgr.getLoansByOwner(addr1.address, 0, 100);
+            expect(res7.length).to.equal(7);
+
+            await (await posMgr.createLoan(1, cfmm3.address, addr1.address, ethers.constants.MaxUint256)).wait();
+
+            const res8 = await posMgr.getLoansByOwner(addr1.address, 0, 100);
+            expect(res8.length).to.equal(8);
+
+            const res9 = await posMgr.getLoansByOwnerInPool(addr1.address, gammaPool3.address, 0, 100);
+            expect(res9.length).to.equal(1);
         });
 
         it("#borrowLiquidity should return tokenId", async function () {
@@ -481,22 +552,26 @@ describe("PositionManager", function () {
 
             const res = await (await posMgr.createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams)).wait();
 
+            const latestBlock = await ethers.provider.getBlock("latest");
+            const num = latestBlock.number * 100;
+            const expTokenId = num + 19;
+
             expect(res.events[1].event).to.equal("CreateLoan");
             const args0 = res.events[1].args;
             expect(args0.pool).to.equal(gammaPool.address);
             expect(args0.owner).to.equal(owner.address);
-            expect(args0.tokenId.toNumber()).to.equal(19);
+            expect(args0.tokenId.toNumber()).to.equal(expTokenId);
 
             expect(res.events[4].event).to.equal("IncreaseCollateral");
             const args1 = res.events[4].args;
             expect(args1.pool).to.equal(gammaPool.address);
-            expect(args1.tokenId.toNumber()).to.equal(19);
+            expect(args1.tokenId.toNumber()).to.equal(expTokenId);
             expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[5].event).to.equal("BorrowLiquidity");
             const args2 = res.events[5].args;
             expect(args2.pool).to.equal(gammaPool.address);
-            expect(args2.tokenId.toNumber()).to.equal(19);
+            expect(args2.tokenId.toNumber()).to.equal(expTokenId);
             expect(args2.liquidityBorrowed).to.equal(23);
             expect(args2.amounts.length).to.equal(2);
 
@@ -511,6 +586,16 @@ describe("PositionManager", function () {
             expect(args3.cfmmReserves.length).to.equal(2);
             expect(args3.cfmmReserves[0]).to.equal(0);
             expect(args3.cfmmReserves[1]).to.equal(0);
+
+            const res1 = await posMgr.getLoansByOwnerInPool(owner.address, gammaPool.address, 0, 10);
+            expect(res1.length).to.equal(1);
+            expect(res1[0].tokenId).to.equal(25);
+
+            const res2 = await posMgr.getLoansByOwnerInPool(owner.address, gammaPool2.address, 0, 10);
+            expect(res2.length).to.equal(0);
+
+            const res3 = await posMgr.getLoansByOwnerInPool(owner.address, gammaPool.address, 5, 10);
+            expect(res3.length).to.equal(0);
         });
 
         it("#createLoanBorrowAndRebalance should return tokenId, tokensHeld, amounts. Has deltas", async function () {
@@ -531,29 +616,33 @@ describe("PositionManager", function () {
 
             const res = await (await posMgr.createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams)).wait();
 
+            const latestBlock = await ethers.provider.getBlock("latest");
+            const num = latestBlock.number * 100;
+            const expTokenId = num + 19;
+
             expect(res.events[1].event).to.equal("CreateLoan");
             const args0 = res.events[1].args;
             expect(args0.pool).to.equal(gammaPool.address);
             expect(args0.owner).to.equal(owner.address);
-            expect(args0.tokenId.toNumber()).to.equal(19);
+            expect(args0.tokenId.toNumber()).to.equal(expTokenId);
 
             expect(res.events[4].event).to.equal("IncreaseCollateral");
             const args1 = res.events[4].args;
             expect(args1.pool).to.equal(gammaPool.address);
-            expect(args1.tokenId.toNumber()).to.equal(19);
+            expect(args1.tokenId.toNumber()).to.equal(expTokenId);
             expect(args1.tokensHeld.length).to.equal(6);
 
             expect(res.events[5].event).to.equal("BorrowLiquidity");
             const args2 = res.events[5].args;
             expect(args2.pool).to.equal(gammaPool.address);
-            expect(args2.tokenId.toNumber()).to.equal(19);
+            expect(args2.tokenId.toNumber()).to.equal(expTokenId);
             expect(args2.liquidityBorrowed).to.equal(23);
             expect(args2.amounts.length).to.equal(2);
 
             expect(res.events[6].event).to.equal("RebalanceCollateral");
             const args3 = res.events[6].args;
             expect(args3.pool).to.equal(gammaPool.address);
-            expect(args3.tokenId.toNumber()).to.equal(19);
+            expect(args3.tokenId.toNumber()).to.equal(expTokenId);
             expect(args3.tokensHeld.length).to.equal(2);
 
             expect(res.events[7].event).to.equal("LoanUpdate");

@@ -41,6 +41,14 @@ contract TestGammaPool is IGammaPool, TERC20 {
         return tokens_;
     }
 
+    function getLoans(uint256, uint256) external virtual override view returns(IGammaPool.LoanData[] memory _loans) {
+        return(new IGammaPool.LoanData[](0));
+    }
+
+    function getLoanCount() external virtual override view returns(uint256) {
+        return 0;
+    }
+
     function getPoolBalances() external virtual override view returns(uint128[] memory tokenBalances, uint256 lpTokenBalance, uint256 lpTokenBorrowed,
         uint256 lpTokenBorrowedPlusInterest, uint256 borrowedInvariant, uint256 lpInvariant) {
         return(new uint128[](1), 1, 2, 3, 4, 5);
@@ -113,18 +121,18 @@ contract TestGammaPool is IGammaPool, TERC20 {
 
     //Long Gamma
     function createLoan() external virtual override returns(uint256 tokenId) {
-        tokenId = 19;
+        tokenId = 19 + block.number * 100;
     }
 
-    function loan(uint256) external virtual override view returns (uint256 id, address poolId,
-        uint128[] memory tokensHeld, uint256 initLiquidity, uint256 liquidity, uint256 lpTokens, uint256 rateIndex) {
-        id = 20;
-        poolId = cfmm;
-        tokensHeld = new uint128[](5);
-        liquidity = 21;
-        lpTokens = 22;
-        rateIndex = 23;
-        initLiquidity = 24;
+    function loan(uint256) external virtual override view returns(IGammaPool.LoanData memory _loanData) {
+        _loanData.id = 20;
+        _loanData.poolId = cfmm;
+        _loanData.tokensHeld = new uint128[](5);
+        _loanData.liquidity = 21;
+        _loanData.lpTokens = 22;
+        _loanData.rateIndex = 23;
+        _loanData.initLiquidity = 24;
+        _loanData.tokenId = 25;
     }
 
     function borrowLiquidity(uint256, uint256) external virtual override returns(uint256 liquidityBorrowed, uint256[] memory amounts) {
