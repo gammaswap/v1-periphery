@@ -173,6 +173,10 @@ contract TestGammaPool is IGammaPool, TERC20 {
         tokensHeld = new uint128[](2);
     }
 
+    function getRebalanceDeltas(uint256 tokenId) external virtual override view returns(int256[] memory deltas) {
+        deltas = new int256[](2);
+    }
+
     function liquidate(uint256, int256[] calldata, uint256[] calldata) external override virtual returns(uint256 loanLiquidity, uint256[] memory refund) {
         return (1, new uint256[](2));
     }

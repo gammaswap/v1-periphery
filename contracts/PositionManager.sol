@@ -175,7 +175,7 @@ contract PositionManager is IPositionManager, Transfers, PositionManagerQueries,
     /// @param tokenId - id to identify the loan in the GammaPool
     /// @param amounts - amounts of reserve tokens requesting to withdraw from loan
     /// @return tokensHeld - new loan collateral token amounts
-    function decreaseCollateral(address gammaPool, address to, uint256 tokenId, uint256[] calldata amounts) internal virtual returns(uint128[] memory tokensHeld) {
+    function decreaseCollateral(address gammaPool, address to, uint256 tokenId, uint256[] memory amounts) internal virtual returns(uint128[] memory tokensHeld) {
         tokensHeld = IGammaPool(gammaPool).decreaseCollateral(tokenId, amounts, to);
         emit DecreaseCollateral(gammaPool, tokenId, tokensHeld);
     }
@@ -186,7 +186,7 @@ contract PositionManager is IPositionManager, Transfers, PositionManagerQueries,
     /// @param deltas - amount to swap of one token at index for another (>0 buy, <0 sell). Must have at least one index field be 0
     /// @param minCollateral - minimum amount of expected collateral after re-balancing. Used for slippage control
     /// @return tokensHeld - new loan collateral token amounts
-    function rebalanceCollateral(address gammaPool, uint256 tokenId, int256[] calldata deltas, uint128[] calldata minCollateral) internal virtual returns(uint128[] memory tokensHeld) {
+    function rebalanceCollateral(address gammaPool, uint256 tokenId, int256[] memory deltas, uint128[] memory minCollateral) internal virtual returns(uint128[] memory tokensHeld) {
         tokensHeld = IGammaPool(gammaPool).rebalanceCollateral(tokenId, deltas);
         checkMinCollateral(tokensHeld, minCollateral);
         emit RebalanceCollateral(gammaPool, tokenId, tokensHeld);
@@ -315,7 +315,28 @@ contract PositionManager is IPositionManager, Transfers, PositionManagerQueries,
         logLoan(gammaPool, params.tokenId, msg.sender);
     }
 
-    function closeLoan(uint256 tokenId, uint128[] calldata minCollateral, uint256 deadline) external virtual override isAuthorizedForToken(tokenId) isExpired(deadline) returns(uint256 liquidityPaid) {
-
+    /// @dev See {IPositionManager-closeLoan}.
+    function closeLoan(RebalanceRepayAndWithdrawParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint256 liquidityPaid) {
+        address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
+        int256[] memory deltas = IGammaPool(gammaPool).getRebalanceDeltas(params.tokenId);
+        rebalanceCollateral(gammaPool, params.tokenId, deltas, params.minCollateral);
+        (liquidityPaid,) = repayLiquidity(gammaPool, params.tokenId, type(uint256).max, params.minRepaid, params.fees);
+        IGammaPool.LoanData memory _loanData = IGammaPool(gammaPool).loan(params.tokenId);
+        uint256[] memory _tokensHeld = new uint256[](_loanData.tokensHeld.length);
+        bool withdrawFunds = false;
+        for(uint256 i = 0; i < _loanData.tokensHeld.length;) {
+            _tokensHeld[i] = _loanData.tokensHeld[i];
+            if(params.withdraw.length > 0 && _tokensHeld[i] < params.withdraw[i]) {
+                revert AmountsMin();
+            }
+            withdrawFunds = withdrawFunds || _tokensHeld[i] > 0;
+            unchecked{
+                i++;
+            }
+        }
+        if(withdrawFunds) {
+            decreaseCollateral(gammaPool, params.to, params.tokenId, _tokensHeld);
+        }
+        logLoan(gammaPool, params.tokenId, msg.sender);
     }
 }

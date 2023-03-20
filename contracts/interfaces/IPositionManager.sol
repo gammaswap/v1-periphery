@@ -351,5 +351,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers, IPositionManagerQuer
     /// @return amounts - amounts of reserve tokens received to hold as collateral for liquidity borrowed
     function rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams calldata params) external returns(uint128[] memory tokensHeld, uint256 liquidityPaid, uint256[] memory amounts);
 
-    function closeLoan(uint256 tokenId, uint128[] calldata minCollateral, uint256 deadline) external returns(uint256 liquidityPaid);
+    /// @notice Rebalance's loan's collateral to repay loan completely, repay loan completely, withdraw remaining collateral
+    /// @param params - struct containing params to identify GammaPool to perform transactions on
+    /// @return liquidityPaid - actual liquidity debt paid
+    function closeLoan(RebalanceRepayAndWithdrawParams calldata params) external returns(uint256 liquidityPaid);
 }
