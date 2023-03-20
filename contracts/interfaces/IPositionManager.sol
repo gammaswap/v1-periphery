@@ -2,14 +2,14 @@
 pragma solidity >=0.8.0;
 
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol";
-import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "./ITransfers.sol";
+import "./IPositionManagerQueries.sol";
 
 /// @title Interface for PositionManager
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Defines external functions and events emitted by PositionManager
 /// @dev Interface also defines all GammaPool events through inheritance of IGammaPoolEvents
-interface IPositionManager is IGammaPoolEvents, ITransfers {
+interface IPositionManager is IGammaPoolEvents, ITransfers, IPositionManagerQueries {
     /// @dev Emitted when depositing CFMM LP tokens as liquidity in a pool
     /// @param pool - address of pool minting GS LP tokens
     /// @param shares - minted quantity of pool's GS LP tokens
@@ -261,22 +261,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256[] fees;
     }
 
-    /// @dev Struct to store loan reference information for a user
-    struct LoanInfo {
-        /// @dev GammaPool address of loan
-        address poolId;
-        /// @dev tokenId identifier of loan
-        uint256 tokenId;
-    }
-
     /// @return factory - factory contract that creates all GammaPools this PositionManager interacts with
     function factory() external view returns (address);
-
-    /// @return _loans - loans belonging to user for specific gammaPool
-    function getLoansByOwnerInPool(address owner, address gammaPool, uint256 start, uint256 end) external view returns(IGammaPool.LoanData[] memory _loans);
-
-    /// @return _loans - loans belonging to user
-    function getLoansByOwner(address owner, uint256 start, uint256 end) external view returns(IGammaPool.LoanData[] memory _loans);
 
     // Short Gamma
 
@@ -364,4 +350,9 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @return liquidityPaid - actual liquidity debt paid
     /// @return amounts - amounts of reserve tokens received to hold as collateral for liquidity borrowed
     function rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams calldata params) external returns(uint128[] memory tokensHeld, uint256 liquidityPaid, uint256[] memory amounts);
+
+    /// @notice Rebalance's loan's collateral to repay loan completely, repay loan completely, withdraw remaining collateral
+    /// @param params - struct containing params to identify GammaPool to perform transactions on
+    /// @return liquidityPaid - actual liquidity debt paid
+    function closeLoan(RebalanceRepayAndWithdrawParams calldata params) external returns(uint256 liquidityPaid);
 }

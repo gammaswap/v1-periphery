@@ -6,13 +6,14 @@ import "@gammaswap/v1-core/contracts/libraries/AddressCalculator.sol";
 import "./interfaces/IPositionManager.sol";
 import "./base/Transfers.sol";
 import "./base/GammaPoolERC721.sol";
+import "./base/PositionManagerQueries.sol";
 
 /// @title PositionManager, concrete implementation of IPositionManager
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Periphery contract used to aggregate function calls to a GammaPool and give NFT (ERC721) functionality to loans
 /// @notice Loans created through PositionManager become NFTs and can only be managed through PositionManager
 /// @dev PositionManager is owner of loan and user is owner of NFT that represents loan in a GammaPool
-contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
+contract PositionManager is IPositionManager, Transfers, PositionManagerQueries, GammaPoolERC721 {
 
     error Forbidden();
     error Expired();
@@ -23,9 +24,6 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
 
     /// @dev See {IPositionManager-factory}.
     address public immutable override factory;
-
-    mapping(address => LoanInfo[]) private loansByOwner;
-    mapping(address => mapping(address => uint256[])) private loansByOwnerInPool;
 
     modifier isAuthorizedForToken(uint256 tokenId) {
         checkAuthorization(tokenId);
@@ -54,7 +52,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
     }
 
     /// @dev Initializes the contract by setting `factory`, and `WETH`.
-    constructor(address _factory, address _WETH) Transfers(_WETH) {
+    constructor(address _factory, address _WETH) Transfers(_WETH) PositionManagerQueries(_factory) {
         factory = _factory;
     }
 
@@ -66,52 +64,6 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
     /// @dev See {IERC721Metadata-symbol}.
     function symbol() public view virtual override returns (string memory) {
         return _symbol;
-    }
-
-    /// @dev See {IPositionManager-getLoansByOwnerInPool}.
-    function getLoansByOwnerInPool(address owner, address gammaPool, uint256 start, uint256 end) external virtual override view returns(IGammaPool.LoanData[] memory _loans) {
-        uint256[] storage _tokenIds = loansByOwnerInPool[owner][gammaPool];
-        if(start > end || _tokenIds.length == 0) {
-            return new IGammaPool.LoanData[](0);
-        }
-        uint256 lastIdx = _tokenIds.length - 1;
-        if(start <= lastIdx) {
-            uint256 _start = start;
-            uint256 _end = lastIdx < end ? lastIdx : end;
-            uint256 _size = _end - _start + 1;
-            _loans = new IGammaPool.LoanData[](_size);
-            uint256 k = 0;
-            for(uint256 i = _start; i <= _end;) {
-                _loans[k] = IGammaPool(gammaPool).loan(_tokenIds[i]);
-                unchecked {
-                    k++;
-                    i++;
-                }
-            }
-        }
-    }
-
-    /// @dev See {IPositionManager-getLoansByOwner}.
-    function getLoansByOwner(address owner, uint256 start, uint256 end) external view returns(IGammaPool.LoanData[] memory _loans) {
-        LoanInfo[] storage _loanInfoList = loansByOwner[owner];
-        if(start > end || _loanInfoList.length == 0) {
-            return new IGammaPool.LoanData[](0);
-        }
-        uint256 lastIdx = _loanInfoList.length - 1;
-        if(start <= lastIdx) {
-            uint256 _start = start;
-            uint256 _end = lastIdx < end ? lastIdx : end;
-            uint256 _size = _end - _start + 1;
-            _loans = new IGammaPool.LoanData[](_size);
-            uint256 k = 0;
-            for(uint256 i = _start; i <= _end;) {
-                _loans[k] = IGammaPool(_loanInfoList[i].poolId).loan(_loanInfoList[i].tokenId);
-                unchecked {
-                    k++;
-                    i++;
-                }
-            }
-        }
     }
 
     /// @dev See {ITransfers-getGammaPoolAddress}.
@@ -202,8 +154,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
     function createLoan(address gammaPool, address to) internal virtual returns(uint256 tokenId) {
         tokenId = IGammaPool(gammaPool).createLoan();
         _safeMint(to, tokenId);
-        loansByOwnerInPool[to][gammaPool].push(tokenId);
-        loansByOwner[to].push(LoanInfo({ poolId: gammaPool, tokenId: tokenId }));
+        addLoanToOwner(gammaPool, tokenId, to);
         emit CreateLoan(gammaPool, to, tokenId);
     }
 
@@ -224,7 +175,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
     /// @param tokenId - id to identify the loan in the GammaPool
     /// @param amounts - amounts of reserve tokens requesting to withdraw from loan
     /// @return tokensHeld - new loan collateral token amounts
-    function decreaseCollateral(address gammaPool, address to, uint256 tokenId, uint256[] calldata amounts) internal virtual returns(uint128[] memory tokensHeld) {
+    function decreaseCollateral(address gammaPool, address to, uint256 tokenId, uint256[] memory amounts) internal virtual returns(uint128[] memory tokensHeld) {
         tokensHeld = IGammaPool(gammaPool).decreaseCollateral(tokenId, amounts, to);
         emit DecreaseCollateral(gammaPool, tokenId, tokensHeld);
     }
@@ -235,7 +186,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
     /// @param deltas - amount to swap of one token at index for another (>0 buy, <0 sell). Must have at least one index field be 0
     /// @param minCollateral - minimum amount of expected collateral after re-balancing. Used for slippage control
     /// @return tokensHeld - new loan collateral token amounts
-    function rebalanceCollateral(address gammaPool, uint256 tokenId, int256[] calldata deltas, uint128[] calldata minCollateral) internal virtual returns(uint128[] memory tokensHeld) {
+    function rebalanceCollateral(address gammaPool, uint256 tokenId, int256[] memory deltas, uint128[] memory minCollateral) internal virtual returns(uint128[] memory tokensHeld) {
         tokensHeld = IGammaPool(gammaPool).rebalanceCollateral(tokenId, deltas);
         checkMinCollateral(tokensHeld, minCollateral);
         emit RebalanceCollateral(gammaPool, tokenId, tokensHeld);
@@ -360,6 +311,31 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolERC721 {
         }
         if(params.withdraw.length != 0) {
             tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw);
+        }
+        logLoan(gammaPool, params.tokenId, msg.sender);
+    }
+
+    /// @dev See {IPositionManager-closeLoan}.
+    function closeLoan(RebalanceRepayAndWithdrawParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint256 liquidityPaid) {
+        address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
+        int256[] memory deltas = IGammaPool(gammaPool).getRebalanceDeltas(params.tokenId);
+        rebalanceCollateral(gammaPool, params.tokenId, deltas, params.minCollateral);
+        (liquidityPaid,) = repayLiquidity(gammaPool, params.tokenId, type(uint256).max, params.minRepaid, params.fees);
+        IGammaPool.LoanData memory _loanData = IGammaPool(gammaPool).loan(params.tokenId);
+        uint256[] memory _tokensHeld = new uint256[](_loanData.tokensHeld.length);
+        bool withdrawFunds = false;
+        for(uint256 i = 0; i < _loanData.tokensHeld.length;) {
+            _tokensHeld[i] = _loanData.tokensHeld[i];
+            if(params.withdraw.length > 0 && _tokensHeld[i] < params.withdraw[i]) {
+                revert AmountsMin();
+            }
+            withdrawFunds = withdrawFunds || _tokensHeld[i] > 0;
+            unchecked{
+                i++;
+            }
+        }
+        if(withdrawFunds) {
+            decreaseCollateral(gammaPool, params.to, params.tokenId, _tokensHeld);
         }
         logLoan(gammaPool, params.tokenId, msg.sender);
     }
