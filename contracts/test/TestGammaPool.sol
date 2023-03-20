@@ -66,7 +66,23 @@ contract TestGammaPool is IGammaPool, TERC20 {
         return(new uint128[](2), 2, 3);
     }
 
+    function getLastCFMMPrice() external view returns(uint256) {
+        return 7;
+    }
+
+    function getConstantPoolData() external view returns(PoolData memory data) {
+        return _getPoolData();
+    }
+
+    function getLatestPoolData() external view returns(PoolData memory data) {
+        return _getPoolData();
+    }
+
     function getPoolData() external virtual override view returns(PoolData memory data) {
+        return _getPoolData();
+    }
+
+    function _getPoolData() internal virtual view returns(PoolData memory data) {
         data.protocolId = protocolId;
         data.longStrategy = longStrategy;
         data.shortStrategy = shortStrategy;
@@ -169,8 +185,12 @@ contract TestGammaPool is IGammaPool, TERC20 {
         return (3, 4, new uint256[](2));
     }
 
-    function validateCFMM(address[] calldata, address, bytes calldata) external override pure returns(address[] memory, uint8[] memory) {
-        return (new address[](2), new uint8[](2));
+    function validateCFMM(address[] calldata, address, bytes calldata) external override pure returns(address[] memory) {
+        return (new address[](2));
+    }
+
+    function updatePool(uint256 tokenId) external returns(uint256, uint256) {
+        return(5, 6);
     }
 
     function skim(address) external override {
