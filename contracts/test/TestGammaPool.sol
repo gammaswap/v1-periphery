@@ -83,6 +83,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
     }
 
     function _getPoolData() internal virtual view returns(PoolData memory data) {
+        data.poolId = address(this);
         data.protocolId = protocolId;
         data.longStrategy = longStrategy;
         data.shortStrategy = shortStrategy;
@@ -103,6 +104,10 @@ contract TestGammaPool is IGammaPool, TERC20 {
         data.tokens = tokens_;
         data.TOKEN_BALANCE = new uint128[](1);
         data.CFMM_RESERVES = new uint128[](2);
+    }
+
+    function getTokensMetaData() external view returns(address[] memory _tokens, string[] memory _symbols, string[] memory _names, uint8[] memory _decimals) {
+        return(new address[](1),new string[](2),new string[](3),new uint8[](4));
     }
 
     function testSendTokensCallback(address posAddr, address[] calldata _tokens, uint256[] calldata amounts, address payee, bytes calldata data) external virtual {
@@ -126,9 +131,10 @@ contract TestGammaPool is IGammaPool, TERC20 {
         assets = 17;
     }
 
-    function depositReserves(address, uint256[] calldata, uint256[] calldata, bytes calldata) external virtual override returns(uint256[] memory reserves, uint256 shares) {
+    function depositReserves(address to, uint256[] calldata, uint256[] calldata, bytes calldata) external virtual override returns(uint256[] memory reserves, uint256 shares) {
         reserves = new uint256[](4);
         shares = 18;
+        _mint(to, shares);
     }
 
     function getLatestCFMMReserves() external virtual override view returns(uint128[] memory cfmmReserves) {
@@ -195,6 +201,10 @@ contract TestGammaPool is IGammaPool, TERC20 {
 
     function updatePool(uint256 tokenId) external returns(uint256, uint256) {
         return(5, 6);
+    }
+
+    function getLatestRates() external view returns(uint256 accFeeIndex, uint256 lastCFMMFeeIndex, uint256 lastFeeIndex, uint256 borrowRate, uint256 lastBlockNumber) {
+        return(1, 2, 3, 4, 5);
     }
 
     function skim(address) external override {

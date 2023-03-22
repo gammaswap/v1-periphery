@@ -13,7 +13,7 @@ import "./base/PositionManagerQueries.sol";
 /// @notice Periphery contract used to aggregate function calls to a GammaPool and give NFT (ERC721) functionality to loans
 /// @notice Loans created through PositionManager become NFTs and can only be managed through PositionManager
 /// @dev PositionManager is owner of loan and user is owner of NFT that represents loan in a GammaPool
-contract PositionManager is IPositionManager, Transfers, PositionManagerQueries, GammaPoolERC721 {
+contract PositionManager is IPositionManager, Transfers, PositionManagerQueries {
 
     error Forbidden();
     error Expired();
@@ -153,8 +153,7 @@ contract PositionManager is IPositionManager, Transfers, PositionManagerQueries,
     /// @return tokenId - tokenId from creation of loan
     function createLoan(address gammaPool, address to) internal virtual returns(uint256 tokenId) {
         tokenId = IGammaPool(gammaPool).createLoan();
-        _safeMint(to, tokenId);
-        addLoanToOwner(gammaPool, tokenId, to);
+        mintQueryableLoan(gammaPool, tokenId, to);
         emit CreateLoan(gammaPool, to, tokenId);
     }
 
