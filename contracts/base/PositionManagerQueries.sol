@@ -1,16 +1,18 @@
-// SPDX-License-Identifier: UNLICENSED
+// SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity ^0.8.0;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+import "@gammaswap/v1-core/contracts/interfaces/IGammaPoolFactory.sol";
+import "../libraries/QueryUtils.sol";
 import "../interfaces/IPositionManagerQueries.sol";
+import "../interfaces/IGammaPoolQueryableLoans.sol";
+import "./GammaPoolQueryableLoans.sol";
 
 /// @title Implementation of IPositionManagerQueries
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Implements external functions used by PositionManager to query pools and loans
 /// @dev These are all view functions that read from storage of different GammaPools and GammaPoolFactory
-abstract contract PositionManagerQueries is IPositionManagerQueries {
-
-    mapping(address => LoanInfo[]) private loansByOwner;
-    mapping(address => mapping(address => uint256[])) private loansByOwnerAndPool;
+abstract contract PositionManagerQueries is IPositionManagerQueries, GammaPoolQueryableLoans {
 
     address private immutable factory;
 
@@ -18,43 +20,17 @@ abstract contract PositionManagerQueries is IPositionManagerQueries {
         factory = _factory;
     }
 
-    /// @dev Add loan to mappings by user so that they can be queried
-    /// @param pool - pool loan identified by `tokenId` belongs to
-    /// @param tokenId - unique identifier of loan
-    /// @param owner - owner of loan
-    function addLoanToOwner(address pool, uint256 tokenId, address owner) internal virtual {
-        loansByOwnerAndPool[owner][pool].push(tokenId);
-        loansByOwner[owner].push(LoanInfo({ poolId: pool, tokenId: tokenId }));
-    }
-
-    /// @notice Validate and get parameters to query loans or pools arrays. If query fails validation size is zero
-    /// @dev Get search parameters to query array. If end > last index of array, cap it at array's last index
-    /// @param start - start index of array
-    /// @param end - end index array
-    /// @param len - assumed length of array
-    /// @return _start - start index of owner's loan array
-    /// @return _end - end index of owner's loan array
-    /// @return _size - expected number of results from query
-    function getSearchParameters(uint256 start, uint256 end, uint256 len) internal virtual pure returns(uint256 _start, uint256 _end, uint256 _size) {
-        if(len != 0 && start <= end && start <= len - 1) {
-            _start = start;
-            unchecked {
-                uint256 _lastIdx = len - 1;
-                _end = _lastIdx < end ? _lastIdx : end;
-                _size = _end - _start + 1;
-            }
-        }
-    }
-
     /// @dev See {IPositionManagerQueries-getLoansByOwnerAndPool}.
     function getLoansByOwnerAndPool(address owner, address gammaPool, uint256 start, uint256 end) external virtual override view returns(IGammaPool.LoanData[] memory _loans) {
-        uint256[] storage _tokenIds = loansByOwnerAndPool[owner][gammaPool];
-        (uint256 _start, uint256 _end, uint256 _size) = getSearchParameters(start, end, _tokenIds.length);
+        uint256[] memory _tokenIds = loansByOwnerAndPool[owner][gammaPool];
+        (uint256 _start, uint256 _end, uint256 _size) = QueryUtils.getSearchParameters(start, end, _tokenIds.length);
         if(_size > 0) {
             _loans = new IGammaPool.LoanData[](_size);
             uint256 k = 0;
             for(uint256 i = _start; i <= _end;) {
-                _loans[k] = IGammaPool(gammaPool).loan(_tokenIds[i]);
+                if(_tokenIds[i] > 0) {
+                    _loans[k] = IGammaPool(gammaPool).loan(_tokenIds[i]);
+                }
                 unchecked {
                     k++;
                     i++;
@@ -67,13 +43,16 @@ abstract contract PositionManagerQueries is IPositionManagerQueries {
 
     /// @dev See {IPositionManagerQueries-getLoansByOwner}.
     function getLoansByOwner(address owner, uint256 start, uint256 end) external virtual override view returns(IGammaPool.LoanData[] memory _loans) {
-        LoanInfo[] storage _loanInfoList = loansByOwner[owner];
-        (uint256 _start, uint256 _end, uint256 _size) = getSearchParameters(start, end, _loanInfoList.length);
+        uint256[] memory _loanList = loansByOwner[owner];
+        (uint256 _start, uint256 _end, uint256 _size) = QueryUtils.getSearchParameters(start, end, _loanList.length);
         if(_size > 0) {
             _loans = new IGammaPool.LoanData[](_size);
             uint256 k = 0;
             for(uint256 i = _start; i <= _end;) {
-                _loans[k] = IGammaPool(_loanInfoList[i].poolId).loan(_loanInfoList[i].tokenId);
+                uint256 _tokenId = _loanList[i];
+                if(_tokenId > 0) {
+                    _loans[k] = IGammaPool(loanToInfo[_tokenId].pool).loan(_tokenId);
+                }
                 unchecked {
                     k++;
                     i++;
@@ -86,7 +65,7 @@ abstract contract PositionManagerQueries is IPositionManagerQueries {
 
     /// @dev See {IPositionManagerQueries-getPools}.
     function getPools(uint256 start, uint256 end) external override virtual view returns(IGammaPool.PoolData[] memory _pools) {
-        (address[] memory _poolAddresses,) = IGammaPoolFactory(factory).getPools(start, end);
+        address[] memory _poolAddresses = IGammaPoolFactory(factory).getPools(start, end);
         _pools = new IGammaPool.PoolData[](_poolAddresses.length);
         for(uint256 i = 0; i < _poolAddresses.length;) {
             _pools[i] = IGammaPool(_poolAddresses[i]).getLatestPoolData();
@@ -107,4 +86,16 @@ abstract contract PositionManagerQueries is IPositionManagerQueries {
         }
     }
 
+    /// @dev See {IPositionManagerQueries-getPoolsWithOwnerLPBalance}.
+    function getPoolsWithOwnerLPBalance(address[] calldata poolAddresses, address owner) external view returns(IGammaPool.PoolData[] memory _pools, uint256[] memory _balances) {
+        _pools = new IGammaPool.PoolData[](poolAddresses.length);
+        _balances = new uint256[](poolAddresses.length);
+        for(uint256 i = 0; i < poolAddresses.length;) {
+            _balances[i] = IERC20(poolAddresses[i]).balanceOf(owner);
+            _pools[i] = IGammaPool(poolAddresses[i]).getLatestPoolData();
+            unchecked {
+                i++;
+            }
+        }
+    }
 }

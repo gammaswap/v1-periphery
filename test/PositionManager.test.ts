@@ -113,7 +113,7 @@ describe("PositionManager", function () {
             await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             
-            const sendTokensCallback =  {
+            const sendTokensCallback = {
                 payer: owner.address,
                 cfmm: cfmm.address,
                 protocol: protocolId,
@@ -138,7 +138,7 @@ describe("PositionManager", function () {
             const prevBalancePayee_A = await tokenA.balanceOf(addr1.address);
             const prevBalancePayee_B = await tokenB.balanceOf(addr1.address);
 
-            const sendTokensCallback =  {
+            const sendTokensCallback = {
                 payer: owner.address,
                 cfmm: cfmm.address,
                 protocol: protocolId,
@@ -290,7 +290,7 @@ describe("PositionManager", function () {
         it("#depositNoPull should return shares", async function () {
             await cfmm.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             
-            const DepositWithdrawParams =  {
+            const DepositWithdrawParams = {
                 cfmm: cfmm.address,
                 protocolId: protocolId,
                 lpTokens: 1,
@@ -306,7 +306,7 @@ describe("PositionManager", function () {
         });
 
         it("#withdrawNoPull should return assets", async function () {
-            const DepositWithdrawParams =  {
+            const DepositWithdrawParams = {
                 cfmm: cfmm.address,
                 protocolId: protocolId,
                 lpTokens: 1,
@@ -322,7 +322,7 @@ describe("PositionManager", function () {
         });
 
         it("#depositReserves should return shares and length of reserves", async function () {
-            const DepositReservesParams =  {
+            const DepositReservesParams = {
                 cfmm: cfmm.address,
                 amountsDesired: [10000, 100],
                 amountsMin: [1000, 10],
@@ -330,16 +330,33 @@ describe("PositionManager", function () {
                 protocolId: protocolId,
                 deadline: ethers.constants.MaxUint256
             }
-            const res = await (await posMgr.depositReserves(DepositReservesParams)).wait();
-            
-            const { args } = res.events[0];
+            const res0 = await (await posMgr.depositReserves(DepositReservesParams)).wait();
+
+            const { args } = res0.events[1];
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.reserves.length).to.equal(4);
             expect(args.shares.toNumber()).to.equal(18);
+
+            const res1 = await posMgr.getPoolsWithOwnerLPBalance([args.pool], addr4.address);
+            expect(res1._pools[0].poolId).to.equal(gammaPool.address);
+            expect(res1._balances[0]).to.equal(18);
+
+            const DepositReservesParams1 = {
+                cfmm: cfmm.address,
+                amountsDesired: [10000, 100],
+                amountsMin: [1000, 10],
+                to: owner.address,
+                protocolId: protocolId,
+                deadline: ethers.constants.MaxUint256
+            }
+            await (await posMgr.depositReserves(DepositReservesParams1)).wait();
+            const res2 = await posMgr.getPoolsWithOwnerLPBalance([args.pool], addr4.address);
+            expect(res2._pools[0].poolId).to.equal(gammaPool.address);
+            expect(res2._balances[0]).to.equal(18);
         });
 
         it("#withdrawReserves should return assets and lenght of reserves", async function () {
-            const WithdrawReservesParams =  {
+            const WithdrawReservesParams = {
                 cfmm: cfmm.address,
                 protocolId: protocolId,
                 amount: 1000,
@@ -416,6 +433,67 @@ describe("PositionManager", function () {
 
             const res9 = await posMgr.getLoansByOwnerAndPool(addr1.address, gammaPool3.address, 0, 100);
             expect(res9.length).to.equal(1);
+        });
+
+        it("#transfer loan", async function () {
+            const res0a = await posMgr.getLoansByOwnerAndPool(owner.address, gammaPool.address, 0, 10);
+            expect(res0a.length).to.eq(0);
+            const res0b = await posMgr.getLoansByOwner(owner.address, 0, 10);
+            expect(res0b.length).to.eq(0);
+            const res1a = await posMgr.getLoansByOwnerAndPool(addr4.address, gammaPool.address, 0, 10);
+            expect(res1a.length).to.eq(0);
+            const res1b = await posMgr.getLoansByOwner(addr4.address, 0, 10);
+            expect(res1b.length).to.eq(0);
+
+            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
+            const latestBlock = await ethers.provider.getBlock("latest");
+            const num = latestBlock.number * 100;
+            const expTokenId = num + 19;
+            const { args } = res.events[1];
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.owner).to.equal(owner.address);
+            expect(args.tokenId.toNumber()).to.equal(expTokenId);
+
+            const res1 = await posMgr.getLoansByOwnerAndPool(owner.address, gammaPool.address, 0, 10);
+            expect(res1.length).to.eq(1);
+            expect(res1[0].tokenId).to.eq(25);
+            const res2 = await posMgr.getLoansByOwner(owner.address, 0, 10);
+            expect(res2.length).to.eq(1);
+            expect(res2[0].tokenId).to.eq(25);
+
+            await (await posMgr.transferFrom(owner.address, addr4.address, expTokenId)).wait();
+
+            const res3 = await posMgr.getLoansByOwnerAndPool(owner.address, gammaPool.address, 0, 10);
+            expect(res3.length).to.eq(1);
+            expect(res3[0].tokenId).to.eq(0);
+            const res4 = await posMgr.getLoansByOwner(owner.address, 0, 10);
+            expect(res4.length).to.eq(1);
+            expect(res4[0].tokenId).to.eq(0);
+
+            const res5 = await posMgr.getLoansByOwnerAndPool(addr4.address, gammaPool.address, 0, 10);
+            expect(res5.length).to.eq(1);
+            expect(res5[0].tokenId).to.eq(25);
+            const res6 = await posMgr.getLoansByOwner(addr4.address, 0, 10);
+            expect(res6.length).to.eq(1);
+            expect(res6[0].tokenId).to.eq(25);
+
+            await (await posMgr.connect(addr4).transferFrom(addr4.address, owner.address, expTokenId)).wait();
+
+            const res7 = await posMgr.getLoansByOwnerAndPool(addr4.address, gammaPool.address, 0, 10);
+            expect(res7.length).to.eq(1);
+            expect(res7[0].tokenId).to.eq(0);
+            const res8 = await posMgr.getLoansByOwner(addr4.address, 0, 10);
+            expect(res8.length).to.eq(1);
+            expect(res8[0].tokenId).to.eq(0);
+
+            const res9 = await posMgr.getLoansByOwnerAndPool(owner.address, gammaPool.address, 0, 10);
+            expect(res9.length).to.eq(2);
+            expect(res9[0].tokenId).to.eq(0);
+            expect(res9[1].tokenId).to.eq(25);
+            const res10 = await posMgr.getLoansByOwner(owner.address, 0, 10);
+            expect(res10.length).to.eq(2);
+            expect(res10[0].tokenId).to.eq(0);
+            expect(res10[1].tokenId).to.eq(25);
         });
 
         it("#borrowLiquidity should return tokenId", async function () {
@@ -1146,7 +1224,7 @@ describe("PositionManager", function () {
             expect(args5.initLiquidity.toNumber()).to.equal(24)
             expect(args5.cfmmReserves.length).to.equal(2);
             expect(args5.cfmmReserves[0]).to.equal(0);
-            expect(args5.cfmmReserves[1]).to.equal(0);/**/
+            expect(args5.cfmmReserves[1]).to.equal(0);
         });
 
         it("#closeLoan should pass withdraw array of zeroes", async function () {
@@ -1218,10 +1296,10 @@ describe("PositionManager", function () {
             expect(args5.tokensHeld.length).to.equal(2);
             expect(args5.liquidity.toNumber()).to.equal(21);
             expect(args5.lpTokens.toNumber()).to.equal(22);
-            expect(args5.initLiquidity.toNumber()).to.equal(24)
+            expect(args5.initLiquidity.toNumber()).to.equal(24);
             expect(args5.cfmmReserves.length).to.equal(2);
             expect(args5.cfmmReserves[0]).to.equal(0);
-            expect(args5.cfmmReserves[1]).to.equal(0);/**/
+            expect(args5.cfmmReserves[1]).to.equal(0);
         });
     });
 });
