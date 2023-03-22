@@ -433,7 +433,6 @@ describe("PositionManager", function () {
 
             const res9 = await posMgr.getLoansByOwnerAndPool(addr1.address, gammaPool3.address, 0, 100);
             expect(res9.length).to.equal(1);
-
         });
 
         it("#transfer loan", async function () {
