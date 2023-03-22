@@ -31,7 +31,7 @@ abstract contract PositionManagerQueries is IPositionManagerQueries, GammaPoolQu
             for(uint256 i = _start; i <= _end;) {
                 if(_tokenIds[i] > 0) {
                     _loans[k] = IGammaPool(gammaPool).loan(_tokenIds[i]);
-                    _loans[k].liquidity = uint128(_loans[k].liquidity * accFeeIndex / _loans[k].rateIndex);
+                    _loans[k].liquidity = _loans[k].rateIndex == 0 ? 0 : uint128(_loans[k].liquidity * accFeeIndex / _loans[k].rateIndex);
                 }
                 unchecked {
                     k++;
