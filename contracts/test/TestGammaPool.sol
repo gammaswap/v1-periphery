@@ -203,8 +203,8 @@ contract TestGammaPool is IGammaPool, TERC20 {
         return(5, 6);
     }
 
-    function getLatestRates() external view returns(uint256 accFeeIndex, uint256 lastCFMMFeeIndex, uint256 lastFeeIndex, uint256 borrowRate, uint256 lastBlockNumber) {
-        return(1, 2, 3, 4, 5);
+    function getLatestRates() external view returns(uint256 accFeeIndex, uint256 lastCFMMFeeIndex, uint256 lastFeeIndex, uint256 borrowRate, uint256 lastBlockNumber, uint256 currBlockNumber) {
+        return(1, 2, 3, 4, 5, 6);
     }
 
     function skim(address) external override {
