@@ -6,14 +6,14 @@ import "@gammaswap/v1-core/contracts/libraries/AddressCalculator.sol";
 import "./interfaces/IPositionManager.sol";
 import "./base/Transfers.sol";
 import "./base/GammaPoolERC721.sol";
-import "./base/PositionManagerQueries.sol";
+import "./base/GammaPoolQueryableLoans.sol";
 
 /// @title PositionManager, concrete implementation of IPositionManager
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Periphery contract used to aggregate function calls to a GammaPool and give NFT (ERC721) functionality to loans
 /// @notice Loans created through PositionManager become NFTs and can only be managed through PositionManager
 /// @dev PositionManager is owner of loan and user is owner of NFT that represents loan in a GammaPool
-contract PositionManager is IPositionManager, Transfers, PositionManagerQueries {
+contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans {
 
     error Forbidden();
     error Expired();
@@ -51,8 +51,8 @@ contract PositionManager is IPositionManager, Transfers, PositionManagerQueries 
         }
     }
 
-    /// @dev Initializes the contract by setting `factory`, and `WETH`.
-    constructor(address _factory, address _WETH) Transfers(_WETH) PositionManagerQueries(_factory) {
+    /// @dev Initializes the contract by setting `factory`, `WETH`, and `dataStore`.
+    constructor(address _factory, address _WETH, address _dataStore) Transfers(_WETH) GammaPoolQueryableLoans(_dataStore) {
         factory = _factory;
     }
 
@@ -64,6 +64,11 @@ contract PositionManager is IPositionManager, Transfers, PositionManagerQueries 
     /// @dev See {IERC721Metadata-symbol}.
     function symbol() public view virtual override returns (string memory) {
         return _symbol;
+    }
+
+    /// @param _dataStore - address of contract holding loan information for queries
+    function setDataStore(address _dataStore) external virtual {
+        dataStore = _dataStore;
     }
 
     /// @dev See {ITransfers-getGammaPoolAddress}.

@@ -6,17 +6,19 @@ import "@gammaswap/v1-core/contracts/interfaces/IGammaPoolFactory.sol";
 import "../libraries/QueryUtils.sol";
 import "../interfaces/IPositionManagerQueries.sol";
 import "../interfaces/IGammaPoolQueryableLoans.sol";
-import "./GammaPoolQueryableLoans.sol";
+import "./LoanStore.sol";
 
 /// @title Implementation of IPositionManagerQueries
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Implements external functions used by PositionManager to query pools and loans
 /// @dev These are all view functions that read from storage of different GammaPools and GammaPoolFactory
-abstract contract PositionManagerQueries is IPositionManagerQueries, GammaPoolQueryableLoans {
+contract PositionManagerQueries is IPositionManagerQueries, LoanStore {
 
+    /// @dev address of GammaPool factory contract
     address private immutable factory;
 
-    constructor(address _factory) {
+    /// @dev Initializes the contract by setting `_factory`, and `_owner`.
+    constructor(address _factory, address _owner) LoanStore(_owner) {
         factory = _factory;
     }
 

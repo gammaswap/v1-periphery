@@ -3,13 +3,12 @@ pragma solidity >=0.8.0;
 
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol";
 import "./ITransfers.sol";
-import "./IPositionManagerQueries.sol";
 
 /// @title Interface for PositionManager
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Defines external functions and events emitted by PositionManager
 /// @dev Interface also defines all GammaPool events through inheritance of IGammaPoolEvents
-interface IPositionManager is IGammaPoolEvents, ITransfers, IPositionManagerQueries {
+interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @dev Emitted when depositing CFMM LP tokens as liquidity in a pool
     /// @param pool - address of pool minting GS LP tokens
     /// @param shares - minted quantity of pool's GS LP tokens

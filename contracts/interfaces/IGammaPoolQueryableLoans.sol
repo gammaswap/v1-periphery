@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 
-/// @title Interface for IPositionManagerQueries
+/// @title Interface for IGammaPoolQueryableLoans
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @dev Defines external functions used by PositionManager to query pools and loans
 interface IGammaPoolQueryableLoans {
