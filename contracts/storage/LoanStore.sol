@@ -8,16 +8,6 @@ import "../interfaces/ILoanStore.sol";
 /// @notice It's meant to be inherited by other contracts to create queries
 abstract contract LoanStore is ILoanStore {
 
-    /// @dev Struct to store identifiable information about loan to perform queries in PositionManager
-    struct LoanInfo {
-        /// @dev Address of pool loan belongs to
-        address pool;
-        /// @dev Add loan to mappings by user
-        uint256 byOwnerAndPoolIdx;
-        /// @dev Add loan to mappings by user
-        uint256 byOwnerIdx;
-    }
-
     mapping(uint256 => LoanInfo) internal loanToInfo;
     mapping(address => uint256[]) internal loansByOwner;
     mapping(address => mapping(address => uint256[])) internal loansByOwnerAndPool;

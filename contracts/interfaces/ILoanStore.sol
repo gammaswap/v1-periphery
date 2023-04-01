@@ -3,6 +3,16 @@ pragma solidity ^0.8.0;
 
 interface ILoanStore {
 
+    /// @dev Struct to store identifiable information about loan to perform queries in PositionManager
+    struct LoanInfo {
+        /// @dev Address of pool loan belongs to
+        address pool;
+        /// @dev Add loan to mappings by user
+        uint256 byOwnerAndPoolIdx;
+        /// @dev Add loan to mappings by user
+        uint256 byOwnerIdx;
+    }
+
     /// @dev Add loan to mappings by user so that they can be queried
     /// @param pool - pool loan identified by `tokenId` belongs to
     /// @param tokenId - unique identifier of loan
