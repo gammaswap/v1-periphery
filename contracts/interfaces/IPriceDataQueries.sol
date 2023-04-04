@@ -3,7 +3,7 @@ pragma solidity ^0.8.0;
 
 interface IPriceDataQueries {
 
-    /// @dev Struct to store identifiable information about loan to perform queries in PositionManager
+    /// @dev Struct to store single time series data point
     struct TimeSeries {
         uint256 timestamp;
         uint256 open;
@@ -11,6 +11,8 @@ interface IPriceDataQueries {
         uint256 low;
         uint256 close;
     }
+
+    /// @dev Struct to store raw time series data obtained from GammaPool
     struct RawData {
         /// @dev Timestamp of datapoint
         uint256 timestamp;
@@ -23,10 +25,12 @@ interface IPriceDataQueries {
         /// @dev YIeld of GammaPool since last update (feeIndex = (1 + borrowRate) * (1 + cfmmRate)
         uint256 accFeeIndex;
         /// @dev Add loan to mappings by user
-        uint256 lastPx; // 340 billion billion is uint128, 79 billion is uint96, 309 million is uint88, 1.2 million is uint80
+        uint256 lastPrice; // 340 billion billion is uint128, 79 billion is uint96, 309 million is uint88, 1.2 million is uint80
         /// @dev YIeld of GammaPool since last update (feeIndex = (1 + borrowRate) * (1 + cfmmRate)
         uint256 indexRate;
     }
+
+    /// @dev Struct to store all time series data in arrays
     struct TimeSeriesData {
         RawData[] rawData;
         TimeSeries[] dailyPrices;

@@ -27,13 +27,13 @@ contract PositionManagerQueries is IPositionManagerQueries, LoanStore {
         uint256[] memory _tokenIds = loansByOwnerAndPool[owner][gammaPool];
         (uint256 _start, uint256 _end, uint256 _size) = QueryUtils.getSearchParameters(start, end, _tokenIds.length);
         if(_size > 0) {
-            (uint256 accFeeIndex,,,,,) = IGammaPool(gammaPool).getLatestRates();
+            IGammaPool.RateData memory data = IGammaPool(gammaPool).getLatestRates();
             _loans = new IGammaPool.LoanData[](_size);
             uint256 k = 0;
             for(uint256 i = _start; i <= _end;) {
                 if(_tokenIds[i] > 0) {
                     _loans[k] = IGammaPool(gammaPool).loan(_tokenIds[i]);
-                    _loans[k].liquidity = _loans[k].rateIndex == 0 ? 0 : uint128(_loans[k].liquidity * accFeeIndex / _loans[k].rateIndex);
+                    _loans[k].liquidity = _loans[k].rateIndex == 0 ? 0 : uint128(_loans[k].liquidity * data.accFeeIndex / _loans[k].rateIndex);
                 }
                 unchecked {
                     k++;

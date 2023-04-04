@@ -57,19 +57,18 @@ abstract contract PriceStore is IPriceStore {
         _nextTimestamp = lastTimestamp + _frequency;
         nextTimestamp = _nextTimestamp;
 
-        uint256 lastPx = IGammaPool(pool).getLastCFMMPrice();
         uint256 accFeeIndex;
         uint256 borrowRate;
         uint256 currBlockNumber;
-        (accFeeIndex,,,borrowRate,,currBlockNumber) = IGammaPool(pool).getLatestRates(); // should also get lastPx here and utilRate
+        IGammaPool.RateData memory data = IGammaPool(pool).getLatestRates();
 
         PriceInfo memory info = PriceInfo({
             timestamp: uint32(lastTimestamp),
-            blockNumber: uint32(currBlockNumber),
-            utilRate: 0, // need to get this
-            borrowRate: uint16(borrowRate / 1e16), // this can be shrunk to 2 decimals
-            accFeeIndex: uint64(accFeeIndex / 1e6),
-            lastPx: uint96(lastPx)
+            blockNumber: uint32(data.currBlockNumber),
+            utilRate: uint16(data.utilizationRate / 1e14),
+            borrowRate: uint16(data.borrowRate / 1e16), // this can be shrunk to 2 decimals
+            accFeeIndex: uint64(data.accFeeIndex / 1e6),
+            lastPrice: uint96(data.lastPrice)
         });
 
         uint256 len = timeSeries[pool].length;

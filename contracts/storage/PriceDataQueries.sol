@@ -62,13 +62,13 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
                     uint256 lastTimestamp = _frequency * info.timestamp / _frequency;
                     _nextTimestamp = lastTimestamp + _frequency;
 
-                    _data.dailyPrices[k] = createTimeSeries(lastTimestamp, info.lastPx);
+                    _data.dailyPrices[k] = createTimeSeries(lastTimestamp, info.lastPrice);
                     _data.borrowRates[k] = createTimeSeries(lastTimestamp, info.borrowRate);
                     _data.utilRates[k] = createTimeSeries(lastTimestamp, info.utilRate);
                     _data.indexRates[k] = createTimeSeries(lastTimestamp, indexRate);
                 } else {
                     // keep filling bar
-                    _data.dailyPrices[k] = updateTimeSeries(_data.dailyPrices[k], info.lastPx);
+                    _data.dailyPrices[k] = updateTimeSeries(_data.dailyPrices[k], info.lastPrice);
                     _data.borrowRates[k] = updateTimeSeries(_data.borrowRates[k], info.borrowRate);
                     _data.utilRates[k] = updateTimeSeries(_data.utilRates[k], info.utilRate);
                     _data.indexRates[k] = updateTimeSeries(_data.indexRates[k], indexRate);
@@ -125,7 +125,7 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
             utilRate: info.utilRate,
             borrowRate: info.borrowRate,
             accFeeIndex: info.accFeeIndex,
-            lastPx: info.lastPx,
+            lastPrice: info.lastPrice,
             indexRate: 0
         });
     }

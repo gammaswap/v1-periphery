@@ -16,7 +16,7 @@ interface IPriceStore {
         /// @dev YIeld of GammaPool since last update (feeIndex = (1 + borrowRate) * (1 + cfmmRate)
         uint64 accFeeIndex;
         /// @dev Add loan to mappings by user
-        uint96 lastPx; // 340 billion billion is uint128, 79 billion is uint96, 309 million is uint88, 1.2 million is uint80
+        uint96 lastPrice; // 340 billion billion is uint128, 79 billion is uint96, 309 million is uint88, 1.2 million is uint80
     }
 
     /// @dev See {IPriceStore-setSource}.
