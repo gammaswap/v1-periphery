@@ -1,0 +1,652 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "pool",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        }
+      ],
+      "name": "addLoanToOwner",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_source",
+          "type": "address"
+        }
+      ],
+      "name": "setSource",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "transferLoan",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "addLoanToOwner(address,uint256,address)": "c67e2403",
+    "setSource(address)": "a8026912",
+    "transferLoan(address,address,uint256)": "02ca8acf"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"}],\"name\":\"addLoanToOwner\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_source\",\"type\":\"address\"}],\"name\":\"setSource\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"transferLoan\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{\"addLoanToOwner(address,uint256,address)\":{\"details\":\"Add loan to mappings by user so that they can be queried\",\"params\":{\"owner\":\"- owner of loan\",\"pool\":\"- pool loan identified by `tokenId` belongs to\",\"tokenId\":\"- unique identifier of loan\"}},\"setSource(address)\":{\"params\":{\"_source\":\"- address supplying loan information\"}},\"transferLoan(address,address,uint256)\":{\"details\":\"Transfer loan identified by `tokenId` from address `from` to another address `to`\",\"params\":{\"from\":\"- address transferring loan\",\"to\":\"- address receiving loan\",\"tokenId\":\"- unique identifier of loan\"}}},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/interfaces/ILoanStore.sol\":\"ILoanStore\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"contracts/interfaces/ILoanStore.sol\":{\"keccak256\":\"0x2d6f68e513171d09a230502a49b368e59399d5e69c397d7561488ee679012858\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://dd4ca91492601126eb8300c6865692862d9dbf92efb9041d22ad8cd2b772cc5f\",\"dweb:/ipfs/QmXHsn6D4t3CWXLXxZei7iQmebRV8cGp25Mua8PkcQss1C\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "addLoanToOwner"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_source",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "setSource"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "transferLoan"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "addLoanToOwner(address,uint256,address)": {
+            "details": "Add loan to mappings by user so that they can be queried",
+            "params": {
+              "owner": "- owner of loan",
+              "pool": "- pool loan identified by `tokenId` belongs to",
+              "tokenId": "- unique identifier of loan"
+            }
+          },
+          "setSource(address)": {
+            "params": {
+              "_source": "- address supplying loan information"
+            }
+          },
+          "transferLoan(address,address,uint256)": {
+            "details": "Transfer loan identified by `tokenId` from address `from` to another address `to`",
+            "params": {
+              "from": "- address transferring loan",
+              "to": "- address receiving loan",
+              "tokenId": "- unique identifier of loan"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "contracts/interfaces/ILoanStore.sol": "ILoanStore"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "contracts/interfaces/ILoanStore.sol": {
+        "keccak256": "0x2d6f68e513171d09a230502a49b368e59399d5e69c397d7561488ee679012858",
+        "urls": [
+          "bzz-raw://dd4ca91492601126eb8300c6865692862d9dbf92efb9041d22ad8cd2b772cc5f",
+          "dweb:/ipfs/QmXHsn6D4t3CWXLXxZei7iQmebRV8cGp25Mua8PkcQss1C"
+        ],
+        "license": "GPL-2.0-or-later"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "contracts/interfaces/ILoanStore.sol",
+    "id": 2830,
+    "exportedSymbols": {
+      "ILoanStore": [
+        2829
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "45:1147:5",
+    "nodes": [
+      {
+        "id": 2792,
+        "nodeType": "PragmaDirective",
+        "src": "45:24:5",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 2829,
+        "nodeType": "ContractDefinition",
+        "src": "71:1120:5",
+        "nodes": [
+          {
+            "id": 2802,
+            "nodeType": "StructDefinition",
+            "src": "202:249:5",
+            "nodes": [],
+            "canonicalName": "ILoanStore.LoanInfo",
+            "members": [
+              {
+                "constant": false,
+                "id": 2795,
+                "mutability": "mutable",
+                "name": "pool",
+                "nameLocation": "285:4:5",
+                "nodeType": "VariableDeclaration",
+                "scope": 2802,
+                "src": "277:12:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 2794,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "277:7:5",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2798,
+                "mutability": "mutable",
+                "name": "byOwnerAndPoolIdx",
+                "nameLocation": "353:17:5",
+                "nodeType": "VariableDeclaration",
+                "scope": 2802,
+                "src": "345:25:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2797,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "345:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 2801,
+                "mutability": "mutable",
+                "name": "byOwnerIdx",
+                "nameLocation": "434:10:5",
+                "nodeType": "VariableDeclaration",
+                "scope": 2802,
+                "src": "426:18:5",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 2800,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "426:7:5",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "LoanInfo",
+            "nameLocation": "209:8:5",
+            "scope": 2829,
+            "visibility": "public"
+          },
+          {
+            "id": 2812,
+            "nodeType": "FunctionDefinition",
+            "src": "682:79:5",
+            "nodes": [],
+            "documentation": {
+              "id": 2803,
+              "nodeType": "StructuredDocumentation",
+              "src": "457:220:5",
+              "text": "@dev Add loan to mappings by user so that they can be queried\n @param pool - pool loan identified by `tokenId` belongs to\n @param tokenId - unique identifier of loan\n @param owner - owner of loan"
+            },
+            "functionSelector": "c67e2403",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addLoanToOwner",
+            "nameLocation": "691:14:5",
+            "parameters": {
+              "id": 2810,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2805,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "714:4:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2812,
+                  "src": "706:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2804,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "706:7:5",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2807,
+                  "mutability": "mutable",
+                  "name": "tokenId",
+                  "nameLocation": "728:7:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2812,
+                  "src": "720:15:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2806,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "720:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2809,
+                  "mutability": "mutable",
+                  "name": "owner",
+                  "nameLocation": "745:5:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2812,
+                  "src": "737:13:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2808,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "737:7:5",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "705:46:5"
+            },
+            "returnParameters": {
+              "id": 2811,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "760:0:5"
+            },
+            "scope": 2829,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 2822,
+            "nodeType": "FunctionDefinition",
+            "src": "1004:74:5",
+            "nodes": [],
+            "documentation": {
+              "id": 2813,
+              "nodeType": "StructuredDocumentation",
+              "src": "767:232:5",
+              "text": "@dev Transfer loan identified by `tokenId` from address `from` to another address `to`\n @param from - address transferring loan\n @param to - address receiving loan\n @param tokenId - unique identifier of loan"
+            },
+            "functionSelector": "02ca8acf",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "transferLoan",
+            "nameLocation": "1013:12:5",
+            "parameters": {
+              "id": 2820,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2815,
+                  "mutability": "mutable",
+                  "name": "from",
+                  "nameLocation": "1034:4:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2822,
+                  "src": "1026:12:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2814,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1026:7:5",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2817,
+                  "mutability": "mutable",
+                  "name": "to",
+                  "nameLocation": "1048:2:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2822,
+                  "src": "1040:10:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2816,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1040:7:5",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2819,
+                  "mutability": "mutable",
+                  "name": "tokenId",
+                  "nameLocation": "1060:7:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2822,
+                  "src": "1052:15:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2818,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1052:7:5",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1025:43:5"
+            },
+            "returnParameters": {
+              "id": 2821,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1077:0:5"
+            },
+            "scope": 2829,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 2828,
+            "nodeType": "FunctionDefinition",
+            "src": "1144:45:5",
+            "nodes": [],
+            "documentation": {
+              "id": 2823,
+              "nodeType": "StructuredDocumentation",
+              "src": "1084:55:5",
+              "text": "@param _source - address supplying loan information"
+            },
+            "functionSelector": "a8026912",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setSource",
+            "nameLocation": "1153:9:5",
+            "parameters": {
+              "id": 2826,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2825,
+                  "mutability": "mutable",
+                  "name": "_source",
+                  "nameLocation": "1171:7:5",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2828,
+                  "src": "1163:15:5",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2824,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1163:7:5",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1162:17:5"
+            },
+            "returnParameters": {
+              "id": 2827,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1188:0:5"
+            },
+            "scope": 2829,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ILoanStore",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          2829
+        ],
+        "name": "ILoanStore",
+        "nameLocation": "81:10:5",
+        "scope": 2830,
+        "usedErrors": []
+      }
+    ],
+    "license": "GPL-2.0-or-later"
+  },
+  "id": 5
+}

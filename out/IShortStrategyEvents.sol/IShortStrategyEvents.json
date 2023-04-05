@@ -1,0 +1,725 @@
+{
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "assets",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "shares",
+          "type": "uint256"
+        }
+      ],
+      "name": "Deposit",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokenBalance",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokenBorrowed",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint48",
+          "name": "lastBlockNumber",
+          "type": "uint48"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint96",
+          "name": "accFeeIndex",
+          "type": "uint96"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokenBorrowedPlusInterest",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "lpInvariant",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "borrowedInvariant",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128[]",
+          "name": "cfmmReserves",
+          "type": "uint128[]"
+        },
+        {
+          "indexed": true,
+          "internalType": "enum IStrategyEvents.TX_TYPE",
+          "name": "txType",
+          "type": "uint8"
+        }
+      ],
+      "name": "PoolUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "assets",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "shares",
+          "type": "uint256"
+        }
+      ],
+      "name": "Withdraw",
+      "type": "event"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {},
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"assets\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"shares\",\"type\":\"uint256\"}],\"name\":\"Deposit\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokenBalance\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokenBorrowed\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint48\",\"name\":\"lastBlockNumber\",\"type\":\"uint48\"},{\"indexed\":false,\"internalType\":\"uint96\",\"name\":\"accFeeIndex\",\"type\":\"uint96\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokenBorrowedPlusInterest\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"lpInvariant\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"borrowedInvariant\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128[]\",\"name\":\"cfmmReserves\",\"type\":\"uint128[]\"},{\"indexed\":true,\"internalType\":\"enum IStrategyEvents.TX_TYPE\",\"name\":\"txType\",\"type\":\"uint8\"}],\"name\":\"PoolUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"assets\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"shares\",\"type\":\"uint256\"}],\"name\":\"Withdraw\",\"type\":\"event\"}],\"devdoc\":{\"author\":\"Daniel D. Alcarraz (https://github.com/0xDanr)\",\"details\":\"Events emitted by all short strategy implementations\",\"events\":{\"Deposit(address,address,uint256,uint256)\":{\"details\":\"Event emitted when a deposit of CFMM LP tokens in exchange of GS LP tokens happens (e.g. _deposit, _mint, _depositReserves, _depositNoPull)\",\"params\":{\"assets\":\"- amount CFMM LP tokens deposited\",\"caller\":\"- address calling the function to deposit CFMM LP tokens\",\"shares\":\"- amount GS LP tokens minted\",\"to\":\"- address receiving GS LP tokens\"}},\"Withdraw(address,address,address,uint256,uint256)\":{\"details\":\"Event emitted when a withdrawal of CFMM LP tokens happens (e.g. _withdraw, _redeem, _withdrawReserves, _withdrawNoPull)\",\"params\":{\"assets\":\"- amount of CFMM LP tokens withdrawn\",\"caller\":\"- address calling the function to withdraw CFMM LP tokens\",\"from\":\"- address redeeming/burning GS LP tokens\",\"shares\":\"- amount of GS LP tokens redeemed\",\"to\":\"- address receiving CFMM LP tokens\"}}},\"kind\":\"dev\",\"methods\":{},\"title\":\"Short Strategy Events Interface\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IShortStrategyEvents.sol\":\"IShortStrategyEvents\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IShortStrategyEvents.sol\":{\"keccak256\":\"0xb8364a03d6510ce6cc06e80d07e1b95eb830846531b538fd89d596341ea7e9b0\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://ec99cfc1ce267318d1b1af8abd703022be278a1dfac467f15369b832b07467b2\",\"dweb:/ipfs/QmWgWfcHtLaV51at58G4UZL25FAGMbAYUKbPXAB7GYg5i7\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IStrategyEvents.sol\":{\"keccak256\":\"0x064b90ebb2a719301c74417bff732323e9af13c79a46675917a6d9afaff79a70\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://e0f2657b940b14fd82707f9f84eb6ad2a90d7296d14e18d8da3540c9bfa9a804\",\"dweb:/ipfs/QmSPRT9CcKf9b6BhuZBaTHjfWyNCJ4C4ZsTJQxPcEzh8r9\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "caller",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "assets",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Deposit",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "lpTokenBalance",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokenBorrowed",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint48",
+              "name": "lastBlockNumber",
+              "type": "uint48",
+              "indexed": false
+            },
+            {
+              "internalType": "uint96",
+              "name": "accFeeIndex",
+              "type": "uint96",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokenBorrowedPlusInterest",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "lpInvariant",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "borrowedInvariant",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128[]",
+              "name": "cfmmReserves",
+              "type": "uint128[]",
+              "indexed": false
+            },
+            {
+              "internalType": "enum IStrategyEvents.TX_TYPE",
+              "name": "txType",
+              "type": "uint8",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "PoolUpdated",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "caller",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "assets",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Withdraw",
+          "anonymous": false
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IShortStrategyEvents.sol": "IShortStrategyEvents"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IShortStrategyEvents.sol": {
+        "keccak256": "0xb8364a03d6510ce6cc06e80d07e1b95eb830846531b538fd89d596341ea7e9b0",
+        "urls": [
+          "bzz-raw://ec99cfc1ce267318d1b1af8abd703022be278a1dfac467f15369b832b07467b2",
+          "dweb:/ipfs/QmWgWfcHtLaV51at58G4UZL25FAGMbAYUKbPXAB7GYg5i7"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IStrategyEvents.sol": {
+        "keccak256": "0x064b90ebb2a719301c74417bff732323e9af13c79a46675917a6d9afaff79a70",
+        "urls": [
+          "bzz-raw://e0f2657b940b14fd82707f9f84eb6ad2a90d7296d14e18d8da3540c9bfa9a804",
+          "dweb:/ipfs/QmSPRT9CcKf9b6BhuZBaTHjfWyNCJ4C4ZsTJQxPcEzh8r9"
+        ],
+        "license": "BUSL-1.1"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IShortStrategyEvents.sol",
+    "id": 37496,
+    "exportedSymbols": {
+      "IShortStrategyEvents": [
+        37495
+      ],
+      "IStrategyEvents": [
+        37539
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "37:1323:57",
+    "nodes": [
+      {
+        "id": 37466,
+        "nodeType": "PragmaDirective",
+        "src": "37:24:57",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 37467,
+        "nodeType": "ImportDirective",
+        "src": "63:31:57",
+        "nodes": [],
+        "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IStrategyEvents.sol",
+        "file": "./IStrategyEvents.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 37496,
+        "sourceUnit": 37540,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 37495,
+        "nodeType": "ContractDefinition",
+        "src": "260:1099:57",
+        "nodes": [
+          {
+            "id": 37481,
+            "nodeType": "EventDefinition",
+            "src": "706:90:57",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 37471,
+              "nodeType": "StructuredDocumentation",
+              "src": "316:385:57",
+              "text": "@dev Event emitted when a deposit of CFMM LP tokens in exchange of GS LP tokens happens (e.g. _deposit, _mint, _depositReserves, _depositNoPull)\n @param caller - address calling the function to deposit CFMM LP tokens\n @param to - address receiving GS LP tokens\n @param assets - amount CFMM LP tokens deposited\n @param shares - amount GS LP tokens minted"
+            },
+            "eventSelector": "dcbc1c05240f31ff3ad067ef1ee35ce4997762752e3a095284754544f4c709d7",
+            "name": "Deposit",
+            "nameLocation": "712:7:57",
+            "parameters": {
+              "id": 37480,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 37473,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "caller",
+                  "nameLocation": "736:6:57",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37481,
+                  "src": "720:22:57",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37472,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "720:7:57",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37475,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "to",
+                  "nameLocation": "760:2:57",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37481,
+                  "src": "744:18:57",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37474,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "744:7:57",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37477,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "assets",
+                  "nameLocation": "772:6:57",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37481,
+                  "src": "764:14:57",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 37476,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "764:7:57",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37479,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "shares",
+                  "nameLocation": "788:6:57",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37481,
+                  "src": "780:14:57",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 37478,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "780:7:57",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "719:76:57"
+            }
+          },
+          {
+            "id": 37494,
+            "nodeType": "EventDefinition",
+            "src": "1244:113:57",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 37482,
+              "nodeType": "StructuredDocumentation",
+              "src": "802:437:57",
+              "text": "@dev Event emitted when a withdrawal of CFMM LP tokens happens (e.g. _withdraw, _redeem, _withdrawReserves, _withdrawNoPull)\n @param caller - address calling the function to withdraw CFMM LP tokens\n @param to - address receiving CFMM LP tokens\n @param from - address redeeming/burning GS LP tokens\n @param assets - amount of CFMM LP tokens withdrawn\n @param shares - amount of GS LP tokens redeemed"
+            },
+            "eventSelector": "fbde797d201c681b91056529119e0b02407c7bb96a4a2c75c01fc9667232c8db",
+            "name": "Withdraw",
+            "nameLocation": "1250:8:57",
+            "parameters": {
+              "id": 37493,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 37484,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "caller",
+                  "nameLocation": "1275:6:57",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37494,
+                  "src": "1259:22:57",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37483,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1259:7:57",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37486,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "to",
+                  "nameLocation": "1299:2:57",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37494,
+                  "src": "1283:18:57",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37485,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1283:7:57",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37488,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "from",
+                  "nameLocation": "1319:4:57",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37494,
+                  "src": "1303:20:57",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37487,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1303:7:57",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37490,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "assets",
+                  "nameLocation": "1333:6:57",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37494,
+                  "src": "1325:14:57",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 37489,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1325:7:57",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37492,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "shares",
+                  "nameLocation": "1349:6:57",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37494,
+                  "src": "1341:14:57",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 37491,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1341:7:57",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1258:98:57"
+            }
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 37469,
+              "name": "IStrategyEvents",
+              "nameLocations": [
+                "294:15:57"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 37539,
+              "src": "294:15:57"
+            },
+            "id": 37470,
+            "nodeType": "InheritanceSpecifier",
+            "src": "294:15:57"
+          }
+        ],
+        "canonicalName": "IShortStrategyEvents",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 37468,
+          "nodeType": "StructuredDocumentation",
+          "src": "96:164:57",
+          "text": "@title Short Strategy Events Interface\n @author Daniel D. Alcarraz (https://github.com/0xDanr)\n @dev Events emitted by all short strategy implementations"
+        },
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          37495,
+          37539
+        ],
+        "name": "IShortStrategyEvents",
+        "nameLocation": "270:20:57",
+        "scope": 37496,
+        "usedErrors": []
+      }
+    ],
+    "license": "BUSL-1.1"
+  },
+  "id": 57
+}

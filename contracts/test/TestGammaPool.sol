@@ -203,7 +203,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
         return(5, 6);
     }
 
-    function getLatestRates() external view returns(RateData memory data) {
+    function getLatestRates() external virtual view returns(RateData memory data) {
         data.accFeeIndex = 1;
         data.lastCFMMFeeIndex = 2;
         data.lastFeeIndex = 3;

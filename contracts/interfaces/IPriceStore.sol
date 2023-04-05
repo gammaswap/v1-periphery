@@ -25,7 +25,16 @@ interface IPriceStore {
     /// @dev See {IPriceStore-addPriceInfo}.
     function addPriceInfo(address pool) external;
 
+    /// @dev See {IPriceStore-setMaxLen}.
     function setMaxLen(uint256 _maxLen) external;
 
+    /// @dev See {IPriceStore-setFrequency}.
     function setFrequency(uint256 _frequency) external;
+
+    /// @dev See {IPriceStore-size}.
+    function size(address _pool) external view returns(uint256);
+
+    /// @dev See {IPriceStore-getTimeSeriesAt}.
+    function getTimeSeriesAt(address pool, uint256 index) external view returns(PriceInfo memory data);
+
 }

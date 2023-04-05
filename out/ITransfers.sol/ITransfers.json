@@ -1,0 +1,604 @@
+{
+  "abi": [
+    {
+      "inputs": [],
+      "name": "WETH",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "minAmt",
+          "type": "uint256"
+        }
+      ],
+      "name": "clearToken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "refundETH",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "tokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "amounts",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "address",
+          "name": "payee",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "sendTokensCallback",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "minAmt",
+          "type": "uint256"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        }
+      ],
+      "name": "unwrapWETH",
+      "outputs": [],
+      "stateMutability": "payable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "WETH()": "ad5c4648",
+    "clearToken(address,address,uint256)": "ccbe764a",
+    "refundETH()": "12210e8a",
+    "sendTokensCallback(address[],uint256[],address,bytes)": "6464a1eb",
+    "unwrapWETH(uint256,address)": "e16d9ce5"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"WETH\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"minAmt\",\"type\":\"uint256\"}],\"name\":\"clearToken\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"refundETH\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"tokens\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"amounts\",\"type\":\"uint256[]\"},{\"internalType\":\"address\",\"name\":\"payee\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"sendTokensCallback\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"minAmt\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"}],\"name\":\"unwrapWETH\",\"outputs\":[],\"stateMutability\":\"payable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Daniel D. Alcarraz (https://github.com/0xDanr)\",\"kind\":\"dev\",\"methods\":{\"WETH()\":{\"returns\":{\"_0\":\"WETH - address of Wrapped Ethereum contract\"}},\"clearToken(address,address,uint256)\":{\"details\":\"Withdraw ERC20 tokens from contract\",\"params\":{\"minAmt\":\"- threshold balance before token can be withdrawn\",\"to\":\"- destination address where withdrawn quantity will be sent to\",\"token\":\"- address of ERC20 token that will be withdrawn\"}},\"refundETH()\":{\"details\":\"Refund ETH balance to caller\"},\"sendTokensCallback(address[],uint256[],address,bytes)\":{\"details\":\"Transfer token `amounts` after verifying identity of caller using `data` is a GammaPool\",\"params\":{\"amounts\":\"- token amounts to be transferred\",\"data\":\"- struct used to verify the function caller\",\"payee\":\"- receiver of token `amounts`\",\"tokens\":\"- address of ERC20 tokens that will be transferred\"}},\"unwrapWETH(uint256,address)\":{\"details\":\"Unwrap Wrapped ETH in contract and send ETH to recipient `to`\",\"params\":{\"minAmt\":\"- threshold balance of WETH which must be crossed before ETH can be refunded\",\"to\":\"- destination address where ETH will be sent to\"}}},\"title\":\"Interface for Transfers abstract contract\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"Interface used to send tokens and clear tokens and Ether from a contract\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/interfaces/ITransfers.sol\":\"ITransfers\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"contracts/interfaces/ITransfers.sol\":{\"keccak256\":\"0x39ba391461783203435d7c67f2d8fb067dbbfb242df4773ce7d0fc7775813e47\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://3cc1c944839b7ad87e1bd045b5c86178a94bada30457df4d208eab4a0a65f15e\",\"dweb:/ipfs/QmNZc6oDQ6wWtKgER8RM5fxBpLTZdH77KkWLF4YqnakzZR\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/IRefunds.sol\":{\"keccak256\":\"0x63384a51a8d82810f13b4a41a748b31bdba9f91ce19698d94af6dd2db13d6cf5\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://f00bd9e892b38391b7231c28afc02260ab18af0cd274a9d410a7a41da3567a8d\",\"dweb:/ipfs/QmWK7rH2bq9okVbEECJNHy2dBQzot6Fn8Cdq26o1bUc61m\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol\":{\"keccak256\":\"0xa32cbd95925e95f0d2c5deca7f576313def8e1775ca5b8e3e98ef2a4b54154ba\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://5f9446e78e834a914839ddf629174df60dc8996ff5d16c5a3b5cf7d62dc9fb35\",\"dweb:/ipfs/QmYjaWxnywfUceNLT27sDAGaqABYfD6q5kRnXaVNcizMed\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "WETH",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minAmt",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "clearToken"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "payable",
+          "type": "function",
+          "name": "refundETH"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "payee",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "sendTokensCallback"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "minAmt",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "payable",
+          "type": "function",
+          "name": "unwrapWETH"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "WETH()": {
+            "returns": {
+              "_0": "WETH - address of Wrapped Ethereum contract"
+            }
+          },
+          "clearToken(address,address,uint256)": {
+            "details": "Withdraw ERC20 tokens from contract",
+            "params": {
+              "minAmt": "- threshold balance before token can be withdrawn",
+              "to": "- destination address where withdrawn quantity will be sent to",
+              "token": "- address of ERC20 token that will be withdrawn"
+            }
+          },
+          "refundETH()": {
+            "details": "Refund ETH balance to caller"
+          },
+          "sendTokensCallback(address[],uint256[],address,bytes)": {
+            "details": "Transfer token `amounts` after verifying identity of caller using `data` is a GammaPool",
+            "params": {
+              "amounts": "- token amounts to be transferred",
+              "data": "- struct used to verify the function caller",
+              "payee": "- receiver of token `amounts`",
+              "tokens": "- address of ERC20 tokens that will be transferred"
+            }
+          },
+          "unwrapWETH(uint256,address)": {
+            "details": "Unwrap Wrapped ETH in contract and send ETH to recipient `to`",
+            "params": {
+              "minAmt": "- threshold balance of WETH which must be crossed before ETH can be refunded",
+              "to": "- destination address where ETH will be sent to"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "contracts/interfaces/ITransfers.sol": "ITransfers"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "contracts/interfaces/ITransfers.sol": {
+        "keccak256": "0x39ba391461783203435d7c67f2d8fb067dbbfb242df4773ce7d0fc7775813e47",
+        "urls": [
+          "bzz-raw://3cc1c944839b7ad87e1bd045b5c86178a94bada30457df4d208eab4a0a65f15e",
+          "dweb:/ipfs/QmNZc6oDQ6wWtKgER8RM5fxBpLTZdH77KkWLF4YqnakzZR"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/IRefunds.sol": {
+        "keccak256": "0x63384a51a8d82810f13b4a41a748b31bdba9f91ce19698d94af6dd2db13d6cf5",
+        "urls": [
+          "bzz-raw://f00bd9e892b38391b7231c28afc02260ab18af0cd274a9d410a7a41da3567a8d",
+          "dweb:/ipfs/QmWK7rH2bq9okVbEECJNHy2dBQzot6Fn8Cdq26o1bUc61m"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol": {
+        "keccak256": "0xa32cbd95925e95f0d2c5deca7f576313def8e1775ca5b8e3e98ef2a4b54154ba",
+        "urls": [
+          "bzz-raw://5f9446e78e834a914839ddf629174df60dc8996ff5d16c5a3b5cf7d62dc9fb35",
+          "dweb:/ipfs/QmYjaWxnywfUceNLT27sDAGaqABYfD6q5kRnXaVNcizMed"
+        ],
+        "license": "BUSL-1.1"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "contracts/interfaces/ITransfers.sol",
+    "id": 3598,
+    "exportedSymbols": {
+      "IRefunds": [
+        37342
+      ],
+      "ISendTokensCallback": [
+        37370
+      ],
+      "ITransfers": [
+        3597
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "45:939:10",
+    "nodes": [
+      {
+        "id": 3571,
+        "nodeType": "PragmaDirective",
+        "src": "45:24:10",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 3572,
+        "nodeType": "ImportDirective",
+        "src": "71:62:10",
+        "nodes": [],
+        "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/IRefunds.sol",
+        "file": "@gammaswap/v1-core/contracts/interfaces/IRefunds.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 3598,
+        "sourceUnit": 37343,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 3573,
+        "nodeType": "ImportDirective",
+        "src": "134:83:10",
+        "nodes": [],
+        "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol",
+        "file": "@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 3598,
+        "sourceUnit": 37371,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 3597,
+        "nodeType": "ContractDefinition",
+        "src": "416:568:10",
+        "nodes": [
+          {
+            "id": 3584,
+            "nodeType": "FunctionDefinition",
+            "src": "537:48:10",
+            "nodes": [],
+            "documentation": {
+              "id": 3579,
+              "nodeType": "StructuredDocumentation",
+              "src": "477:55:10",
+              "text": "@return WETH - address of Wrapped Ethereum contract"
+            },
+            "functionSelector": "ad5c4648",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "WETH",
+            "nameLocation": "546:4:10",
+            "parameters": {
+              "id": 3580,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "550:2:10"
+            },
+            "returnParameters": {
+              "id": 3583,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3582,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3584,
+                  "src": "576:7:10",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3581,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "576:7:10",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "575:9:10"
+            },
+            "scope": 3597,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 3588,
+            "nodeType": "FunctionDefinition",
+            "src": "633:38:10",
+            "nodes": [],
+            "documentation": {
+              "id": 3585,
+              "nodeType": "StructuredDocumentation",
+              "src": "591:37:10",
+              "text": "@dev Refund ETH balance to caller"
+            },
+            "functionSelector": "12210e8a",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "refundETH",
+            "nameLocation": "642:9:10",
+            "parameters": {
+              "id": 3586,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "651:2:10"
+            },
+            "returnParameters": {
+              "id": 3587,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "670:0:10"
+            },
+            "scope": 3597,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 3596,
+            "nodeType": "FunctionDefinition",
+            "src": "917:65:10",
+            "nodes": [],
+            "documentation": {
+              "id": 3589,
+              "nodeType": "StructuredDocumentation",
+              "src": "677:235:10",
+              "text": "@dev Unwrap Wrapped ETH in contract and send ETH to recipient `to`\n @param minAmt - threshold balance of WETH which must be crossed before ETH can be refunded\n @param to - destination address where ETH will be sent to"
+            },
+            "functionSelector": "e16d9ce5",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "unwrapWETH",
+            "nameLocation": "926:10:10",
+            "parameters": {
+              "id": 3594,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3591,
+                  "mutability": "mutable",
+                  "name": "minAmt",
+                  "nameLocation": "945:6:10",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3596,
+                  "src": "937:14:10",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3590,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "937:7:10",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3593,
+                  "mutability": "mutable",
+                  "name": "to",
+                  "nameLocation": "961:2:10",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3596,
+                  "src": "953:10:10",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3592,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "953:7:10",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "936:28:10"
+            },
+            "returnParameters": {
+              "id": 3595,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "981:0:10"
+            },
+            "scope": 3597,
+            "stateMutability": "payable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 3575,
+              "name": "ISendTokensCallback",
+              "nameLocations": [
+                "440:19:10"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 37370,
+              "src": "440:19:10"
+            },
+            "id": 3576,
+            "nodeType": "InheritanceSpecifier",
+            "src": "440:19:10"
+          },
+          {
+            "baseName": {
+              "id": 3577,
+              "name": "IRefunds",
+              "nameLocations": [
+                "461:8:10"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 37342,
+              "src": "461:8:10"
+            },
+            "id": 3578,
+            "nodeType": "InheritanceSpecifier",
+            "src": "461:8:10"
+          }
+        ],
+        "canonicalName": "ITransfers",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 3574,
+          "nodeType": "StructuredDocumentation",
+          "src": "219:197:10",
+          "text": "@title Interface for Transfers abstract contract\n @author Daniel D. Alcarraz (https://github.com/0xDanr)\n @notice Interface used to send tokens and clear tokens and Ether from a contract"
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          3597,
+          37342,
+          37370
+        ],
+        "name": "ITransfers",
+        "nameLocation": "426:10:10",
+        "scope": 3598,
+        "usedErrors": []
+      }
+    ],
+    "license": "GPL-2.0-or-later"
+  },
+  "id": 10
+}

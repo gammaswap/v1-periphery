@@ -1,0 +1,902 @@
+{
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "assets",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "shares",
+          "type": "uint256"
+        }
+      ],
+      "name": "Deposit",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128[]",
+          "name": "amounts",
+          "type": "uint128[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokens",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "liquidity",
+          "type": "uint128"
+        },
+        {
+          "indexed": true,
+          "internalType": "enum IStrategyEvents.TX_TYPE",
+          "name": "txType",
+          "type": "uint8"
+        }
+      ],
+      "name": "ExternalSwap",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "collateral",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "liquidity",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "writeDownAmt",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "enum IStrategyEvents.TX_TYPE",
+          "name": "txType",
+          "type": "uint8"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256[]",
+          "name": "tokenIds",
+          "type": "uint256[]"
+        }
+      ],
+      "name": "Liquidation",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        }
+      ],
+      "name": "LoanCreated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128[]",
+          "name": "tokensHeld",
+          "type": "uint128[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "liquidity",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "initLiquidity",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokens",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint96",
+          "name": "rateIndex",
+          "type": "uint96"
+        },
+        {
+          "indexed": true,
+          "internalType": "enum IStrategyEvents.TX_TYPE",
+          "name": "txType",
+          "type": "uint8"
+        }
+      ],
+      "name": "LoanUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokenBalance",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokenBorrowed",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint48",
+          "name": "lastBlockNumber",
+          "type": "uint48"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint96",
+          "name": "accFeeIndex",
+          "type": "uint96"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokenBorrowedPlusInterest",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "lpInvariant",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "borrowedInvariant",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128[]",
+          "name": "cfmmReserves",
+          "type": "uint128[]"
+        },
+        {
+          "indexed": true,
+          "internalType": "enum IStrategyEvents.TX_TYPE",
+          "name": "txType",
+          "type": "uint8"
+        }
+      ],
+      "name": "PoolUpdated",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "caller",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "assets",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "shares",
+          "type": "uint256"
+        }
+      ],
+      "name": "Withdraw",
+      "type": "event"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {},
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"assets\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"shares\",\"type\":\"uint256\"}],\"name\":\"Deposit\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint128[]\",\"name\":\"amounts\",\"type\":\"uint128[]\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokens\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"liquidity\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"enum IStrategyEvents.TX_TYPE\",\"name\":\"txType\",\"type\":\"uint8\"}],\"name\":\"ExternalSwap\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"collateral\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"liquidity\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"writeDownAmt\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"enum IStrategyEvents.TX_TYPE\",\"name\":\"txType\",\"type\":\"uint8\"},{\"indexed\":false,\"internalType\":\"uint256[]\",\"name\":\"tokenIds\",\"type\":\"uint256[]\"}],\"name\":\"Liquidation\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"}],\"name\":\"LoanCreated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint128[]\",\"name\":\"tokensHeld\",\"type\":\"uint128[]\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"liquidity\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"initLiquidity\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokens\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint96\",\"name\":\"rateIndex\",\"type\":\"uint96\"},{\"indexed\":true,\"internalType\":\"enum IStrategyEvents.TX_TYPE\",\"name\":\"txType\",\"type\":\"uint8\"}],\"name\":\"LoanUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokenBalance\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokenBorrowed\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint48\",\"name\":\"lastBlockNumber\",\"type\":\"uint48\"},{\"indexed\":false,\"internalType\":\"uint96\",\"name\":\"accFeeIndex\",\"type\":\"uint96\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokenBorrowedPlusInterest\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"lpInvariant\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"borrowedInvariant\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128[]\",\"name\":\"cfmmReserves\",\"type\":\"uint128[]\"},{\"indexed\":true,\"internalType\":\"enum IStrategyEvents.TX_TYPE\",\"name\":\"txType\",\"type\":\"uint8\"}],\"name\":\"PoolUpdated\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"caller\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"assets\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"shares\",\"type\":\"uint256\"}],\"name\":\"Withdraw\",\"type\":\"event\"}],\"devdoc\":{\"author\":\"Daniel D. Alcarraz (https://github.com/0xDanr)\",\"details\":\"Events emitted by all GammaPool implementations (contains all strategy events)\",\"events\":{\"LoanCreated(address,uint256)\":{\"details\":\"Event emitted when a Loan is created\",\"params\":{\"caller\":\"- address that created the loan\",\"tokenId\":\"- unique id that identifies the loan in question\"}}},\"kind\":\"dev\",\"methods\":{},\"title\":\"GammaPool Events Interface\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol\":\"IGammaPoolEvents\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol\":{\"keccak256\":\"0xf2ea9ca71d445ec5f8fe5d1ee1f28761b60c8f786902aff34e7438e102bfed79\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://aa9cd3e2341355caf94d90d2a21f6aae15259c7345ade628c3977e310d7fd8b1\",\"dweb:/ipfs/QmQAXKruMhZqjfBaG1T6a8Do7DmNHggSxZWdacfXyQ879E\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IExternalStrategyEvents.sol\":{\"keccak256\":\"0x832450347032f3d6178045bcf754ea30b6a74eeb6a786fd23214582780619158\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://1afbe6eab83fb06e3353ed9d22b70874efeb5787f51c60785569d86d98cf9399\",\"dweb:/ipfs/QmeQPwe75onniP9dCjifJuzd4d8BuM7iK2EuMEWcYDws88\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/ILiquidationStrategyEvents.sol\":{\"keccak256\":\"0x1f009597009c68e642dd0342849a5152d26207156c7b8cdcc3fd0721ddfc0e20\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://f00d623be5df1a0817dd32e17f7a3c078dbd417911971c585e68c1537af6abe6\",\"dweb:/ipfs/QmeWeu9C96csmBNa6tSJtx4MZosHhCVuDQFoGpYik9Ynv2\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/ILongStrategyEvents.sol\":{\"keccak256\":\"0x42ecb77c95b87dd95d059c88ac704c57ff3cebbf6aec2b80208e7c817ff27324\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://bd1cad8352d8e55270f26bc4e38ee16d15de9d8c77331ba7ef8afbf7f39ffc41\",\"dweb:/ipfs/QmeGum8jB8WzsqhV5eNErifCSjPt8hRS3P73MKxuRDevyP\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IShortStrategyEvents.sol\":{\"keccak256\":\"0xb8364a03d6510ce6cc06e80d07e1b95eb830846531b538fd89d596341ea7e9b0\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://ec99cfc1ce267318d1b1af8abd703022be278a1dfac467f15369b832b07467b2\",\"dweb:/ipfs/QmWgWfcHtLaV51at58G4UZL25FAGMbAYUKbPXAB7GYg5i7\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IStrategyEvents.sol\":{\"keccak256\":\"0x064b90ebb2a719301c74417bff732323e9af13c79a46675917a6d9afaff79a70\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://e0f2657b940b14fd82707f9f84eb6ad2a90d7296d14e18d8da3540c9bfa9a804\",\"dweb:/ipfs/QmSPRT9CcKf9b6BhuZBaTHjfWyNCJ4C4ZsTJQxPcEzh8r9\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "caller",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "assets",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Deposit",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "internalType": "uint128[]",
+              "name": "amounts",
+              "type": "uint128[]",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokens",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "liquidity",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "enum IStrategyEvents.TX_TYPE",
+              "name": "txType",
+              "type": "uint8",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "ExternalSwap",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "internalType": "uint128",
+              "name": "collateral",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "liquidity",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "writeDownAmt",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "enum IStrategyEvents.TX_TYPE",
+              "name": "txType",
+              "type": "uint8",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "tokenIds",
+              "type": "uint256[]",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Liquidation",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "caller",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "LoanCreated",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "internalType": "uint128[]",
+              "name": "tokensHeld",
+              "type": "uint128[]",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "liquidity",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "initLiquidity",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokens",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint96",
+              "name": "rateIndex",
+              "type": "uint96",
+              "indexed": false
+            },
+            {
+              "internalType": "enum IStrategyEvents.TX_TYPE",
+              "name": "txType",
+              "type": "uint8",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "LoanUpdated",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "lpTokenBalance",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokenBorrowed",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint48",
+              "name": "lastBlockNumber",
+              "type": "uint48",
+              "indexed": false
+            },
+            {
+              "internalType": "uint96",
+              "name": "accFeeIndex",
+              "type": "uint96",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokenBorrowedPlusInterest",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "lpInvariant",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "borrowedInvariant",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128[]",
+              "name": "cfmmReserves",
+              "type": "uint128[]",
+              "indexed": false
+            },
+            {
+              "internalType": "enum IStrategyEvents.TX_TYPE",
+              "name": "txType",
+              "type": "uint8",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "PoolUpdated",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "caller",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "assets",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "shares",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Withdraw",
+          "anonymous": false
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol": "IGammaPoolEvents"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol": {
+        "keccak256": "0xf2ea9ca71d445ec5f8fe5d1ee1f28761b60c8f786902aff34e7438e102bfed79",
+        "urls": [
+          "bzz-raw://aa9cd3e2341355caf94d90d2a21f6aae15259c7345ade628c3977e310d7fd8b1",
+          "dweb:/ipfs/QmQAXKruMhZqjfBaG1T6a8Do7DmNHggSxZWdacfXyQ879E"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IExternalStrategyEvents.sol": {
+        "keccak256": "0x832450347032f3d6178045bcf754ea30b6a74eeb6a786fd23214582780619158",
+        "urls": [
+          "bzz-raw://1afbe6eab83fb06e3353ed9d22b70874efeb5787f51c60785569d86d98cf9399",
+          "dweb:/ipfs/QmeQPwe75onniP9dCjifJuzd4d8BuM7iK2EuMEWcYDws88"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/ILiquidationStrategyEvents.sol": {
+        "keccak256": "0x1f009597009c68e642dd0342849a5152d26207156c7b8cdcc3fd0721ddfc0e20",
+        "urls": [
+          "bzz-raw://f00d623be5df1a0817dd32e17f7a3c078dbd417911971c585e68c1537af6abe6",
+          "dweb:/ipfs/QmeWeu9C96csmBNa6tSJtx4MZosHhCVuDQFoGpYik9Ynv2"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/ILongStrategyEvents.sol": {
+        "keccak256": "0x42ecb77c95b87dd95d059c88ac704c57ff3cebbf6aec2b80208e7c817ff27324",
+        "urls": [
+          "bzz-raw://bd1cad8352d8e55270f26bc4e38ee16d15de9d8c77331ba7ef8afbf7f39ffc41",
+          "dweb:/ipfs/QmeGum8jB8WzsqhV5eNErifCSjPt8hRS3P73MKxuRDevyP"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IShortStrategyEvents.sol": {
+        "keccak256": "0xb8364a03d6510ce6cc06e80d07e1b95eb830846531b538fd89d596341ea7e9b0",
+        "urls": [
+          "bzz-raw://ec99cfc1ce267318d1b1af8abd703022be278a1dfac467f15369b832b07467b2",
+          "dweb:/ipfs/QmWgWfcHtLaV51at58G4UZL25FAGMbAYUKbPXAB7GYg5i7"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IStrategyEvents.sol": {
+        "keccak256": "0x064b90ebb2a719301c74417bff732323e9af13c79a46675917a6d9afaff79a70",
+        "urls": [
+          "bzz-raw://e0f2657b940b14fd82707f9f84eb6ad2a90d7296d14e18d8da3540c9bfa9a804",
+          "dweb:/ipfs/QmSPRT9CcKf9b6BhuZBaTHjfWyNCJ4C4ZsTJQxPcEzh8r9"
+        ],
+        "license": "BUSL-1.1"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol",
+    "id": 37130,
+    "exportedSymbols": {
+      "IExternalStrategyEvents": [
+        37392
+      ],
+      "IGammaPoolEvents": [
+        37129
+      ],
+      "ILiquidationStrategyEvents": [
+        37438
+      ],
+      "ILongStrategyEvents": [
+        37464
+      ],
+      "IShortStrategyEvents": [
+        37495
+      ],
+      "IStrategyEvents": [
+        37539
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "37:734:49",
+    "nodes": [
+      {
+        "id": 37111,
+        "nodeType": "PragmaDirective",
+        "src": "37:24:49",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 37112,
+        "nodeType": "ImportDirective",
+        "src": "63:60:49",
+        "nodes": [],
+        "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/ILiquidationStrategyEvents.sol",
+        "file": "./strategies/events/ILiquidationStrategyEvents.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 37130,
+        "sourceUnit": 37439,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 37113,
+        "nodeType": "ImportDirective",
+        "src": "124:54:49",
+        "nodes": [],
+        "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IShortStrategyEvents.sol",
+        "file": "./strategies/events/IShortStrategyEvents.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 37130,
+        "sourceUnit": 37496,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 37114,
+        "nodeType": "ImportDirective",
+        "src": "179:57:49",
+        "nodes": [],
+        "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IExternalStrategyEvents.sol",
+        "file": "./strategies/events/IExternalStrategyEvents.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 37130,
+        "sourceUnit": 37393,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 37129,
+        "nodeType": "ContractDefinition",
+        "src": "423:347:49",
+        "nodes": [
+          {
+            "id": 37128,
+            "nodeType": "EventDefinition",
+            "src": "709:59:49",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 37122,
+              "nodeType": "StructuredDocumentation",
+              "src": "533:171:49",
+              "text": "@dev Event emitted when a Loan is created\n @param caller - address that created the loan\n @param tokenId - unique id that identifies the loan in question"
+            },
+            "eventSelector": "ff6a5b0e4cacd5965a6a32e6b962e1c85c90ea06d047a28293fe91759a79f289",
+            "name": "LoanCreated",
+            "nameLocation": "715:11:49",
+            "parameters": {
+              "id": 37127,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 37124,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "caller",
+                  "nameLocation": "743:6:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37128,
+                  "src": "727:22:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37123,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "727:7:49",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37126,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "tokenId",
+                  "nameLocation": "759:7:49",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37128,
+                  "src": "751:15:49",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 37125,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "751:7:49",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "726:41:49"
+            }
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 37116,
+              "name": "IShortStrategyEvents",
+              "nameLocations": [
+                "453:20:49"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 37495,
+              "src": "453:20:49"
+            },
+            "id": 37117,
+            "nodeType": "InheritanceSpecifier",
+            "src": "453:20:49"
+          },
+          {
+            "baseName": {
+              "id": 37118,
+              "name": "ILiquidationStrategyEvents",
+              "nameLocations": [
+                "475:26:49"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 37438,
+              "src": "475:26:49"
+            },
+            "id": 37119,
+            "nodeType": "InheritanceSpecifier",
+            "src": "475:26:49"
+          },
+          {
+            "baseName": {
+              "id": 37120,
+              "name": "IExternalStrategyEvents",
+              "nameLocations": [
+                "503:23:49"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 37392,
+              "src": "503:23:49"
+            },
+            "id": 37121,
+            "nodeType": "InheritanceSpecifier",
+            "src": "503:23:49"
+          }
+        ],
+        "canonicalName": "IGammaPoolEvents",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 37115,
+          "nodeType": "StructuredDocumentation",
+          "src": "238:185:49",
+          "text": "@title GammaPool Events Interface\n @author Daniel D. Alcarraz (https://github.com/0xDanr)\n @dev Events emitted by all GammaPool implementations (contains all strategy events)"
+        },
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          37129,
+          37392,
+          37438,
+          37464,
+          37495,
+          37539
+        ],
+        "name": "IGammaPoolEvents",
+        "nameLocation": "433:16:49",
+        "scope": 37130,
+        "usedErrors": []
+      }
+    ],
+    "license": "BUSL-1.1"
+  },
+  "id": 49
+}

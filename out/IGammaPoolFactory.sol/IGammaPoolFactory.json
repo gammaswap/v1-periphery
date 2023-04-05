@@ -1,0 +1,3378 @@
+{
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "pool",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint16",
+          "name": "protocolFee",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint24",
+          "name": "origMin",
+          "type": "uint24"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint24",
+          "name": "origMax",
+          "type": "uint24"
+        },
+        {
+          "indexed": false,
+          "internalType": "bool",
+          "name": "isSet",
+          "type": "bool"
+        }
+      ],
+      "name": "FeeUpdate",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "pool",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "cfmm",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "uint16",
+          "name": "protocolId",
+          "type": "uint16"
+        },
+        {
+          "indexed": false,
+          "internalType": "address",
+          "name": "implementation",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "address[]",
+          "name": "tokens",
+          "type": "address[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "count",
+          "type": "uint256"
+        }
+      ],
+      "name": "PoolCreated",
+      "type": "event"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_implementation",
+          "type": "address"
+        }
+      ],
+      "name": "addProtocol",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "allPoolsLength",
+      "outputs": [
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "_protocolId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "address",
+          "name": "_cfmm",
+          "type": "address"
+        },
+        {
+          "internalType": "address[]",
+          "name": "_tokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "bytes",
+          "name": "_data",
+          "type": "bytes"
+        }
+      ],
+      "name": "createPool",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "fee",
+      "outputs": [
+        {
+          "internalType": "uint16",
+          "name": "",
+          "type": "uint16"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "feeInfo",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "",
+          "type": "uint256"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "feeTo",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "feeToSetter",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_pool",
+          "type": "address"
+        }
+      ],
+      "name": "getKey",
+      "outputs": [
+        {
+          "internalType": "bytes32",
+          "name": "",
+          "type": "bytes32"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "bytes32",
+          "name": "_salt",
+          "type": "bytes32"
+        }
+      ],
+      "name": "getPool",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_pool",
+          "type": "address"
+        }
+      ],
+      "name": "getPoolFee",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_protocolFee",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_origMinFee",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_origMaxFee",
+          "type": "uint256"
+        },
+        {
+          "internalType": "bool",
+          "name": "_isSet",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint256",
+          "name": "start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "end",
+          "type": "uint256"
+        }
+      ],
+      "name": "getPools",
+      "outputs": [
+        {
+          "internalType": "address[]",
+          "name": "_pools",
+          "type": "address[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "_protocolId",
+          "type": "uint16"
+        }
+      ],
+      "name": "getProtocol",
+      "outputs": [
+        {
+          "internalType": "address",
+          "name": "",
+          "type": "address"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "_protocolId",
+          "type": "uint16"
+        }
+      ],
+      "name": "isProtocolRestricted",
+      "outputs": [
+        {
+          "internalType": "bool",
+          "name": "",
+          "type": "bool"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "origMax",
+      "outputs": [
+        {
+          "internalType": "uint24",
+          "name": "",
+          "type": "uint24"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [],
+      "name": "origMin",
+      "outputs": [
+        {
+          "internalType": "uint24",
+          "name": "",
+          "type": "uint24"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "_protocolId",
+          "type": "uint16"
+        }
+      ],
+      "name": "removeProtocol",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "uint16",
+          "name": "_protocolId",
+          "type": "uint16"
+        },
+        {
+          "internalType": "bool",
+          "name": "_isRestricted",
+          "type": "bool"
+        }
+      ],
+      "name": "setIsProtocolRestricted",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "_pool",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "_to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint16",
+          "name": "_protocolFee",
+          "type": "uint16"
+        },
+        {
+          "internalType": "uint24",
+          "name": "_origMinFee",
+          "type": "uint24"
+        },
+        {
+          "internalType": "uint24",
+          "name": "_origMaxFee",
+          "type": "uint24"
+        },
+        {
+          "internalType": "bool",
+          "name": "_isSet",
+          "type": "bool"
+        }
+      ],
+      "name": "setPoolFee",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "addProtocol(address)": "771d4c28",
+    "allPoolsLength()": "efde4e64",
+    "createPool(uint16,address,address[],bytes)": "f4bff5f1",
+    "fee()": "ddca3f43",
+    "feeInfo()": "995b5aae",
+    "feeTo()": "017e7e58",
+    "feeToSetter()": "094b7415",
+    "getKey(address)": "93790f44",
+    "getPool(bytes32)": "f6c00927",
+    "getPoolFee(address)": "42fcc6fb",
+    "getPools(uint256,uint256)": "bbe95837",
+    "getProtocol(uint16)": "d2c7c2a4",
+    "isProtocolRestricted(uint16)": "d7d1e126",
+    "origMax()": "07746e25",
+    "origMin()": "84915e7f",
+    "removeProtocol(uint16)": "466e0c0a",
+    "setIsProtocolRestricted(uint16,bool)": "b3d5d66b",
+    "setPoolFee(address,address,uint16,uint24,uint24,bool)": "02b764ad"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint16\",\"name\":\"protocolFee\",\"type\":\"uint16\"},{\"indexed\":false,\"internalType\":\"uint24\",\"name\":\"origMin\",\"type\":\"uint24\"},{\"indexed\":false,\"internalType\":\"uint24\",\"name\":\"origMax\",\"type\":\"uint24\"},{\"indexed\":false,\"internalType\":\"bool\",\"name\":\"isSet\",\"type\":\"bool\"}],\"name\":\"FeeUpdate\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"cfmm\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"uint16\",\"name\":\"protocolId\",\"type\":\"uint16\"},{\"indexed\":false,\"internalType\":\"address\",\"name\":\"implementation\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"address[]\",\"name\":\"tokens\",\"type\":\"address[]\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"count\",\"type\":\"uint256\"}],\"name\":\"PoolCreated\",\"type\":\"event\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_implementation\",\"type\":\"address\"}],\"name\":\"addProtocol\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"allPoolsLength\",\"outputs\":[{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint16\",\"name\":\"_protocolId\",\"type\":\"uint16\"},{\"internalType\":\"address\",\"name\":\"_cfmm\",\"type\":\"address\"},{\"internalType\":\"address[]\",\"name\":\"_tokens\",\"type\":\"address[]\"},{\"internalType\":\"bytes\",\"name\":\"_data\",\"type\":\"bytes\"}],\"name\":\"createPool\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"fee\",\"outputs\":[{\"internalType\":\"uint16\",\"name\":\"\",\"type\":\"uint16\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeInfo\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"\",\"type\":\"uint256\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeTo\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"feeToSetter\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_pool\",\"type\":\"address\"}],\"name\":\"getKey\",\"outputs\":[{\"internalType\":\"bytes32\",\"name\":\"\",\"type\":\"bytes32\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"bytes32\",\"name\":\"_salt\",\"type\":\"bytes32\"}],\"name\":\"getPool\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_pool\",\"type\":\"address\"}],\"name\":\"getPoolFee\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_protocolFee\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_origMinFee\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"_origMaxFee\",\"type\":\"uint256\"},{\"internalType\":\"bool\",\"name\":\"_isSet\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"end\",\"type\":\"uint256\"}],\"name\":\"getPools\",\"outputs\":[{\"internalType\":\"address[]\",\"name\":\"_pools\",\"type\":\"address[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint16\",\"name\":\"_protocolId\",\"type\":\"uint16\"}],\"name\":\"getProtocol\",\"outputs\":[{\"internalType\":\"address\",\"name\":\"\",\"type\":\"address\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint16\",\"name\":\"_protocolId\",\"type\":\"uint16\"}],\"name\":\"isProtocolRestricted\",\"outputs\":[{\"internalType\":\"bool\",\"name\":\"\",\"type\":\"bool\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"origMax\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[],\"name\":\"origMin\",\"outputs\":[{\"internalType\":\"uint24\",\"name\":\"\",\"type\":\"uint24\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint16\",\"name\":\"_protocolId\",\"type\":\"uint16\"}],\"name\":\"removeProtocol\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"uint16\",\"name\":\"_protocolId\",\"type\":\"uint16\"},{\"internalType\":\"bool\",\"name\":\"_isRestricted\",\"type\":\"bool\"}],\"name\":\"setIsProtocolRestricted\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"_pool\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"_to\",\"type\":\"address\"},{\"internalType\":\"uint16\",\"name\":\"_protocolFee\",\"type\":\"uint16\"},{\"internalType\":\"uint24\",\"name\":\"_origMinFee\",\"type\":\"uint24\"},{\"internalType\":\"uint24\",\"name\":\"_origMaxFee\",\"type\":\"uint24\"},{\"internalType\":\"bool\",\"name\":\"_isSet\",\"type\":\"bool\"}],\"name\":\"setPoolFee\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Daniel D. Alcarraz (https://github.com/0xDanr)\",\"details\":\"All instantiated GammaPoolFactory contracts must implement this interface\",\"events\":{\"FeeUpdate(address,address,uint16,uint24,uint24,bool)\":{\"details\":\"Event emitted when a GammaPool fee is updated\",\"params\":{\"isSet\":\"- bool flag, true use fee information, false use GammaSwap default fees\",\"pool\":\"- address of new pool whose fee is updated (zero address is default params)\"}},\"PoolCreated(address,address,uint16,address,address[],uint256)\":{\"details\":\"Event emitted when a new GammaPool is instantiated\",\"params\":{\"cfmm\":\"- address of CFMM the GammaPool is created for\",\"count\":\"- number of GammaPools instantiated including this contract\",\"implementation\":\"- implementation address of GammaPool proxy contract. Because all GammaPools are created as proxy contracts\",\"pool\":\"- address of new pool that is created\",\"protocolId\":\"- id identifier of GammaPool protocol (can be thought of as version)\",\"tokens\":\"- ERC20 tokens of CFMM\"}}},\"kind\":\"dev\",\"methods\":{\"addProtocol(address)\":{\"details\":\"Add a protocol implementation to GammaPoolFactory contract. Which means GammaPoolFactory can create GammaPools with this implementation (protocol)\",\"params\":{\"_implementation\":\"- implementation address of GammaPool proxy contract. Because all GammaPools are created as proxy contracts\"}},\"allPoolsLength()\":{\"returns\":{\"_0\":\"count - number of GammaPools that have been instantiated through this GammaPoolFactory contract\"}},\"createPool(uint16,address,address[],bytes)\":{\"details\":\"Instantiate a new GammaPool for a CFMM based on an existing implementation (protocolId)\",\"params\":{\"_cfmm\":\"- address of CFMM the GammaPool is created for\",\"_data\":\"- custom struct containing additional information used to verify the `_cfmm`\",\"_protocolId\":\"- id identifier of GammaPool protocol (can be thought of as version)\",\"_tokens\":\"- addresses of ERC20 tokens in CFMM, used for validation during runtime of function\"},\"returns\":{\"_0\":\"_address - address of new GammaPool proxy contract that was instantiated\"}},\"fee()\":{\"returns\":{\"_0\":\"fee - protocol fee charged by GammaPool to liquidity borrowers in terms of basis points\"}},\"feeInfo()\":{\"returns\":{\"_0\":\"feeTo - address that receives protocol fees\",\"_1\":\"fee - protocol fee charged by GammaPool to liquidity borrowers in terms of basis points\"}},\"feeTo()\":{\"returns\":{\"_0\":\"feeTo - address that receives protocol fees\"}},\"feeToSetter()\":{\"returns\":{\"_0\":\"feeToSetter - address that has the power to set protocol fees\"}},\"getKey(address)\":{\"details\":\"Mapping of bytes32 salts (key) to GammaPool addresses. The salt is predetermined and used to instantiate a GammaPool with a unique address\",\"params\":{\"_pool\":\"- address of GammaPool that maps to bytes32 salt (key)\"},\"returns\":{\"_0\":\"_salt - the bytes32 key that is unique to the GammaPool and therefore also used as a unique identifier of the GammaPool\"}},\"getPool(bytes32)\":{\"details\":\"Mapping of bytes32 salts (key) to GammaPool addresses. The salt is predetermined and used to instantiate a GammaPool with a unique address\",\"params\":{\"_salt\":\"- the bytes32 key that is unique to the GammaPool and therefore also used as a unique identifier of the GammaPool\"},\"returns\":{\"_0\":\"_address - address of GammaPool that maps to bytes32 salt (key)\"}},\"getPoolFee(address)\":{\"details\":\"Get pool fee parameters used to calculate protocol fees\",\"params\":{\"_pool\":\"- pool address identifier\"},\"returns\":{\"_isSet\":\"- bool flag, true use fee information, false use GammaSwap default fees\",\"_origMaxFee\":\"- max origination fee\",\"_origMinFee\":\"- min origination fee\",\"_protocolFee\":\"- address of CFMM the GammaPool is created for\",\"_to\":\"- address receiving fee\"}},\"getPools(uint256,uint256)\":{\"details\":\"Get list of pools from start index to end index. If it goes over index it returns up to the max size of allPools array\",\"params\":{\"end\":\"- end index of pools to search\",\"start\":\"- start index of pools to search\"},\"returns\":{\"_pools\":\"- all pools requested\"}},\"getProtocol(uint16)\":{\"details\":\"Get implementation address that maps to protocolId. This is the actual implementation code that a GammaPool implements for a protocolId\",\"params\":{\"_protocolId\":\"- id identifier of GammaPool implementation (can be thought of as version)\"},\"returns\":{\"_0\":\"_address - implementation address of GammaPool proxy contract. Because all GammaPools are created as proxy contracts\"}},\"isProtocolRestricted(uint16)\":{\"details\":\"Check if protocol is restricted. Which means only owner of GammaPoolFactory is allowed to instantiate GammaPools using this protocol\",\"params\":{\"_protocolId\":\"- id identifier of GammaPool protocol (can be thought of as version) that is being checked\"},\"returns\":{\"_0\":\"_isRestricted - true if protocol is restricted, false otherwise\"}},\"origMax()\":{\"returns\":{\"_0\":\"origMax - max origination fee charged by GammaPool to liquidity borrowers in terms of basis points\"}},\"origMin()\":{\"returns\":{\"_0\":\"origMin - min origination fee charged by GammaPool to liquidity borrowers in terms of basis points\"}},\"removeProtocol(uint16)\":{\"details\":\"Removing protocol implementation from GammaPoolFactory contract. Which means GammaPoolFactory will no longer be able to create GammaPools with this implementation (protocol)\",\"params\":{\"_protocolId\":\"- id identifier of GammaPool implementation\"}},\"setIsProtocolRestricted(uint16,bool)\":{\"details\":\"Set a protocol to be restricted or unrestricted. That means only owner of GammaPoolFactory is allowed to instantiate GammaPools using this protocol\",\"params\":{\"_isRestricted\":\"- set to true for restricted, set to false for unrestricted\",\"_protocolId\":\"- id identifier of GammaPool protocol (can be thought of as version) that is being restricted\"}},\"setPoolFee(address,address,uint16,uint24,uint24,bool)\":{\"details\":\"Set pool fee parameters used to calculate protocol fees\",\"params\":{\"_isSet\":\"- bool flag, true use fee information, false use GammaSwap default fees\",\"_origMaxFee\":\"- max origination fee\",\"_origMinFee\":\"- min origination fee\",\"_pool\":\"- id identifier of GammaPool protocol (can be thought of as version)\",\"_protocolFee\":\"- address of CFMM the GammaPool is created for\",\"_to\":\"- address receiving fee\"}}},\"title\":\"Interface for factory contract to create more GammaPool contracts.\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"addProtocol(address)\":{\"notice\":\"Only owner of GammaPoolFactory can call this function\"},\"removeProtocol(uint16)\":{\"notice\":\"Only owner of GammaPoolFactory can call this function\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolFactory.sol\":\"IGammaPoolFactory\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolFactory.sol\":{\"keccak256\":\"0xb8169429532ad037f8ab27c221d98132bdc5f815eebb16392bb51a3045b262ee\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://bf2ac76dc37238eea4d26f793da4b135e1803e46e8b14f16e8062271954dab35\",\"dweb:/ipfs/QmVseSs8jTetSTH7hxGA4E4LMqPdJNEu12d268oobGyM7M\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "pool",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint16",
+              "name": "protocolFee",
+              "type": "uint16",
+              "indexed": false
+            },
+            {
+              "internalType": "uint24",
+              "name": "origMin",
+              "type": "uint24",
+              "indexed": false
+            },
+            {
+              "internalType": "uint24",
+              "name": "origMax",
+              "type": "uint24",
+              "indexed": false
+            },
+            {
+              "internalType": "bool",
+              "name": "isSet",
+              "type": "bool",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "FeeUpdate",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "pool",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "cfmm",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint16",
+              "name": "protocolId",
+              "type": "uint16",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "implementation",
+              "type": "address",
+              "indexed": false
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokens",
+              "type": "address[]",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "count",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "PoolCreated",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_implementation",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "addProtocol"
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "allPoolsLength",
+          "outputs": [
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_protocolId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "address",
+              "name": "_cfmm",
+              "type": "address"
+            },
+            {
+              "internalType": "address[]",
+              "name": "_tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "bytes",
+              "name": "_data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "createPool",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "fee",
+          "outputs": [
+            {
+              "internalType": "uint16",
+              "name": "",
+              "type": "uint16"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "feeInfo",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "",
+              "type": "uint256"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "feeTo",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "feeToSetter",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_pool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getKey",
+          "outputs": [
+            {
+              "internalType": "bytes32",
+              "name": "",
+              "type": "bytes32"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "bytes32",
+              "name": "_salt",
+              "type": "bytes32"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getPool",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_pool",
+              "type": "address"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getPoolFee",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_protocolFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_origMinFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_origMaxFee",
+              "type": "uint256"
+            },
+            {
+              "internalType": "bool",
+              "name": "_isSet",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "start",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "end",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getPools",
+          "outputs": [
+            {
+              "internalType": "address[]",
+              "name": "_pools",
+              "type": "address[]"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_protocolId",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getProtocol",
+          "outputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_protocolId",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "isProtocolRestricted",
+          "outputs": [
+            {
+              "internalType": "bool",
+              "name": "",
+              "type": "bool"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "origMax",
+          "outputs": [
+            {
+              "internalType": "uint24",
+              "name": "",
+              "type": "uint24"
+            }
+          ]
+        },
+        {
+          "inputs": [],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "origMin",
+          "outputs": [
+            {
+              "internalType": "uint24",
+              "name": "",
+              "type": "uint24"
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_protocolId",
+              "type": "uint16"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "removeProtocol"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint16",
+              "name": "_protocolId",
+              "type": "uint16"
+            },
+            {
+              "internalType": "bool",
+              "name": "_isRestricted",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "setIsProtocolRestricted"
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_pool",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "_to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint16",
+              "name": "_protocolFee",
+              "type": "uint16"
+            },
+            {
+              "internalType": "uint24",
+              "name": "_origMinFee",
+              "type": "uint24"
+            },
+            {
+              "internalType": "uint24",
+              "name": "_origMaxFee",
+              "type": "uint24"
+            },
+            {
+              "internalType": "bool",
+              "name": "_isSet",
+              "type": "bool"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "setPoolFee"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "addProtocol(address)": {
+            "details": "Add a protocol implementation to GammaPoolFactory contract. Which means GammaPoolFactory can create GammaPools with this implementation (protocol)",
+            "params": {
+              "_implementation": "- implementation address of GammaPool proxy contract. Because all GammaPools are created as proxy contracts"
+            }
+          },
+          "allPoolsLength()": {
+            "returns": {
+              "_0": "count - number of GammaPools that have been instantiated through this GammaPoolFactory contract"
+            }
+          },
+          "createPool(uint16,address,address[],bytes)": {
+            "details": "Instantiate a new GammaPool for a CFMM based on an existing implementation (protocolId)",
+            "params": {
+              "_cfmm": "- address of CFMM the GammaPool is created for",
+              "_data": "- custom struct containing additional information used to verify the `_cfmm`",
+              "_protocolId": "- id identifier of GammaPool protocol (can be thought of as version)",
+              "_tokens": "- addresses of ERC20 tokens in CFMM, used for validation during runtime of function"
+            },
+            "returns": {
+              "_0": "_address - address of new GammaPool proxy contract that was instantiated"
+            }
+          },
+          "fee()": {
+            "returns": {
+              "_0": "fee - protocol fee charged by GammaPool to liquidity borrowers in terms of basis points"
+            }
+          },
+          "feeInfo()": {
+            "returns": {
+              "_0": "feeTo - address that receives protocol fees",
+              "_1": "fee - protocol fee charged by GammaPool to liquidity borrowers in terms of basis points"
+            }
+          },
+          "feeTo()": {
+            "returns": {
+              "_0": "feeTo - address that receives protocol fees"
+            }
+          },
+          "feeToSetter()": {
+            "returns": {
+              "_0": "feeToSetter - address that has the power to set protocol fees"
+            }
+          },
+          "getKey(address)": {
+            "details": "Mapping of bytes32 salts (key) to GammaPool addresses. The salt is predetermined and used to instantiate a GammaPool with a unique address",
+            "params": {
+              "_pool": "- address of GammaPool that maps to bytes32 salt (key)"
+            },
+            "returns": {
+              "_0": "_salt - the bytes32 key that is unique to the GammaPool and therefore also used as a unique identifier of the GammaPool"
+            }
+          },
+          "getPool(bytes32)": {
+            "details": "Mapping of bytes32 salts (key) to GammaPool addresses. The salt is predetermined and used to instantiate a GammaPool with a unique address",
+            "params": {
+              "_salt": "- the bytes32 key that is unique to the GammaPool and therefore also used as a unique identifier of the GammaPool"
+            },
+            "returns": {
+              "_0": "_address - address of GammaPool that maps to bytes32 salt (key)"
+            }
+          },
+          "getPoolFee(address)": {
+            "details": "Get pool fee parameters used to calculate protocol fees",
+            "params": {
+              "_pool": "- pool address identifier"
+            },
+            "returns": {
+              "_isSet": "- bool flag, true use fee information, false use GammaSwap default fees",
+              "_origMaxFee": "- max origination fee",
+              "_origMinFee": "- min origination fee",
+              "_protocolFee": "- address of CFMM the GammaPool is created for",
+              "_to": "- address receiving fee"
+            }
+          },
+          "getPools(uint256,uint256)": {
+            "details": "Get list of pools from start index to end index. If it goes over index it returns up to the max size of allPools array",
+            "params": {
+              "end": "- end index of pools to search",
+              "start": "- start index of pools to search"
+            },
+            "returns": {
+              "_pools": "- all pools requested"
+            }
+          },
+          "getProtocol(uint16)": {
+            "details": "Get implementation address that maps to protocolId. This is the actual implementation code that a GammaPool implements for a protocolId",
+            "params": {
+              "_protocolId": "- id identifier of GammaPool implementation (can be thought of as version)"
+            },
+            "returns": {
+              "_0": "_address - implementation address of GammaPool proxy contract. Because all GammaPools are created as proxy contracts"
+            }
+          },
+          "isProtocolRestricted(uint16)": {
+            "details": "Check if protocol is restricted. Which means only owner of GammaPoolFactory is allowed to instantiate GammaPools using this protocol",
+            "params": {
+              "_protocolId": "- id identifier of GammaPool protocol (can be thought of as version) that is being checked"
+            },
+            "returns": {
+              "_0": "_isRestricted - true if protocol is restricted, false otherwise"
+            }
+          },
+          "origMax()": {
+            "returns": {
+              "_0": "origMax - max origination fee charged by GammaPool to liquidity borrowers in terms of basis points"
+            }
+          },
+          "origMin()": {
+            "returns": {
+              "_0": "origMin - min origination fee charged by GammaPool to liquidity borrowers in terms of basis points"
+            }
+          },
+          "removeProtocol(uint16)": {
+            "details": "Removing protocol implementation from GammaPoolFactory contract. Which means GammaPoolFactory will no longer be able to create GammaPools with this implementation (protocol)",
+            "params": {
+              "_protocolId": "- id identifier of GammaPool implementation"
+            }
+          },
+          "setIsProtocolRestricted(uint16,bool)": {
+            "details": "Set a protocol to be restricted or unrestricted. That means only owner of GammaPoolFactory is allowed to instantiate GammaPools using this protocol",
+            "params": {
+              "_isRestricted": "- set to true for restricted, set to false for unrestricted",
+              "_protocolId": "- id identifier of GammaPool protocol (can be thought of as version) that is being restricted"
+            }
+          },
+          "setPoolFee(address,address,uint16,uint24,uint24,bool)": {
+            "details": "Set pool fee parameters used to calculate protocol fees",
+            "params": {
+              "_isSet": "- bool flag, true use fee information, false use GammaSwap default fees",
+              "_origMaxFee": "- max origination fee",
+              "_origMinFee": "- min origination fee",
+              "_pool": "- id identifier of GammaPool protocol (can be thought of as version)",
+              "_protocolFee": "- address of CFMM the GammaPool is created for",
+              "_to": "- address receiving fee"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "addProtocol(address)": {
+            "notice": "Only owner of GammaPoolFactory can call this function"
+          },
+          "removeProtocol(uint16)": {
+            "notice": "Only owner of GammaPoolFactory can call this function"
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolFactory.sol": "IGammaPoolFactory"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolFactory.sol": {
+        "keccak256": "0xb8169429532ad037f8ab27c221d98132bdc5f815eebb16392bb51a3045b262ee",
+        "urls": [
+          "bzz-raw://bf2ac76dc37238eea4d26f793da4b135e1803e46e8b14f16e8062271954dab35",
+          "dweb:/ipfs/QmVseSs8jTetSTH7hxGA4E4LMqPdJNEu12d268oobGyM7M"
+        ],
+        "license": "BUSL-1.1"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolFactory.sol",
+    "id": 36596,
+    "exportedSymbols": {
+      "IGammaPoolFactory": [
+        36595
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "37:7989:45",
+    "nodes": [
+      {
+        "id": 36404,
+        "nodeType": "PragmaDirective",
+        "src": "37:24:45",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 36595,
+        "nodeType": "ContractDefinition",
+        "src": "283:7743:45",
+        "nodes": [
+          {
+            "id": 36421,
+            "nodeType": "EventDefinition",
+            "src": "865:146:45",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 36406,
+              "nodeType": "StructuredDocumentation",
+              "src": "317:543:45",
+              "text": "@dev Event emitted when a new GammaPool is instantiated\n @param pool - address of new pool that is created\n @param cfmm - address of CFMM the GammaPool is created for\n @param protocolId - id identifier of GammaPool protocol (can be thought of as version)\n @param implementation - implementation address of GammaPool proxy contract. Because all GammaPools are created as proxy contracts\n @param tokens - ERC20 tokens of CFMM\n @param count - number of GammaPools instantiated including this contract"
+            },
+            "eventSelector": "0602b4d2a860b0800227fff13d2c7fa8d3457e5e7baa8d9136831cff34bedec6",
+            "name": "PoolCreated",
+            "nameLocation": "871:11:45",
+            "parameters": {
+              "id": 36420,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36408,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "899:4:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36421,
+                  "src": "883:20:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36407,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "883:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36410,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "cfmm",
+                  "nameLocation": "921:4:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36421,
+                  "src": "905:20:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36409,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "905:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36412,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "protocolId",
+                  "nameLocation": "942:10:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36421,
+                  "src": "927:25:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 36411,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "927:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36414,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "implementation",
+                  "nameLocation": "962:14:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36421,
+                  "src": "954:22:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36413,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "954:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36417,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "tokens",
+                  "nameLocation": "988:6:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36421,
+                  "src": "978:16:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                    "typeString": "address[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 36415,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "978:7:45",
+                      "stateMutability": "nonpayable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "id": 36416,
+                    "nodeType": "ArrayTypeName",
+                    "src": "978:9:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                      "typeString": "address[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36419,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "count",
+                  "nameLocation": "1004:5:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36421,
+                  "src": "996:13:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36418,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "996:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "882:128:45"
+            }
+          },
+          {
+            "id": 36436,
+            "nodeType": "EventDefinition",
+            "src": "1432:122:45",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 36422,
+              "nodeType": "StructuredDocumentation",
+              "src": "1017:410:45",
+              "text": "@dev Event emitted when a GammaPool fee is updated\n @param pool - address of new pool whose fee is updated (zero address is default params)\n @return protocolFee - address of CFMM the GammaPool is created for\n @return origMin - min origination fee\n @return origMax - max origination fee\n @param isSet - bool flag, true use fee information, false use GammaSwap default fees"
+            },
+            "eventSelector": "9a3097937862f661f64471829bfe4416590fccb7bc935506c248261cdc2563ac",
+            "name": "FeeUpdate",
+            "nameLocation": "1438:9:45",
+            "parameters": {
+              "id": 36435,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36424,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "1464:4:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36436,
+                  "src": "1448:20:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36423,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1448:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36426,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "to",
+                  "nameLocation": "1486:2:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36436,
+                  "src": "1470:18:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36425,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1470:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36428,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "protocolFee",
+                  "nameLocation": "1497:11:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36436,
+                  "src": "1490:18:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 36427,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1490:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36430,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "origMin",
+                  "nameLocation": "1517:7:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36436,
+                  "src": "1510:14:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint24",
+                    "typeString": "uint24"
+                  },
+                  "typeName": {
+                    "id": 36429,
+                    "name": "uint24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1510:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint24",
+                      "typeString": "uint24"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36432,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "origMax",
+                  "nameLocation": "1533:7:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36436,
+                  "src": "1526:14:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint24",
+                    "typeString": "uint24"
+                  },
+                  "typeName": {
+                    "id": 36431,
+                    "name": "uint24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1526:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint24",
+                      "typeString": "uint24"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36434,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "isSet",
+                  "nameLocation": "1547:5:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36436,
+                  "src": "1542:10:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 36433,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1542:4:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1447:106:45"
+            }
+          },
+          {
+            "id": 36444,
+            "nodeType": "FunctionDefinition",
+            "src": "1904:78:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36437,
+              "nodeType": "StructuredDocumentation",
+              "src": "1560:339:45",
+              "text": "@dev Check if protocol is restricted. Which means only owner of GammaPoolFactory is allowed to instantiate GammaPools using this protocol\n @param _protocolId - id identifier of GammaPool protocol (can be thought of as version) that is being checked\n @return _isRestricted - true if protocol is restricted, false otherwise"
+            },
+            "functionSelector": "d7d1e126",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "isProtocolRestricted",
+            "nameLocation": "1913:20:45",
+            "parameters": {
+              "id": 36440,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36439,
+                  "mutability": "mutable",
+                  "name": "_protocolId",
+                  "nameLocation": "1941:11:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36444,
+                  "src": "1934:18:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 36438,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1934:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1933:20:45"
+            },
+            "returnParameters": {
+              "id": 36443,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36442,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36444,
+                  "src": "1976:4:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 36441,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1976:4:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1975:6:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36452,
+            "nodeType": "FunctionDefinition",
+            "src": "2359:82:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36445,
+              "nodeType": "StructuredDocumentation",
+              "src": "1988:366:45",
+              "text": "@dev Set a protocol to be restricted or unrestricted. That means only owner of GammaPoolFactory is allowed to instantiate GammaPools using this protocol\n @param _protocolId - id identifier of GammaPool protocol (can be thought of as version) that is being restricted\n @param _isRestricted - set to true for restricted, set to false for unrestricted"
+            },
+            "functionSelector": "b3d5d66b",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setIsProtocolRestricted",
+            "nameLocation": "2368:23:45",
+            "parameters": {
+              "id": 36450,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36447,
+                  "mutability": "mutable",
+                  "name": "_protocolId",
+                  "nameLocation": "2399:11:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36452,
+                  "src": "2392:18:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 36446,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2392:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36449,
+                  "mutability": "mutable",
+                  "name": "_isRestricted",
+                  "nameLocation": "2417:13:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36452,
+                  "src": "2412:18:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 36448,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2412:4:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2391:40:45"
+            },
+            "returnParameters": {
+              "id": 36451,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2440:0:45"
+            },
+            "scope": 36595,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36458,
+            "nodeType": "FunctionDefinition",
+            "src": "2816:55:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36453,
+              "nodeType": "StructuredDocumentation",
+              "src": "2447:364:45",
+              "text": "@notice Only owner of GammaPoolFactory can call this function\n @dev Add a protocol implementation to GammaPoolFactory contract. Which means GammaPoolFactory can create GammaPools with this implementation (protocol)\n @param _implementation - implementation address of GammaPool proxy contract. Because all GammaPools are created as proxy contracts"
+            },
+            "functionSelector": "771d4c28",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "addProtocol",
+            "nameLocation": "2825:11:45",
+            "parameters": {
+              "id": 36456,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36455,
+                  "mutability": "mutable",
+                  "name": "_implementation",
+                  "nameLocation": "2845:15:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36458,
+                  "src": "2837:23:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36454,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "2837:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "2836:25:45"
+            },
+            "returnParameters": {
+              "id": 36457,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "2870:0:45"
+            },
+            "scope": 36595,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36464,
+            "nodeType": "FunctionDefinition",
+            "src": "3205:53:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36459,
+              "nodeType": "StructuredDocumentation",
+              "src": "2877:323:45",
+              "text": "@notice Only owner of GammaPoolFactory can call this function\n @dev Removing protocol implementation from GammaPoolFactory contract. Which means GammaPoolFactory will no longer be able to create GammaPools with this implementation (protocol)\n @param _protocolId - id identifier of GammaPool implementation"
+            },
+            "functionSelector": "466e0c0a",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "removeProtocol",
+            "nameLocation": "3214:14:45",
+            "parameters": {
+              "id": 36462,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36461,
+                  "mutability": "mutable",
+                  "name": "_protocolId",
+                  "nameLocation": "3236:11:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36464,
+                  "src": "3229:18:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 36460,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3229:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3228:20:45"
+            },
+            "returnParameters": {
+              "id": 36463,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "3257:0:45"
+            },
+            "scope": 36595,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36472,
+            "nodeType": "FunctionDefinition",
+            "src": "3648:73:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36465,
+              "nodeType": "StructuredDocumentation",
+              "src": "3264:379:45",
+              "text": "@dev Get implementation address that maps to protocolId. This is the actual implementation code that a GammaPool implements for a protocolId\n @param _protocolId - id identifier of GammaPool implementation (can be thought of as version)\n @return _address - implementation address of GammaPool proxy contract. Because all GammaPools are created as proxy contracts"
+            },
+            "functionSelector": "d2c7c2a4",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getProtocol",
+            "nameLocation": "3657:11:45",
+            "parameters": {
+              "id": 36468,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36467,
+                  "mutability": "mutable",
+                  "name": "_protocolId",
+                  "nameLocation": "3676:11:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36472,
+                  "src": "3669:18:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 36466,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3669:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3668:20:45"
+            },
+            "returnParameters": {
+              "id": 36471,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36470,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36472,
+                  "src": "3712:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36469,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "3712:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "3711:9:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36487,
+            "nodeType": "FunctionDefinition",
+            "src": "4286:131:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36473,
+              "nodeType": "StructuredDocumentation",
+              "src": "3727:554:45",
+              "text": "@dev Instantiate a new GammaPool for a CFMM based on an existing implementation (protocolId)\n @param _protocolId - id identifier of GammaPool protocol (can be thought of as version)\n @param _cfmm - address of CFMM the GammaPool is created for\n @param _tokens - addresses of ERC20 tokens in CFMM, used for validation during runtime of function\n @param _data - custom struct containing additional information used to verify the `_cfmm`\n @return _address - address of new GammaPool proxy contract that was instantiated"
+            },
+            "functionSelector": "f4bff5f1",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "createPool",
+            "nameLocation": "4295:10:45",
+            "parameters": {
+              "id": 36483,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36475,
+                  "mutability": "mutable",
+                  "name": "_protocolId",
+                  "nameLocation": "4313:11:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36487,
+                  "src": "4306:18:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 36474,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4306:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36477,
+                  "mutability": "mutable",
+                  "name": "_cfmm",
+                  "nameLocation": "4334:5:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36487,
+                  "src": "4326:13:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36476,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4326:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36480,
+                  "mutability": "mutable",
+                  "name": "_tokens",
+                  "nameLocation": "4360:7:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36487,
+                  "src": "4341:26:45",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_calldata_ptr",
+                    "typeString": "address[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 36478,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "4341:7:45",
+                      "stateMutability": "nonpayable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "id": 36479,
+                    "nodeType": "ArrayTypeName",
+                    "src": "4341:9:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                      "typeString": "address[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36482,
+                  "mutability": "mutable",
+                  "name": "_data",
+                  "nameLocation": "4384:5:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36487,
+                  "src": "4369:20:45",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 36481,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4369:5:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4305:85:45"
+            },
+            "returnParameters": {
+              "id": 36486,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36485,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36487,
+                  "src": "4408:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36484,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4408:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4407:9:45"
+            },
+            "scope": 36595,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36495,
+            "nodeType": "FunctionDefinition",
+            "src": "4790:63:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36488,
+              "nodeType": "StructuredDocumentation",
+              "src": "4423:362:45",
+              "text": "@dev Mapping of bytes32 salts (key) to GammaPool addresses. The salt is predetermined and used to instantiate a GammaPool with a unique address\n @param _salt - the bytes32 key that is unique to the GammaPool and therefore also used as a unique identifier of the GammaPool\n @return _address - address of GammaPool that maps to bytes32 salt (key)"
+            },
+            "functionSelector": "f6c00927",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getPool",
+            "nameLocation": "4799:7:45",
+            "parameters": {
+              "id": 36491,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36490,
+                  "mutability": "mutable",
+                  "name": "_salt",
+                  "nameLocation": "4815:5:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36495,
+                  "src": "4807:13:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 36489,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4807:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4806:15:45"
+            },
+            "returnParameters": {
+              "id": 36494,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36493,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36495,
+                  "src": "4844:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36492,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "4844:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "4843:9:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36503,
+            "nodeType": "FunctionDefinition",
+            "src": "5223:62:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36496,
+              "nodeType": "StructuredDocumentation",
+              "src": "4859:359:45",
+              "text": "@dev Mapping of bytes32 salts (key) to GammaPool addresses. The salt is predetermined and used to instantiate a GammaPool with a unique address\n @param _pool - address of GammaPool that maps to bytes32 salt (key)\n @return _salt - the bytes32 key that is unique to the GammaPool and therefore also used as a unique identifier of the GammaPool"
+            },
+            "functionSelector": "93790f44",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getKey",
+            "nameLocation": "5232:6:45",
+            "parameters": {
+              "id": 36499,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36498,
+                  "mutability": "mutable",
+                  "name": "_pool",
+                  "nameLocation": "5247:5:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36503,
+                  "src": "5239:13:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36497,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5239:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5238:15:45"
+            },
+            "returnParameters": {
+              "id": 36502,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36501,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36503,
+                  "src": "5276:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes32",
+                    "typeString": "bytes32"
+                  },
+                  "typeName": {
+                    "id": 36500,
+                    "name": "bytes32",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5276:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes32",
+                      "typeString": "bytes32"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5275:9:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36509,
+            "nodeType": "FunctionDefinition",
+            "src": "5403:58:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36504,
+              "nodeType": "StructuredDocumentation",
+              "src": "5291:107:45",
+              "text": "@return count - number of GammaPools that have been instantiated through this GammaPoolFactory contract"
+            },
+            "functionSelector": "efde4e64",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "allPoolsLength",
+            "nameLocation": "5412:14:45",
+            "parameters": {
+              "id": 36505,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "5426:2:45"
+            },
+            "returnParameters": {
+              "id": 36508,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36507,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36509,
+                  "src": "5452:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36506,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5452:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5451:9:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36525,
+            "nodeType": "FunctionDefinition",
+            "src": "5898:148:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36510,
+              "nodeType": "StructuredDocumentation",
+              "src": "5467:426:45",
+              "text": "@dev Get pool fee parameters used to calculate protocol fees\n @param _pool - pool address identifier\n @return _to - address receiving fee\n @return _protocolFee - address of CFMM the GammaPool is created for\n @return _origMinFee - min origination fee\n @return _origMaxFee - max origination fee\n @return _isSet - bool flag, true use fee information, false use GammaSwap default fees"
+            },
+            "functionSelector": "42fcc6fb",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getPoolFee",
+            "nameLocation": "5907:10:45",
+            "parameters": {
+              "id": 36513,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36512,
+                  "mutability": "mutable",
+                  "name": "_pool",
+                  "nameLocation": "5926:5:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36525,
+                  "src": "5918:13:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36511,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5918:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5917:15:45"
+            },
+            "returnParameters": {
+              "id": 36524,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36515,
+                  "mutability": "mutable",
+                  "name": "_to",
+                  "nameLocation": "5964:3:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36525,
+                  "src": "5956:11:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36514,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5956:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36517,
+                  "mutability": "mutable",
+                  "name": "_protocolFee",
+                  "nameLocation": "5977:12:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36525,
+                  "src": "5969:20:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36516,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5969:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36519,
+                  "mutability": "mutable",
+                  "name": "_origMinFee",
+                  "nameLocation": "5999:11:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36525,
+                  "src": "5991:19:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36518,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "5991:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36521,
+                  "mutability": "mutable",
+                  "name": "_origMaxFee",
+                  "nameLocation": "6020:11:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36525,
+                  "src": "6012:19:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36520,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6012:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36523,
+                  "mutability": "mutable",
+                  "name": "_isSet",
+                  "nameLocation": "6038:6:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36525,
+                  "src": "6033:11:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 36522,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6033:4:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "5955:90:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36541,
+            "nodeType": "FunctionDefinition",
+            "src": "6521:131:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36526,
+              "nodeType": "StructuredDocumentation",
+              "src": "6052:464:45",
+              "text": "@dev Set pool fee parameters used to calculate protocol fees\n @param _pool - id identifier of GammaPool protocol (can be thought of as version)\n @param _to - address receiving fee\n @param _protocolFee - address of CFMM the GammaPool is created for\n @param _origMinFee - min origination fee\n @param _origMaxFee - max origination fee\n @param _isSet - bool flag, true use fee information, false use GammaSwap default fees"
+            },
+            "functionSelector": "02b764ad",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "setPoolFee",
+            "nameLocation": "6530:10:45",
+            "parameters": {
+              "id": 36539,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36528,
+                  "mutability": "mutable",
+                  "name": "_pool",
+                  "nameLocation": "6549:5:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36541,
+                  "src": "6541:13:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36527,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6541:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36530,
+                  "mutability": "mutable",
+                  "name": "_to",
+                  "nameLocation": "6564:3:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36541,
+                  "src": "6556:11:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36529,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6556:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36532,
+                  "mutability": "mutable",
+                  "name": "_protocolFee",
+                  "nameLocation": "6576:12:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36541,
+                  "src": "6569:19:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 36531,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6569:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36534,
+                  "mutability": "mutable",
+                  "name": "_origMinFee",
+                  "nameLocation": "6597:11:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36541,
+                  "src": "6590:18:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint24",
+                    "typeString": "uint24"
+                  },
+                  "typeName": {
+                    "id": 36533,
+                    "name": "uint24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6590:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint24",
+                      "typeString": "uint24"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36536,
+                  "mutability": "mutable",
+                  "name": "_origMaxFee",
+                  "nameLocation": "6617:11:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36541,
+                  "src": "6610:18:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint24",
+                    "typeString": "uint24"
+                  },
+                  "typeName": {
+                    "id": 36535,
+                    "name": "uint24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6610:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint24",
+                      "typeString": "uint24"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36538,
+                  "mutability": "mutable",
+                  "name": "_isSet",
+                  "nameLocation": "6635:6:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36541,
+                  "src": "6630:11:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bool",
+                    "typeString": "bool"
+                  },
+                  "typeName": {
+                    "id": 36537,
+                    "name": "bool",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6630:4:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bool",
+                      "typeString": "bool"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6540:102:45"
+            },
+            "returnParameters": {
+              "id": 36540,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "6651:0:45"
+            },
+            "scope": 36595,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36547,
+            "nodeType": "FunctionDefinition",
+            "src": "6762:45:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36542,
+              "nodeType": "StructuredDocumentation",
+              "src": "6658:99:45",
+              "text": "@return fee - protocol fee charged by GammaPool to liquidity borrowers in terms of basis points"
+            },
+            "functionSelector": "ddca3f43",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "fee",
+            "nameLocation": "6771:3:45",
+            "parameters": {
+              "id": 36543,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "6774:2:45"
+            },
+            "returnParameters": {
+              "id": 36546,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36545,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36547,
+                  "src": "6799:6:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  },
+                  "typeName": {
+                    "id": 36544,
+                    "name": "uint16",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6799:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint16",
+                      "typeString": "uint16"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6798:8:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36553,
+            "nodeType": "FunctionDefinition",
+            "src": "6928:49:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36548,
+              "nodeType": "StructuredDocumentation",
+              "src": "6813:110:45",
+              "text": "@return origMin - min origination fee charged by GammaPool to liquidity borrowers in terms of basis points"
+            },
+            "functionSelector": "84915e7f",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "origMin",
+            "nameLocation": "6937:7:45",
+            "parameters": {
+              "id": 36549,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "6944:2:45"
+            },
+            "returnParameters": {
+              "id": 36552,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36551,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36553,
+                  "src": "6969:6:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint24",
+                    "typeString": "uint24"
+                  },
+                  "typeName": {
+                    "id": 36550,
+                    "name": "uint24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "6969:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint24",
+                      "typeString": "uint24"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "6968:8:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36559,
+            "nodeType": "FunctionDefinition",
+            "src": "7098:49:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36554,
+              "nodeType": "StructuredDocumentation",
+              "src": "6983:110:45",
+              "text": "@return origMax - max origination fee charged by GammaPool to liquidity borrowers in terms of basis points"
+            },
+            "functionSelector": "07746e25",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "origMax",
+            "nameLocation": "7107:7:45",
+            "parameters": {
+              "id": 36555,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "7114:2:45"
+            },
+            "returnParameters": {
+              "id": 36558,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36557,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36559,
+                  "src": "7139:6:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint24",
+                    "typeString": "uint24"
+                  },
+                  "typeName": {
+                    "id": 36556,
+                    "name": "uint24",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7139:6:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint24",
+                      "typeString": "uint24"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7138:8:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36565,
+            "nodeType": "FunctionDefinition",
+            "src": "7213:48:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36560,
+              "nodeType": "StructuredDocumentation",
+              "src": "7153:55:45",
+              "text": "@return feeTo - address that receives protocol fees"
+            },
+            "functionSelector": "017e7e58",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "feeTo",
+            "nameLocation": "7222:5:45",
+            "parameters": {
+              "id": 36561,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "7227:2:45"
+            },
+            "returnParameters": {
+              "id": 36564,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36563,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36565,
+                  "src": "7252:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36562,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7252:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7251:9:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36571,
+            "nodeType": "FunctionDefinition",
+            "src": "7345:54:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36566,
+              "nodeType": "StructuredDocumentation",
+              "src": "7267:73:45",
+              "text": "@return feeToSetter - address that has the power to set protocol fees"
+            },
+            "functionSelector": "094b7415",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "feeToSetter",
+            "nameLocation": "7354:11:45",
+            "parameters": {
+              "id": 36567,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "7365:2:45"
+            },
+            "returnParameters": {
+              "id": 36570,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36569,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36571,
+                  "src": "7390:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36568,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7390:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7389:9:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36583,
+            "nodeType": "FunctionDefinition",
+            "src": "7569:74:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36572,
+              "nodeType": "StructuredDocumentation",
+              "src": "7405:159:45",
+              "text": "@return feeTo - address that receives protocol fees\n @return fee - protocol fee charged by GammaPool to liquidity borrowers in terms of basis points"
+            },
+            "functionSelector": "995b5aae",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "feeInfo",
+            "nameLocation": "7578:7:45",
+            "parameters": {
+              "id": 36573,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "7585:2:45"
+            },
+            "returnParameters": {
+              "id": 36582,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36575,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36583,
+                  "src": "7610:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 36574,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7610:7:45",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36577,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36583,
+                  "src": "7618:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36576,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7618:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36579,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36583,
+                  "src": "7626:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36578,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7626:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36581,
+                  "mutability": "mutable",
+                  "name": "",
+                  "nameLocation": "-1:-1:-1",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36583,
+                  "src": "7634:7:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36580,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7634:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7609:33:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 36594,
+            "nodeType": "FunctionDefinition",
+            "src": "7930:93:45",
+            "nodes": [],
+            "documentation": {
+              "id": 36584,
+              "nodeType": "StructuredDocumentation",
+              "src": "7649:276:45",
+              "text": "@dev Get list of pools from start index to end index. If it goes over index it returns up to the max size of allPools array\n @param start - start index of pools to search\n @param end - end index of pools to search\n @return _pools - all pools requested"
+            },
+            "functionSelector": "bbe95837",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getPools",
+            "nameLocation": "7939:8:45",
+            "parameters": {
+              "id": 36589,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36586,
+                  "mutability": "mutable",
+                  "name": "start",
+                  "nameLocation": "7956:5:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36594,
+                  "src": "7948:13:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36585,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7948:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 36588,
+                  "mutability": "mutable",
+                  "name": "end",
+                  "nameLocation": "7971:3:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36594,
+                  "src": "7963:11:45",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 36587,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "7963:7:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7947:28:45"
+            },
+            "returnParameters": {
+              "id": 36593,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 36592,
+                  "mutability": "mutable",
+                  "name": "_pools",
+                  "nameLocation": "8015:6:45",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 36594,
+                  "src": "7998:23:45",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_memory_ptr",
+                    "typeString": "address[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 36590,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "7998:7:45",
+                      "stateMutability": "nonpayable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "id": 36591,
+                    "nodeType": "ArrayTypeName",
+                    "src": "7998:9:45",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                      "typeString": "address[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "7997:25:45"
+            },
+            "scope": 36595,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IGammaPoolFactory",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 36405,
+          "nodeType": "StructuredDocumentation",
+          "src": "63:220:45",
+          "text": "@title Interface for factory contract to create more GammaPool contracts.\n @author Daniel D. Alcarraz (https://github.com/0xDanr)\n @dev All instantiated GammaPoolFactory contracts must implement this interface"
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          36595
+        ],
+        "name": "IGammaPoolFactory",
+        "nameLocation": "293:17:45",
+        "scope": 36596,
+        "usedErrors": []
+      }
+    ],
+    "license": "BUSL-1.1"
+  },
+  "id": 45
+}

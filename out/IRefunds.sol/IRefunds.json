@@ -1,0 +1,297 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "token",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "minAmt",
+          "type": "uint256"
+        }
+      ],
+      "name": "clearToken",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "clearToken(address,address,uint256)": "ccbe764a"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"token\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"minAmt\",\"type\":\"uint256\"}],\"name\":\"clearToken\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Daniel D. Alcarraz (https://github.com/0xDanr)\",\"details\":\"Interface used to clear tokens from a contract\",\"kind\":\"dev\",\"methods\":{\"clearToken(address,address,uint256)\":{\"details\":\"Withdraw ERC20 tokens from contract\",\"params\":{\"minAmt\":\"- threshold balance before token can be withdrawn\",\"to\":\"- destination address where withdrawn quantity will be sent to\",\"token\":\"- address of ERC20 token that will be withdrawn\"}}},\"title\":\"Interface for Refunds abstract contract\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/IRefunds.sol\":\"IRefunds\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/IRefunds.sol\":{\"keccak256\":\"0x63384a51a8d82810f13b4a41a748b31bdba9f91ce19698d94af6dd2db13d6cf5\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://f00bd9e892b38391b7231c28afc02260ab18af0cd274a9d410a7a41da3567a8d\",\"dweb:/ipfs/QmWK7rH2bq9okVbEECJNHy2dBQzot6Fn8Cdq26o1bUc61m\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "token",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "minAmt",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "clearToken"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "clearToken(address,address,uint256)": {
+            "details": "Withdraw ERC20 tokens from contract",
+            "params": {
+              "minAmt": "- threshold balance before token can be withdrawn",
+              "to": "- destination address where withdrawn quantity will be sent to",
+              "token": "- address of ERC20 token that will be withdrawn"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "node_modules/@gammaswap/v1-core/contracts/interfaces/IRefunds.sol": "IRefunds"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/IRefunds.sol": {
+        "keccak256": "0x63384a51a8d82810f13b4a41a748b31bdba9f91ce19698d94af6dd2db13d6cf5",
+        "urls": [
+          "bzz-raw://f00bd9e892b38391b7231c28afc02260ab18af0cd274a9d410a7a41da3567a8d",
+          "dweb:/ipfs/QmWK7rH2bq9okVbEECJNHy2dBQzot6Fn8Cdq26o1bUc61m"
+        ],
+        "license": "BUSL-1.1"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/IRefunds.sol",
+    "id": 37343,
+    "exportedSymbols": {
+      "IRefunds": [
+        37342
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "37:563:51",
+    "nodes": [
+      {
+        "id": 37330,
+        "nodeType": "PragmaDirective",
+        "src": "37:24:51",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 37342,
+        "nodeType": "ContractDefinition",
+        "src": "229:370:51",
+        "nodes": [
+          {
+            "id": 37341,
+            "nodeType": "FunctionDefinition",
+            "src": "525:72:51",
+            "nodes": [],
+            "documentation": {
+              "id": 37332,
+              "nodeType": "StructuredDocumentation",
+              "src": "254:266:51",
+              "text": "@dev Withdraw ERC20 tokens from contract\n @param token - address of ERC20 token that will be withdrawn\n @param to - destination address where withdrawn quantity will be sent to\n @param minAmt - threshold balance before token can be withdrawn"
+            },
+            "functionSelector": "ccbe764a",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "clearToken",
+            "nameLocation": "534:10:51",
+            "parameters": {
+              "id": 37339,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 37334,
+                  "mutability": "mutable",
+                  "name": "token",
+                  "nameLocation": "553:5:51",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37341,
+                  "src": "545:13:51",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37333,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "545:7:51",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37336,
+                  "mutability": "mutable",
+                  "name": "to",
+                  "nameLocation": "568:2:51",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37341,
+                  "src": "560:10:51",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37335,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "560:7:51",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37338,
+                  "mutability": "mutable",
+                  "name": "minAmt",
+                  "nameLocation": "580:6:51",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37341,
+                  "src": "572:14:51",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 37337,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "572:7:51",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "544:43:51"
+            },
+            "returnParameters": {
+              "id": 37340,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "596:0:51"
+            },
+            "scope": 37342,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IRefunds",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 37331,
+          "nodeType": "StructuredDocumentation",
+          "src": "63:166:51",
+          "text": "@title Interface for Refunds abstract contract\n @author Daniel D. Alcarraz (https://github.com/0xDanr)\n @dev Interface used to clear tokens from a contract"
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          37342
+        ],
+        "name": "IRefunds",
+        "nameLocation": "239:8:51",
+        "scope": 37343,
+        "usedErrors": []
+      }
+    ],
+    "license": "BUSL-1.1"
+  },
+  "id": 51
+}

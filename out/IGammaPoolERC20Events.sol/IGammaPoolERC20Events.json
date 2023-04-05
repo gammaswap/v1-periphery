@@ -1,0 +1,441 @@
+{
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "spender",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "Approval",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "from",
+          "type": "address"
+        },
+        {
+          "indexed": true,
+          "internalType": "address",
+          "name": "to",
+          "type": "address"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "amount",
+          "type": "uint256"
+        }
+      ],
+      "name": "Transfer",
+      "type": "event"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {},
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"spender\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Approval\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"address\",\"name\":\"from\",\"type\":\"address\"},{\"indexed\":true,\"internalType\":\"address\",\"name\":\"to\",\"type\":\"address\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"amount\",\"type\":\"uint256\"}],\"name\":\"Transfer\",\"type\":\"event\"}],\"devdoc\":{\"author\":\"Daniel D. Alcarraz (https://github.com/0xDanr)\",\"details\":\"Events that should be emitted by all strategy implementations (root of all strategy events interfaces)\",\"events\":{\"Approval(address,address,uint256)\":{\"details\":\"Emitted when the allowance of a `spender` for an `owner` is set by a call to approve function. `amount` is the new allowance.\",\"params\":{\"amount\":\"- amount of GS LP tokens spender is given permission to spend\",\"owner\":\"- address which owns the GS LP tokens spender is being given permission to spend\",\"spender\":\"- address given permission to spend owner's GS LP tokens\"}},\"Transfer(address,address,uint256)\":{\"details\":\"Emitted when `amount` GS LP tokens are moved from account `from` to account `to`.\",\"params\":{\"amount\":\"- amount of GS LP tokens being sent\",\"from\":\"- address sending GS LP tokens\",\"to\":\"- address receiving GS LP tokens\"}}},\"kind\":\"dev\",\"methods\":{},\"title\":\"GammaPool ERC20 Events\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IGammaPoolERC20Events.sol\":\"IGammaPoolERC20Events\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IGammaPoolERC20Events.sol\":{\"keccak256\":\"0x9f71a686b572cb99dcf28c87fdbeaf513ec37b0b2a1eea7a442bbfef7e96c466\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://ebef3809901f949160b180bbb7206832b4771fa3028c18f76eb6db0c5c6343bc\",\"dweb:/ipfs/QmRxxzNAuH8JhCjRTX2UtdmRd2DkKUMqxmm8Vga85cRQRL\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "spender",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Approval",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "from",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "address",
+              "name": "to",
+              "type": "address",
+              "indexed": true
+            },
+            {
+              "internalType": "uint256",
+              "name": "amount",
+              "type": "uint256",
+              "indexed": false
+            }
+          ],
+          "type": "event",
+          "name": "Transfer",
+          "anonymous": false
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IGammaPoolERC20Events.sol": "IGammaPoolERC20Events"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IGammaPoolERC20Events.sol": {
+        "keccak256": "0x9f71a686b572cb99dcf28c87fdbeaf513ec37b0b2a1eea7a442bbfef7e96c466",
+        "urls": [
+          "bzz-raw://ebef3809901f949160b180bbb7206832b4771fa3028c18f76eb6db0c5c6343bc",
+          "dweb:/ipfs/QmRxxzNAuH8JhCjRTX2UtdmRd2DkKUMqxmm8Vga85cRQRL"
+        ],
+        "license": "BUSL-1.1"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IGammaPoolERC20Events.sol",
+    "id": 37415,
+    "exportedSymbols": {
+      "IGammaPoolERC20Events": [
+        37414
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "37:1090:54",
+    "nodes": [
+      {
+        "id": 37394,
+        "nodeType": "PragmaDirective",
+        "src": "37:24:54",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 37414,
+        "nodeType": "ContractDefinition",
+        "src": "268:858:54",
+        "nodes": [
+          {
+            "id": 37404,
+            "nodeType": "EventDefinition",
+            "src": "561:73:54",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 37396,
+              "nodeType": "StructuredDocumentation",
+              "src": "306:250:54",
+              "text": "@dev Emitted when `amount` GS LP tokens are moved from account `from` to account `to`.\n @param from - address sending GS LP tokens\n @param to - address receiving GS LP tokens\n @param amount - amount of GS LP tokens being sent"
+            },
+            "eventSelector": "ddf252ad1be2c89b69c2b068fc378daa952ba7f163c4a11628f55a4df523b3ef",
+            "name": "Transfer",
+            "nameLocation": "567:8:54",
+            "parameters": {
+              "id": 37403,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 37398,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "from",
+                  "nameLocation": "592:4:54",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37404,
+                  "src": "576:20:54",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37397,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "576:7:54",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37400,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "to",
+                  "nameLocation": "614:2:54",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37404,
+                  "src": "598:18:54",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37399,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "598:7:54",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37402,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nameLocation": "626:6:54",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37404,
+                  "src": "618:14:54",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 37401,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "618:7:54",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "575:58:54"
+            }
+          },
+          {
+            "id": 37413,
+            "nodeType": "EventDefinition",
+            "src": "1045:79:54",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 37405,
+              "nodeType": "StructuredDocumentation",
+              "src": "640:400:54",
+              "text": "@dev Emitted when the allowance of a `spender` for an `owner` is set by a call to approve function. `amount` is the new allowance.\n @param owner - address which owns the GS LP tokens spender is being given permission to spend\n @param spender - address given permission to spend owner's GS LP tokens\n @param amount - amount of GS LP tokens spender is given permission to spend"
+            },
+            "eventSelector": "8c5be1e5ebec7d5bd14f71427d1e84f3dd0314c0f7b2291e5b200ac8c7c3b925",
+            "name": "Approval",
+            "nameLocation": "1051:8:54",
+            "parameters": {
+              "id": 37412,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 37407,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "owner",
+                  "nameLocation": "1076:5:54",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37413,
+                  "src": "1060:21:54",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37406,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1060:7:54",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37409,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "spender",
+                  "nameLocation": "1099:7:54",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37413,
+                  "src": "1083:23:54",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37408,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1083:7:54",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37411,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "amount",
+                  "nameLocation": "1116:6:54",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37413,
+                  "src": "1108:14:54",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 37410,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1108:7:54",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1059:64:54"
+            }
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IGammaPoolERC20Events",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 37395,
+          "nodeType": "StructuredDocumentation",
+          "src": "63:205:54",
+          "text": "@title GammaPool ERC20 Events\n @author Daniel D. Alcarraz (https://github.com/0xDanr)\n @dev Events that should be emitted by all strategy implementations (root of all strategy events interfaces)"
+        },
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          37414
+        ],
+        "name": "IGammaPoolERC20Events",
+        "nameLocation": "278:21:54",
+        "scope": 37415,
+        "usedErrors": []
+      }
+    ],
+    "license": "BUSL-1.1"
+  },
+  "id": 54
+}

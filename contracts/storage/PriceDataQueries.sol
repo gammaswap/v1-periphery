@@ -6,18 +6,15 @@ import "../interfaces/IPriceDataQueries.sol";
 
 contract PriceDataQueries is IPriceDataQueries, PriceStore {
 
-    /// @dev address of GammaPool factory contract
-    address private immutable factory;
-
     uint256 public BLOCKS_PER_YEAR;
 
-    /// @dev Initializes the contract by setting `_factory`, `_owner`, `_maxLen`, and `_frequency`.
-    constructor(address _factory, address _owner, uint256 _maxLen, uint256 _frequency) PriceStore(_owner, _maxLen, _frequency) {
-        factory = _factory;
+    /// @dev Initializes the contract by setting `_owner`, `_maxLen`, and `_frequency`.
+    constructor(address _owner, uint256 _maxLen, uint256 _frequency) PriceStore(_owner, _maxLen, _frequency) {
     }
 
     /// @dev See {IPriceDataQueries-getTimeSeries}.
     function getTimeSeries(address pool, uint256 _frequency) external virtual override view returns(TimeSeriesData memory _data) {
+        require(_frequency >= 1 || _frequency <= 24, "FREQUENCY");
         uint256 _firstIdx;
         uint256 _size;
         {
@@ -28,18 +25,24 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
                 return _data;
             } else if(len >= _maxLen) {
                 _size = _maxLen;
-                _firstIdx = len - _maxLen;
+                unchecked{
+                    _firstIdx = len - _maxLen;
+                }
             }
-            uint256 divisor;
-            (_frequency, divisor) = getFrequency(_frequency);
-            _data = createTimeSeriesData(_size, _size / divisor);
+            _data = createTimeSeriesData(_size, _size / _frequency);
+            unchecked{
+                _frequency = _frequency * (1 hours);
+            }
         }
         uint256 accFeeIndex;
         uint256 blockNumber;
         uint256 _nextTimestamp;
         uint256 j = 0;
         uint256 k = 0;
-        for(uint256 i = _firstIdx; i < _firstIdx + _size;) { // hourly
+        unchecked{
+            _size = _firstIdx + _size;
+        }
+        for(uint256 i = _firstIdx; i < _size;) {
             PriceInfo memory info = timeSeries[pool][i];
             _data.rawData[j] = createRawData(info);
             if(i == _firstIdx) {
@@ -60,7 +63,9 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
                         }
                     }
                     uint256 lastTimestamp = _frequency * info.timestamp / _frequency;
-                    _nextTimestamp = lastTimestamp + _frequency;
+                    unchecked{
+                        _nextTimestamp = lastTimestamp + _frequency;
+                    }
 
                     _data.dailyPrices[k] = createTimeSeries(lastTimestamp, info.lastPrice);
                     _data.borrowRates[k] = createTimeSeries(lastTimestamp, info.borrowRate);
@@ -81,14 +86,17 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
         }
     }
 
-    function getFrequency(uint256 _freq) internal pure returns(uint256 _frequency, uint256 divisor) {
+    /*function getFrequency(uint256 _freq) internal pure returns(uint256 _frequency, uint256 divisor) {
         if(_freq == 1) {
+            _frequency = 1 hours;
+            divisor = 1;
+        } if(_freq == 2) {
             _frequency = 2 hours;
             divisor = 2;
-        } else if(_freq == 2) {
+        } else if(_freq == 3) {
             _frequency = 4 hours;
             divisor = 4;
-        }  else if(_freq == 3) {
+        }  else if(_freq == 4) {
             _frequency = 6 hours;
             divisor = 6;
         }  else if(_freq == 4) {
@@ -101,7 +109,7 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
             _frequency = 1 days;
             divisor = 24;
         }
-    }
+    }/**/
 
     function createTimeSeriesData(uint256 rawLen, uint256 seriesLen) internal pure returns(TimeSeriesData memory _data) {
         _data = TimeSeriesData({

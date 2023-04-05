@@ -1,0 +1,449 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address[]",
+          "name": "tokens",
+          "type": "address[]"
+        },
+        {
+          "internalType": "uint256[]",
+          "name": "amounts",
+          "type": "uint256[]"
+        },
+        {
+          "internalType": "address",
+          "name": "payee",
+          "type": "address"
+        },
+        {
+          "internalType": "bytes",
+          "name": "data",
+          "type": "bytes"
+        }
+      ],
+      "name": "sendTokensCallback",
+      "outputs": [],
+      "stateMutability": "nonpayable",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "sendTokensCallback(address[],uint256[],address,bytes)": "6464a1eb"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address[]\",\"name\":\"tokens\",\"type\":\"address[]\"},{\"internalType\":\"uint256[]\",\"name\":\"amounts\",\"type\":\"uint256[]\"},{\"internalType\":\"address\",\"name\":\"payee\",\"type\":\"address\"},{\"internalType\":\"bytes\",\"name\":\"data\",\"type\":\"bytes\"}],\"name\":\"sendTokensCallback\",\"outputs\":[],\"stateMutability\":\"nonpayable\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Daniel D. Alcarraz (https://github.com/0xDanr)\",\"details\":\"Verifies sender is GammaPool by hashing SendTokensCallbackData contents into msg.sender\",\"kind\":\"dev\",\"methods\":{\"sendTokensCallback(address[],uint256[],address,bytes)\":{\"details\":\"Transfer token `amounts` after verifying identity of caller using `data` is a GammaPool\",\"params\":{\"amounts\":\"- token amounts to be transferred\",\"data\":\"- struct used to verify the function caller\",\"payee\":\"- receiver of token `amounts`\",\"tokens\":\"- address of ERC20 tokens that will be transferred\"}}},\"title\":\"ISendTokensCallback interface to handle callbacks to send tokens\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"notice\":\"Used by periphery contracts to transfer token amounts requested by a GammaPool\",\"version\":1}},\"settings\":{\"compilationTarget\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol\":\"ISendTokensCallback\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol\":{\"keccak256\":\"0xa32cbd95925e95f0d2c5deca7f576313def8e1775ca5b8e3e98ef2a4b54154ba\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://5f9446e78e834a914839ddf629174df60dc8996ff5d16c5a3b5cf7d62dc9fb35\",\"dweb:/ipfs/QmYjaWxnywfUceNLT27sDAGaqABYfD6q5kRnXaVNcizMed\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address[]",
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint256[]",
+              "name": "amounts",
+              "type": "uint256[]"
+            },
+            {
+              "internalType": "address",
+              "name": "payee",
+              "type": "address"
+            },
+            {
+              "internalType": "bytes",
+              "name": "data",
+              "type": "bytes"
+            }
+          ],
+          "stateMutability": "nonpayable",
+          "type": "function",
+          "name": "sendTokensCallback"
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "sendTokensCallback(address[],uint256[],address,bytes)": {
+            "details": "Transfer token `amounts` after verifying identity of caller using `data` is a GammaPool",
+            "params": {
+              "amounts": "- token amounts to be transferred",
+              "data": "- struct used to verify the function caller",
+              "payee": "- receiver of token `amounts`",
+              "tokens": "- address of ERC20 tokens that will be transferred"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "node_modules/@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol": "ISendTokensCallback"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol": {
+        "keccak256": "0xa32cbd95925e95f0d2c5deca7f576313def8e1775ca5b8e3e98ef2a4b54154ba",
+        "urls": [
+          "bzz-raw://5f9446e78e834a914839ddf629174df60dc8996ff5d16c5a3b5cf7d62dc9fb35",
+          "dweb:/ipfs/QmYjaWxnywfUceNLT27sDAGaqABYfD6q5kRnXaVNcizMed"
+        ],
+        "license": "BUSL-1.1"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol",
+    "id": 37371,
+    "exportedSymbols": {
+      "ISendTokensCallback": [
+        37370
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "37:1252:52",
+    "nodes": [
+      {
+        "id": 37344,
+        "nodeType": "PragmaDirective",
+        "src": "37:24:52",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 37370,
+        "nodeType": "ContractDefinition",
+        "src": "386:902:52",
+        "nodes": [
+          {
+            "id": 37355,
+            "nodeType": "StructDefinition",
+            "src": "520:286:52",
+            "nodes": [],
+            "canonicalName": "ISendTokensCallback.SendTokensCallbackData",
+            "members": [
+              {
+                "constant": false,
+                "id": 37348,
+                "mutability": "mutable",
+                "name": "payer",
+                "nameLocation": "602:5:52",
+                "nodeType": "VariableDeclaration",
+                "scope": 37355,
+                "src": "594:13:52",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 37347,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "594:7:52",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 37351,
+                "mutability": "mutable",
+                "name": "cfmm",
+                "nameLocation": "699:4:52",
+                "nodeType": "VariableDeclaration",
+                "scope": 37355,
+                "src": "691:12:52",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_address",
+                  "typeString": "address"
+                },
+                "typeName": {
+                  "id": 37350,
+                  "name": "address",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "691:7:52",
+                  "stateMutability": "nonpayable",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 37354,
+                "mutability": "mutable",
+                "name": "protocolId",
+                "nameLocation": "789:10:52",
+                "nodeType": "VariableDeclaration",
+                "scope": 37355,
+                "src": "782:17:52",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint16",
+                  "typeString": "uint16"
+                },
+                "typeName": {
+                  "id": 37353,
+                  "name": "uint16",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "782:6:52",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint16",
+                    "typeString": "uint16"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "SendTokensCallbackData",
+            "nameLocation": "527:22:52",
+            "scope": 37370,
+            "visibility": "public"
+          },
+          {
+            "id": 37369,
+            "nodeType": "FunctionDefinition",
+            "src": "1158:128:52",
+            "nodes": [],
+            "documentation": {
+              "id": 37356,
+              "nodeType": "StructuredDocumentation",
+              "src": "812:341:52",
+              "text": "@dev Transfer token `amounts` after verifying identity of caller using `data` is a GammaPool\n @param tokens - address of ERC20 tokens that will be transferred\n @param amounts - token amounts to be transferred\n @param payee - receiver of token `amounts`\n @param data - struct used to verify the function caller"
+            },
+            "functionSelector": "6464a1eb",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "sendTokensCallback",
+            "nameLocation": "1167:18:52",
+            "parameters": {
+              "id": 37367,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 37359,
+                  "mutability": "mutable",
+                  "name": "tokens",
+                  "nameLocation": "1205:6:52",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37369,
+                  "src": "1186:25:52",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_address_$dyn_calldata_ptr",
+                    "typeString": "address[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 37357,
+                      "name": "address",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1186:7:52",
+                      "stateMutability": "nonpayable",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_address",
+                        "typeString": "address"
+                      }
+                    },
+                    "id": 37358,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1186:9:52",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_address_$dyn_storage_ptr",
+                      "typeString": "address[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37362,
+                  "mutability": "mutable",
+                  "name": "amounts",
+                  "nameLocation": "1232:7:52",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37369,
+                  "src": "1213:26:52",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint256_$dyn_calldata_ptr",
+                    "typeString": "uint256[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 37360,
+                      "name": "uint256",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "1213:7:52",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint256",
+                        "typeString": "uint256"
+                      }
+                    },
+                    "id": 37361,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1213:9:52",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint256_$dyn_storage_ptr",
+                      "typeString": "uint256[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37364,
+                  "mutability": "mutable",
+                  "name": "payee",
+                  "nameLocation": "1249:5:52",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37369,
+                  "src": "1241:13:52",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 37363,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1241:7:52",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37366,
+                  "mutability": "mutable",
+                  "name": "data",
+                  "nameLocation": "1271:4:52",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37369,
+                  "src": "1256:19:52",
+                  "stateVariable": false,
+                  "storageLocation": "calldata",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_bytes_calldata_ptr",
+                    "typeString": "bytes"
+                  },
+                  "typeName": {
+                    "id": 37365,
+                    "name": "bytes",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1256:5:52",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_bytes_storage_ptr",
+                      "typeString": "bytes"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1185:91:52"
+            },
+            "returnParameters": {
+              "id": 37368,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "1285:0:52"
+            },
+            "scope": 37370,
+            "stateMutability": "nonpayable",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "ISendTokensCallback",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 37345,
+          "nodeType": "StructuredDocumentation",
+          "src": "63:323:52",
+          "text": "@title ISendTokensCallback interface to handle callbacks to send tokens\n @author Daniel D. Alcarraz (https://github.com/0xDanr)\n @notice Used by periphery contracts to transfer token amounts requested by a GammaPool\n @dev Verifies sender is GammaPool by hashing SendTokensCallbackData contents into msg.sender"
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          37370
+        ],
+        "name": "ISendTokensCallback",
+        "nameLocation": "396:19:52",
+        "scope": 37371,
+        "usedErrors": []
+      }
+    ],
+    "license": "BUSL-1.1"
+  },
+  "id": 52
+}

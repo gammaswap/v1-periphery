@@ -14,3 +14,7 @@
    //npm.pkg.github.com/:_authToken=<GITHUB_ACCESS_TOKEN>
 ```
 4. Run ```npx hardhat test```
+5. Run ```forge test```
+
+# Steps to Run GammaSwap Foundry Specific Tests
+Run ```forge test --match-test optionalSpecificTest --match-contract optionalSpecificContract```

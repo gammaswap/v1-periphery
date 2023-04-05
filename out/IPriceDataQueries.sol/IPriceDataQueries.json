@@ -1,0 +1,1226 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "gammaPool",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "_frequency",
+          "type": "uint256"
+        }
+      ],
+      "name": "getTimeSeries",
+      "outputs": [
+        {
+          "components": [
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "timestamp",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "blockNumber",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "utilRate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "borrowRate",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "accFeeIndex",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lastPrice",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "indexRate",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IPriceDataQueries.RawData[]",
+              "name": "rawData",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "timestamp",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "open",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "high",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "low",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "close",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IPriceDataQueries.TimeSeries[]",
+              "name": "dailyPrices",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "timestamp",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "open",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "high",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "low",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "close",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IPriceDataQueries.TimeSeries[]",
+              "name": "utilRates",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "timestamp",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "open",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "high",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "low",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "close",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IPriceDataQueries.TimeSeries[]",
+              "name": "borrowRates",
+              "type": "tuple[]"
+            },
+            {
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "timestamp",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "open",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "high",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "low",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "close",
+                  "type": "uint256"
+                }
+              ],
+              "internalType": "struct IPriceDataQueries.TimeSeries[]",
+              "name": "indexRates",
+              "type": "tuple[]"
+            }
+          ],
+          "internalType": "struct IPriceDataQueries.TimeSeriesData",
+          "name": "_timeSeries",
+          "type": "tuple"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "getTimeSeries(address,uint256)": "138f3003"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"gammaPool\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"_frequency\",\"type\":\"uint256\"}],\"name\":\"getTimeSeries\",\"outputs\":[{\"components\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"blockNumber\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"utilRate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"borrowRate\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"accFeeIndex\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"lastPrice\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"indexRate\",\"type\":\"uint256\"}],\"internalType\":\"struct IPriceDataQueries.RawData[]\",\"name\":\"rawData\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"open\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"high\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"low\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"close\",\"type\":\"uint256\"}],\"internalType\":\"struct IPriceDataQueries.TimeSeries[]\",\"name\":\"dailyPrices\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"open\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"high\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"low\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"close\",\"type\":\"uint256\"}],\"internalType\":\"struct IPriceDataQueries.TimeSeries[]\",\"name\":\"utilRates\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"open\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"high\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"low\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"close\",\"type\":\"uint256\"}],\"internalType\":\"struct IPriceDataQueries.TimeSeries[]\",\"name\":\"borrowRates\",\"type\":\"tuple[]\"},{\"components\":[{\"internalType\":\"uint256\",\"name\":\"timestamp\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"open\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"high\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"low\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"close\",\"type\":\"uint256\"}],\"internalType\":\"struct IPriceDataQueries.TimeSeries[]\",\"name\":\"indexRates\",\"type\":\"tuple[]\"}],\"internalType\":\"struct IPriceDataQueries.TimeSeriesData\",\"name\":\"_timeSeries\",\"type\":\"tuple\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/interfaces/IPriceDataQueries.sol\":\"IPriceDataQueries\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"contracts/interfaces/IPriceDataQueries.sol\":{\"keccak256\":\"0xc2933668f0388faf5054db56c9fbdb5b339da1b0463eff62903bf6d6a36cba6b\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://8ea9a54daea3fafa307b0c3d5dc22bae8d0ba7d8a0c6df24def006509d407827\",\"dweb:/ipfs/QmTFDv7z2MEMWda3YV99GQ6krcejoeLoTWkvtqBpvjSJRV\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "gammaPool",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "_frequency",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getTimeSeries",
+          "outputs": [
+            {
+              "internalType": "struct IPriceDataQueries.TimeSeriesData",
+              "name": "_timeSeries",
+              "type": "tuple",
+              "components": [
+                {
+                  "internalType": "struct IPriceDataQueries.RawData[]",
+                  "name": "rawData",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "timestamp",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "blockNumber",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "utilRate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "borrowRate",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "accFeeIndex",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "lastPrice",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "indexRate",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "internalType": "struct IPriceDataQueries.TimeSeries[]",
+                  "name": "dailyPrices",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "timestamp",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "open",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "high",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "low",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "close",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "internalType": "struct IPriceDataQueries.TimeSeries[]",
+                  "name": "utilRates",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "timestamp",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "open",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "high",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "low",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "close",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "internalType": "struct IPriceDataQueries.TimeSeries[]",
+                  "name": "borrowRates",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "timestamp",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "open",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "high",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "low",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "close",
+                      "type": "uint256"
+                    }
+                  ]
+                },
+                {
+                  "internalType": "struct IPriceDataQueries.TimeSeries[]",
+                  "name": "indexRates",
+                  "type": "tuple[]",
+                  "components": [
+                    {
+                      "internalType": "uint256",
+                      "name": "timestamp",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "open",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "high",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "low",
+                      "type": "uint256"
+                    },
+                    {
+                      "internalType": "uint256",
+                      "name": "close",
+                      "type": "uint256"
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "contracts/interfaces/IPriceDataQueries.sol": "IPriceDataQueries"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "contracts/interfaces/IPriceDataQueries.sol": {
+        "keccak256": "0xc2933668f0388faf5054db56c9fbdb5b339da1b0463eff62903bf6d6a36cba6b",
+        "urls": [
+          "bzz-raw://8ea9a54daea3fafa307b0c3d5dc22bae8d0ba7d8a0c6df24def006509d407827",
+          "dweb:/ipfs/QmTFDv7z2MEMWda3YV99GQ6krcejoeLoTWkvtqBpvjSJRV"
+        ],
+        "license": "GPL-2.0-or-later"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "contracts/interfaces/IPriceDataQueries.sol",
+    "id": 3526,
+    "exportedSymbols": {
+      "IPriceDataQueries": [
+        3525
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "45:1517:8",
+    "nodes": [
+      {
+        "id": 3460,
+        "nodeType": "PragmaDirective",
+        "src": "45:24:8",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 3525,
+        "nodeType": "ContractDefinition",
+        "src": "71:1490:8",
+        "nodes": [
+          {
+            "id": 3471,
+            "nodeType": "StructDefinition",
+            "src": "165:140:8",
+            "nodes": [],
+            "canonicalName": "IPriceDataQueries.TimeSeries",
+            "members": [
+              {
+                "constant": false,
+                "id": 3462,
+                "mutability": "mutable",
+                "name": "timestamp",
+                "nameLocation": "201:9:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3471,
+                "src": "193:17:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3461,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "193:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3464,
+                "mutability": "mutable",
+                "name": "open",
+                "nameLocation": "228:4:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3471,
+                "src": "220:12:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3463,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "220:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3466,
+                "mutability": "mutable",
+                "name": "high",
+                "nameLocation": "250:4:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3471,
+                "src": "242:12:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3465,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "242:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3468,
+                "mutability": "mutable",
+                "name": "low",
+                "nameLocation": "272:3:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3471,
+                "src": "264:11:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3467,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "264:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3470,
+                "mutability": "mutable",
+                "name": "close",
+                "nameLocation": "293:5:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3471,
+                "src": "285:13:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3469,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "285:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "TimeSeries",
+            "nameLocation": "172:10:8",
+            "scope": 3525,
+            "visibility": "public"
+          },
+          {
+            "id": 3493,
+            "nodeType": "StructDefinition",
+            "src": "385:794:8",
+            "nodes": [],
+            "canonicalName": "IPriceDataQueries.RawData",
+            "members": [
+              {
+                "constant": false,
+                "id": 3474,
+                "mutability": "mutable",
+                "name": "timestamp",
+                "nameLocation": "458:9:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3493,
+                "src": "450:17:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3473,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "450:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3477,
+                "mutability": "mutable",
+                "name": "blockNumber",
+                "nameLocation": "525:11:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3493,
+                "src": "517:19:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3476,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "517:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3480,
+                "mutability": "mutable",
+                "name": "utilRate",
+                "nameLocation": "601:8:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3493,
+                "src": "593:16:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3479,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "593:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3483,
+                "mutability": "mutable",
+                "name": "borrowRate",
+                "nameLocation": "731:10:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3493,
+                "src": "723:18:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3482,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "723:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3486,
+                "mutability": "mutable",
+                "name": "accFeeIndex",
+                "nameLocation": "859:11:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3493,
+                "src": "851:19:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3485,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "851:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3489,
+                "mutability": "mutable",
+                "name": "lastPrice",
+                "nameLocation": "934:9:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3493,
+                "src": "926:17:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3488,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "926:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3492,
+                "mutability": "mutable",
+                "name": "indexRate",
+                "nameLocation": "1163:9:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3493,
+                "src": "1155:17:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_uint256",
+                  "typeString": "uint256"
+                },
+                "typeName": {
+                  "id": 3491,
+                  "name": "uint256",
+                  "nodeType": "ElementaryTypeName",
+                  "src": "1155:7:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "RawData",
+            "nameLocation": "392:7:8",
+            "scope": 3525,
+            "visibility": "public"
+          },
+          {
+            "id": 3514,
+            "nodeType": "StructDefinition",
+            "src": "1245:189:8",
+            "nodes": [],
+            "canonicalName": "IPriceDataQueries.TimeSeriesData",
+            "members": [
+              {
+                "constant": false,
+                "id": 3497,
+                "mutability": "mutable",
+                "name": "rawData",
+                "nameLocation": "1287:7:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3514,
+                "src": "1277:17:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_struct$_RawData_$3493_storage_$dyn_storage_ptr",
+                  "typeString": "struct IPriceDataQueries.RawData[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 3495,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 3494,
+                      "name": "RawData",
+                      "nameLocations": [
+                        "1277:7:8"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 3493,
+                      "src": "1277:7:8"
+                    },
+                    "referencedDeclaration": 3493,
+                    "src": "1277:7:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_RawData_$3493_storage_ptr",
+                      "typeString": "struct IPriceDataQueries.RawData"
+                    }
+                  },
+                  "id": 3496,
+                  "nodeType": "ArrayTypeName",
+                  "src": "1277:9:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_RawData_$3493_storage_$dyn_storage_ptr",
+                    "typeString": "struct IPriceDataQueries.RawData[]"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3501,
+                "mutability": "mutable",
+                "name": "dailyPrices",
+                "nameLocation": "1317:11:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3514,
+                "src": "1304:24:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_struct$_TimeSeries_$3471_storage_$dyn_storage_ptr",
+                  "typeString": "struct IPriceDataQueries.TimeSeries[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 3499,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 3498,
+                      "name": "TimeSeries",
+                      "nameLocations": [
+                        "1304:10:8"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 3471,
+                      "src": "1304:10:8"
+                    },
+                    "referencedDeclaration": 3471,
+                    "src": "1304:10:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_TimeSeries_$3471_storage_ptr",
+                      "typeString": "struct IPriceDataQueries.TimeSeries"
+                    }
+                  },
+                  "id": 3500,
+                  "nodeType": "ArrayTypeName",
+                  "src": "1304:12:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_TimeSeries_$3471_storage_$dyn_storage_ptr",
+                    "typeString": "struct IPriceDataQueries.TimeSeries[]"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3505,
+                "mutability": "mutable",
+                "name": "utilRates",
+                "nameLocation": "1351:9:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3514,
+                "src": "1338:22:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_struct$_TimeSeries_$3471_storage_$dyn_storage_ptr",
+                  "typeString": "struct IPriceDataQueries.TimeSeries[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 3503,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 3502,
+                      "name": "TimeSeries",
+                      "nameLocations": [
+                        "1338:10:8"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 3471,
+                      "src": "1338:10:8"
+                    },
+                    "referencedDeclaration": 3471,
+                    "src": "1338:10:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_TimeSeries_$3471_storage_ptr",
+                      "typeString": "struct IPriceDataQueries.TimeSeries"
+                    }
+                  },
+                  "id": 3504,
+                  "nodeType": "ArrayTypeName",
+                  "src": "1338:12:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_TimeSeries_$3471_storage_$dyn_storage_ptr",
+                    "typeString": "struct IPriceDataQueries.TimeSeries[]"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3509,
+                "mutability": "mutable",
+                "name": "borrowRates",
+                "nameLocation": "1383:11:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3514,
+                "src": "1370:24:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_struct$_TimeSeries_$3471_storage_$dyn_storage_ptr",
+                  "typeString": "struct IPriceDataQueries.TimeSeries[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 3507,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 3506,
+                      "name": "TimeSeries",
+                      "nameLocations": [
+                        "1370:10:8"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 3471,
+                      "src": "1370:10:8"
+                    },
+                    "referencedDeclaration": 3471,
+                    "src": "1370:10:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_TimeSeries_$3471_storage_ptr",
+                      "typeString": "struct IPriceDataQueries.TimeSeries"
+                    }
+                  },
+                  "id": 3508,
+                  "nodeType": "ArrayTypeName",
+                  "src": "1370:12:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_TimeSeries_$3471_storage_$dyn_storage_ptr",
+                    "typeString": "struct IPriceDataQueries.TimeSeries[]"
+                  }
+                },
+                "visibility": "internal"
+              },
+              {
+                "constant": false,
+                "id": 3513,
+                "mutability": "mutable",
+                "name": "indexRates",
+                "nameLocation": "1417:10:8",
+                "nodeType": "VariableDeclaration",
+                "scope": 3514,
+                "src": "1404:23:8",
+                "stateVariable": false,
+                "storageLocation": "default",
+                "typeDescriptions": {
+                  "typeIdentifier": "t_array$_t_struct$_TimeSeries_$3471_storage_$dyn_storage_ptr",
+                  "typeString": "struct IPriceDataQueries.TimeSeries[]"
+                },
+                "typeName": {
+                  "baseType": {
+                    "id": 3511,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 3510,
+                      "name": "TimeSeries",
+                      "nameLocations": [
+                        "1404:10:8"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 3471,
+                      "src": "1404:10:8"
+                    },
+                    "referencedDeclaration": 3471,
+                    "src": "1404:10:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_TimeSeries_$3471_storage_ptr",
+                      "typeString": "struct IPriceDataQueries.TimeSeries"
+                    }
+                  },
+                  "id": 3512,
+                  "nodeType": "ArrayTypeName",
+                  "src": "1404:12:8",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_TimeSeries_$3471_storage_$dyn_storage_ptr",
+                    "typeString": "struct IPriceDataQueries.TimeSeries[]"
+                  }
+                },
+                "visibility": "internal"
+              }
+            ],
+            "name": "TimeSeriesData",
+            "nameLocation": "1252:14:8",
+            "scope": 3525,
+            "visibility": "public"
+          },
+          {
+            "id": 3524,
+            "nodeType": "FunctionDefinition",
+            "src": "1440:119:8",
+            "nodes": [],
+            "functionSelector": "138f3003",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getTimeSeries",
+            "nameLocation": "1449:13:8",
+            "parameters": {
+              "id": 3519,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3516,
+                  "mutability": "mutable",
+                  "name": "gammaPool",
+                  "nameLocation": "1471:9:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3524,
+                  "src": "1463:17:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 3515,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1463:7:8",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 3518,
+                  "mutability": "mutable",
+                  "name": "_frequency",
+                  "nameLocation": "1490:10:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3524,
+                  "src": "1482:18:8",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 3517,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1482:7:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1462:39:8"
+            },
+            "returnParameters": {
+              "id": 3523,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 3522,
+                  "mutability": "mutable",
+                  "name": "_timeSeries",
+                  "nameLocation": "1546:11:8",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 3524,
+                  "src": "1524:33:8",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_struct$_TimeSeriesData_$3514_memory_ptr",
+                    "typeString": "struct IPriceDataQueries.TimeSeriesData"
+                  },
+                  "typeName": {
+                    "id": 3521,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 3520,
+                      "name": "TimeSeriesData",
+                      "nameLocations": [
+                        "1524:14:8"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 3514,
+                      "src": "1524:14:8"
+                    },
+                    "referencedDeclaration": 3514,
+                    "src": "1524:14:8",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_struct$_TimeSeriesData_$3514_storage_ptr",
+                      "typeString": "struct IPriceDataQueries.TimeSeriesData"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1523:35:8"
+            },
+            "scope": 3525,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IPriceDataQueries",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          3525
+        ],
+        "name": "IPriceDataQueries",
+        "nameLocation": "81:17:8",
+        "scope": 3526,
+        "usedErrors": []
+      }
+    ],
+    "license": "GPL-2.0-or-later"
+  },
+  "id": 8
+}

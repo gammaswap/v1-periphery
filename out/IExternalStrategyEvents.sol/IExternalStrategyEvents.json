@@ -1,0 +1,542 @@
+{
+  "abi": [
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": true,
+          "internalType": "uint256",
+          "name": "tokenId",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128[]",
+          "name": "amounts",
+          "type": "uint128[]"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokens",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "liquidity",
+          "type": "uint128"
+        },
+        {
+          "indexed": true,
+          "internalType": "enum IStrategyEvents.TX_TYPE",
+          "name": "txType",
+          "type": "uint8"
+        }
+      ],
+      "name": "ExternalSwap",
+      "type": "event"
+    },
+    {
+      "anonymous": false,
+      "inputs": [
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokenBalance",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokenBorrowed",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint48",
+          "name": "lastBlockNumber",
+          "type": "uint48"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint96",
+          "name": "accFeeIndex",
+          "type": "uint96"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint256",
+          "name": "lpTokenBorrowedPlusInterest",
+          "type": "uint256"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "lpInvariant",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128",
+          "name": "borrowedInvariant",
+          "type": "uint128"
+        },
+        {
+          "indexed": false,
+          "internalType": "uint128[]",
+          "name": "cfmmReserves",
+          "type": "uint128[]"
+        },
+        {
+          "indexed": true,
+          "internalType": "enum IStrategyEvents.TX_TYPE",
+          "name": "txType",
+          "type": "uint8"
+        }
+      ],
+      "name": "PoolUpdated",
+      "type": "event"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {},
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"anonymous\":false,\"inputs\":[{\"indexed\":true,\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint128[]\",\"name\":\"amounts\",\"type\":\"uint128[]\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokens\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"liquidity\",\"type\":\"uint128\"},{\"indexed\":true,\"internalType\":\"enum IStrategyEvents.TX_TYPE\",\"name\":\"txType\",\"type\":\"uint8\"}],\"name\":\"ExternalSwap\",\"type\":\"event\"},{\"anonymous\":false,\"inputs\":[{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokenBalance\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokenBorrowed\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint48\",\"name\":\"lastBlockNumber\",\"type\":\"uint48\"},{\"indexed\":false,\"internalType\":\"uint96\",\"name\":\"accFeeIndex\",\"type\":\"uint96\"},{\"indexed\":false,\"internalType\":\"uint256\",\"name\":\"lpTokenBorrowedPlusInterest\",\"type\":\"uint256\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"lpInvariant\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128\",\"name\":\"borrowedInvariant\",\"type\":\"uint128\"},{\"indexed\":false,\"internalType\":\"uint128[]\",\"name\":\"cfmmReserves\",\"type\":\"uint128[]\"},{\"indexed\":true,\"internalType\":\"enum IStrategyEvents.TX_TYPE\",\"name\":\"txType\",\"type\":\"uint8\"}],\"name\":\"PoolUpdated\",\"type\":\"event\"}],\"devdoc\":{\"author\":\"Daniel D. Alcarraz (https://github.com/0xDanr)\",\"details\":\"Events emitted by external strategy (flash loans) implementations\",\"events\":{\"ExternalSwap(uint256,uint128[],uint256,uint128,uint8)\":{\"details\":\"Event emitted when a flash loan is made. Purpose of flash loan is for external swaps/rebalance of loan collateral\",\"params\":{\"amounts\":\"- amounts of tokens held as collateral in pool that were swapped\",\"liquidity\":\"- total liquidity externally swapped in flash loan (amounts + lpTokens)\",\"lpTokens\":\"- LP tokens swapped externally\",\"tokenId\":\"- unique id that identifies the loan in question\",\"txType\":\"- transaction type. Possible values come from enum TX_TYPE\"}}},\"kind\":\"dev\",\"methods\":{},\"title\":\"External Strategy Events Interface\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IExternalStrategyEvents.sol\":\"IExternalStrategyEvents\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IExternalStrategyEvents.sol\":{\"keccak256\":\"0x832450347032f3d6178045bcf754ea30b6a74eeb6a786fd23214582780619158\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://1afbe6eab83fb06e3353ed9d22b70874efeb5787f51c60785569d86d98cf9399\",\"dweb:/ipfs/QmeQPwe75onniP9dCjifJuzd4d8BuM7iK2EuMEWcYDws88\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IStrategyEvents.sol\":{\"keccak256\":\"0x064b90ebb2a719301c74417bff732323e9af13c79a46675917a6d9afaff79a70\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://e0f2657b940b14fd82707f9f84eb6ad2a90d7296d14e18d8da3540c9bfa9a804\",\"dweb:/ipfs/QmSPRT9CcKf9b6BhuZBaTHjfWyNCJ4C4ZsTJQxPcEzh8r9\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256",
+              "indexed": true
+            },
+            {
+              "internalType": "uint128[]",
+              "name": "amounts",
+              "type": "uint128[]",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokens",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "liquidity",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "enum IStrategyEvents.TX_TYPE",
+              "name": "txType",
+              "type": "uint8",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "ExternalSwap",
+          "anonymous": false
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "uint256",
+              "name": "lpTokenBalance",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokenBorrowed",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint48",
+              "name": "lastBlockNumber",
+              "type": "uint48",
+              "indexed": false
+            },
+            {
+              "internalType": "uint96",
+              "name": "accFeeIndex",
+              "type": "uint96",
+              "indexed": false
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokenBorrowedPlusInterest",
+              "type": "uint256",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "lpInvariant",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128",
+              "name": "borrowedInvariant",
+              "type": "uint128",
+              "indexed": false
+            },
+            {
+              "internalType": "uint128[]",
+              "name": "cfmmReserves",
+              "type": "uint128[]",
+              "indexed": false
+            },
+            {
+              "internalType": "enum IStrategyEvents.TX_TYPE",
+              "name": "txType",
+              "type": "uint8",
+              "indexed": true
+            }
+          ],
+          "type": "event",
+          "name": "PoolUpdated",
+          "anonymous": false
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {},
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {},
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IExternalStrategyEvents.sol": "IExternalStrategyEvents"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IExternalStrategyEvents.sol": {
+        "keccak256": "0x832450347032f3d6178045bcf754ea30b6a74eeb6a786fd23214582780619158",
+        "urls": [
+          "bzz-raw://1afbe6eab83fb06e3353ed9d22b70874efeb5787f51c60785569d86d98cf9399",
+          "dweb:/ipfs/QmeQPwe75onniP9dCjifJuzd4d8BuM7iK2EuMEWcYDws88"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IStrategyEvents.sol": {
+        "keccak256": "0x064b90ebb2a719301c74417bff732323e9af13c79a46675917a6d9afaff79a70",
+        "urls": [
+          "bzz-raw://e0f2657b940b14fd82707f9f84eb6ad2a90d7296d14e18d8da3540c9bfa9a804",
+          "dweb:/ipfs/QmSPRT9CcKf9b6BhuZBaTHjfWyNCJ4C4ZsTJQxPcEzh8r9"
+        ],
+        "license": "BUSL-1.1"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IExternalStrategyEvents.sol",
+    "id": 37393,
+    "exportedSymbols": {
+      "IExternalStrategyEvents": [
+        37392
+      ],
+      "IStrategyEvents": [
+        37539
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "37:945:53",
+    "nodes": [
+      {
+        "id": 37372,
+        "nodeType": "PragmaDirective",
+        "src": "37:24:53",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 37373,
+        "nodeType": "ImportDirective",
+        "src": "63:31:53",
+        "nodes": [],
+        "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IStrategyEvents.sol",
+        "file": "./IStrategyEvents.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 37393,
+        "sourceUnit": 37540,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 37392,
+        "nodeType": "ContractDefinition",
+        "src": "276:705:53",
+        "nodes": [
+          {
+            "id": 37391,
+            "nodeType": "EventDefinition",
+            "src": "855:124:53",
+            "nodes": [],
+            "anonymous": false,
+            "documentation": {
+              "id": 37377,
+              "nodeType": "StructuredDocumentation",
+              "src": "335:515:53",
+              "text": "@dev Event emitted when a flash loan is made. Purpose of flash loan is for external swaps/rebalance of loan collateral\n @param tokenId - unique id that identifies the loan in question\n @param amounts - amounts of tokens held as collateral in pool that were swapped\n @param lpTokens - LP tokens swapped externally\n @param liquidity - total liquidity externally swapped in flash loan (amounts + lpTokens)\n @param txType - transaction type. Possible values come from enum TX_TYPE"
+            },
+            "eventSelector": "73321ac103d74004e5d1707b2c72df61248a98cac2760d4879764b9ed4d156a1",
+            "name": "ExternalSwap",
+            "nameLocation": "861:12:53",
+            "parameters": {
+              "id": 37390,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 37379,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "tokenId",
+                  "nameLocation": "890:7:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37391,
+                  "src": "874:23:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 37378,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "874:7:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37382,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "amounts",
+                  "nameLocation": "909:7:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37391,
+                  "src": "899:17:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_uint128_$dyn_memory_ptr",
+                    "typeString": "uint128[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 37380,
+                      "name": "uint128",
+                      "nodeType": "ElementaryTypeName",
+                      "src": "899:7:53",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_uint128",
+                        "typeString": "uint128"
+                      }
+                    },
+                    "id": 37381,
+                    "nodeType": "ArrayTypeName",
+                    "src": "899:9:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_uint128_$dyn_storage_ptr",
+                      "typeString": "uint128[]"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37384,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "lpTokens",
+                  "nameLocation": "926:8:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37391,
+                  "src": "918:16:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 37383,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "918:7:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37386,
+                  "indexed": false,
+                  "mutability": "mutable",
+                  "name": "liquidity",
+                  "nameLocation": "944:9:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37391,
+                  "src": "936:17:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint128",
+                    "typeString": "uint128"
+                  },
+                  "typeName": {
+                    "id": 37385,
+                    "name": "uint128",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "936:7:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint128",
+                      "typeString": "uint128"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 37389,
+                  "indexed": true,
+                  "mutability": "mutable",
+                  "name": "txType",
+                  "nameLocation": "971:6:53",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 37391,
+                  "src": "955:22:53",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_enum$_TX_TYPE_$37515",
+                    "typeString": "enum IStrategyEvents.TX_TYPE"
+                  },
+                  "typeName": {
+                    "id": 37388,
+                    "nodeType": "UserDefinedTypeName",
+                    "pathNode": {
+                      "id": 37387,
+                      "name": "TX_TYPE",
+                      "nameLocations": [
+                        "955:7:53"
+                      ],
+                      "nodeType": "IdentifierPath",
+                      "referencedDeclaration": 37515,
+                      "src": "955:7:53"
+                    },
+                    "referencedDeclaration": 37515,
+                    "src": "955:7:53",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_enum$_TX_TYPE_$37515",
+                      "typeString": "enum IStrategyEvents.TX_TYPE"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "873:105:53"
+            }
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [
+          {
+            "baseName": {
+              "id": 37375,
+              "name": "IStrategyEvents",
+              "nameLocations": [
+                "313:15:53"
+              ],
+              "nodeType": "IdentifierPath",
+              "referencedDeclaration": 37539,
+              "src": "313:15:53"
+            },
+            "id": 37376,
+            "nodeType": "InheritanceSpecifier",
+            "src": "313:15:53"
+          }
+        ],
+        "canonicalName": "IExternalStrategyEvents",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 37374,
+          "nodeType": "StructuredDocumentation",
+          "src": "96:180:53",
+          "text": "@title External Strategy Events Interface\n @author Daniel D. Alcarraz (https://github.com/0xDanr)\n @dev Events emitted by external strategy (flash loans) implementations"
+        },
+        "fullyImplemented": true,
+        "linearizedBaseContracts": [
+          37392,
+          37539
+        ],
+        "name": "IExternalStrategyEvents",
+        "nameLocation": "286:23:53",
+        "scope": 37393,
+        "usedErrors": []
+      }
+    ],
+    "license": "BUSL-1.1"
+  },
+  "id": 53
+}

@@ -1,0 +1,1010 @@
+{
+  "abi": [
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "end",
+          "type": "uint256"
+        }
+      ],
+      "name": "getLoansByOwner",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "poolId",
+              "type": "address"
+            },
+            {
+              "internalType": "uint96",
+              "name": "rateIndex",
+              "type": "uint96"
+            },
+            {
+              "internalType": "uint128",
+              "name": "initLiquidity",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "liquidity",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokens",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint128[]",
+              "name": "tokensHeld",
+              "type": "uint128[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "px",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "decimals",
+              "type": "uint8[]"
+            },
+            {
+              "internalType": "string[]",
+              "name": "symbols",
+              "type": "string[]"
+            },
+            {
+              "internalType": "string[]",
+              "name": "names",
+              "type": "string[]"
+            }
+          ],
+          "internalType": "struct IGammaPool.LoanData[]",
+          "name": "_loans",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    },
+    {
+      "inputs": [
+        {
+          "internalType": "address",
+          "name": "owner",
+          "type": "address"
+        },
+        {
+          "internalType": "address",
+          "name": "pool",
+          "type": "address"
+        },
+        {
+          "internalType": "uint256",
+          "name": "start",
+          "type": "uint256"
+        },
+        {
+          "internalType": "uint256",
+          "name": "end",
+          "type": "uint256"
+        }
+      ],
+      "name": "getLoansByOwnerAndPool",
+      "outputs": [
+        {
+          "components": [
+            {
+              "internalType": "uint256",
+              "name": "id",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "tokenId",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address",
+              "name": "poolId",
+              "type": "address"
+            },
+            {
+              "internalType": "uint96",
+              "name": "rateIndex",
+              "type": "uint96"
+            },
+            {
+              "internalType": "uint128",
+              "name": "initLiquidity",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint128",
+              "name": "liquidity",
+              "type": "uint128"
+            },
+            {
+              "internalType": "uint256",
+              "name": "lpTokens",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint128[]",
+              "name": "tokensHeld",
+              "type": "uint128[]"
+            },
+            {
+              "internalType": "uint256",
+              "name": "px",
+              "type": "uint256"
+            },
+            {
+              "internalType": "address[]",
+              "name": "tokens",
+              "type": "address[]"
+            },
+            {
+              "internalType": "uint8[]",
+              "name": "decimals",
+              "type": "uint8[]"
+            },
+            {
+              "internalType": "string[]",
+              "name": "symbols",
+              "type": "string[]"
+            },
+            {
+              "internalType": "string[]",
+              "name": "names",
+              "type": "string[]"
+            }
+          ],
+          "internalType": "struct IGammaPool.LoanData[]",
+          "name": "_loans",
+          "type": "tuple[]"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "bytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "deployedBytecode": {
+    "object": "0x",
+    "sourceMap": "",
+    "linkReferences": {}
+  },
+  "methodIdentifiers": {
+    "getLoansByOwner(address,uint256,uint256)": "6af35494",
+    "getLoansByOwnerAndPool(address,address,uint256,uint256)": "c70bdbca"
+  },
+  "rawMetadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"end\",\"type\":\"uint256\"}],\"name\":\"getLoansByOwner\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"poolId\",\"type\":\"address\"},{\"internalType\":\"uint96\",\"name\":\"rateIndex\",\"type\":\"uint96\"},{\"internalType\":\"uint128\",\"name\":\"initLiquidity\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"liquidity\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"lpTokens\",\"type\":\"uint256\"},{\"internalType\":\"uint128[]\",\"name\":\"tokensHeld\",\"type\":\"uint128[]\"},{\"internalType\":\"uint256\",\"name\":\"px\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"tokens\",\"type\":\"address[]\"},{\"internalType\":\"uint8[]\",\"name\":\"decimals\",\"type\":\"uint8[]\"},{\"internalType\":\"string[]\",\"name\":\"symbols\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"names\",\"type\":\"string[]\"}],\"internalType\":\"struct IGammaPool.LoanData[]\",\"name\":\"_loans\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"},{\"inputs\":[{\"internalType\":\"address\",\"name\":\"owner\",\"type\":\"address\"},{\"internalType\":\"address\",\"name\":\"pool\",\"type\":\"address\"},{\"internalType\":\"uint256\",\"name\":\"start\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"end\",\"type\":\"uint256\"}],\"name\":\"getLoansByOwnerAndPool\",\"outputs\":[{\"components\":[{\"internalType\":\"uint256\",\"name\":\"id\",\"type\":\"uint256\"},{\"internalType\":\"uint256\",\"name\":\"tokenId\",\"type\":\"uint256\"},{\"internalType\":\"address\",\"name\":\"poolId\",\"type\":\"address\"},{\"internalType\":\"uint96\",\"name\":\"rateIndex\",\"type\":\"uint96\"},{\"internalType\":\"uint128\",\"name\":\"initLiquidity\",\"type\":\"uint128\"},{\"internalType\":\"uint128\",\"name\":\"liquidity\",\"type\":\"uint128\"},{\"internalType\":\"uint256\",\"name\":\"lpTokens\",\"type\":\"uint256\"},{\"internalType\":\"uint128[]\",\"name\":\"tokensHeld\",\"type\":\"uint128[]\"},{\"internalType\":\"uint256\",\"name\":\"px\",\"type\":\"uint256\"},{\"internalType\":\"address[]\",\"name\":\"tokens\",\"type\":\"address[]\"},{\"internalType\":\"uint8[]\",\"name\":\"decimals\",\"type\":\"uint8[]\"},{\"internalType\":\"string[]\",\"name\":\"symbols\",\"type\":\"string[]\"},{\"internalType\":\"string[]\",\"name\":\"names\",\"type\":\"string[]\"}],\"internalType\":\"struct IGammaPool.LoanData[]\",\"name\":\"_loans\",\"type\":\"tuple[]\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"author\":\"Daniel D. Alcarraz (https://github.com/0xDanr)\",\"details\":\"Defines external functions used by PositionManager to query pools and loans\",\"kind\":\"dev\",\"methods\":{\"getLoansByOwner(address,uint256,uint256)\":{\"details\":\"Get loans belonging to owner\",\"params\":{\"end\":\"- end index of owner's loan array\",\"owner\":\"- owner of loans to query loans for\",\"start\":\"- start index of owner's loan array\"},\"returns\":{\"_loans\":\"- loans belonging to user\"}},\"getLoansByOwnerAndPool(address,address,uint256,uint256)\":{\"details\":\"Get loans from specific GammaPool belonging to owner.\",\"params\":{\"end\":\"- end index of owner's loan array from `pool`\",\"owner\":\"- owner of loans to query loans for\",\"pool\":\"- GammaPool to look for loans belonging to owner\",\"start\":\"- start index of owner's loan array from `pool`\"},\"returns\":{\"_loans\":\"- loans belonging to user for specific gammaPool\"}}},\"title\":\"Interface for IGammaPoolQueryableLoans\",\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{\"getLoansByOwner(address,uint256,uint256)\":{\"notice\":\"Loans are added to owner's loan array in the order they're created.\"},\"getLoansByOwnerAndPool(address,address,uint256,uint256)\":{\"notice\":\"Loans are added to owner's loan array for a pool in the order they're created. Index = 0 is the first loan created\"}},\"version\":1}},\"settings\":{\"compilationTarget\":{\"contracts/interfaces/IGammaPoolQueryableLoans.sol\":\"IGammaPoolQueryableLoans\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":true,\"runs\":200},\"remappings\":[\":@ensdomains/=node_modules/@ensdomains/\",\":@gammaswap/=node_modules/@gammaswap/\",\":@openzeppelin/=node_modules/@openzeppelin/\",\":@uniswap/=node_modules/@uniswap/\",\":ds-test/=lib/forge-std/lib/ds-test/src/\",\":eth-gas-reporter/=node_modules/eth-gas-reporter/\",\":forge-std/=lib/forge-std/src/\",\":hardhat/=node_modules/hardhat/\"]},\"sources\":{\"contracts/interfaces/IGammaPoolQueryableLoans.sol\":{\"keccak256\":\"0xf139303da1c17f9644020a3e6a48b57e641f8a4f44bbe33ee5cc33e91ee5233a\",\"license\":\"GPL-2.0-or-later\",\"urls\":[\"bzz-raw://667e002e61f12dd0bf6c4e40c31c6ca9a6429e743bf00b45b0926eb32b56f320\",\"dweb:/ipfs/QmZTtiDzpngJb6AV1PEVDcv75YeNikiwFiL1JDZZtdxGFE\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol\":{\"keccak256\":\"0xcdb8a1d9a41221b7f0c339065451b1978560c93c202be25a97af8c00ba2d55ef\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://01663f10d4d767c9b098bb1ba5440f89b30f3e041b9a1dfd20658b43f4703f87\",\"dweb:/ipfs/QmRkLu869pW3pDQmGcc8DnekfQTyYojnHrbAT7ePKQoACx\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol\":{\"keccak256\":\"0xf2ea9ca71d445ec5f8fe5d1ee1f28761b60c8f786902aff34e7438e102bfed79\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://aa9cd3e2341355caf94d90d2a21f6aae15259c7345ade628c3977e310d7fd8b1\",\"dweb:/ipfs/QmQAXKruMhZqjfBaG1T6a8Do7DmNHggSxZWdacfXyQ879E\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IExternalStrategyEvents.sol\":{\"keccak256\":\"0x832450347032f3d6178045bcf754ea30b6a74eeb6a786fd23214582780619158\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://1afbe6eab83fb06e3353ed9d22b70874efeb5787f51c60785569d86d98cf9399\",\"dweb:/ipfs/QmeQPwe75onniP9dCjifJuzd4d8BuM7iK2EuMEWcYDws88\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IGammaPoolERC20Events.sol\":{\"keccak256\":\"0x9f71a686b572cb99dcf28c87fdbeaf513ec37b0b2a1eea7a442bbfef7e96c466\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://ebef3809901f949160b180bbb7206832b4771fa3028c18f76eb6db0c5c6343bc\",\"dweb:/ipfs/QmRxxzNAuH8JhCjRTX2UtdmRd2DkKUMqxmm8Vga85cRQRL\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/ILiquidationStrategyEvents.sol\":{\"keccak256\":\"0x1f009597009c68e642dd0342849a5152d26207156c7b8cdcc3fd0721ddfc0e20\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://f00d623be5df1a0817dd32e17f7a3c078dbd417911971c585e68c1537af6abe6\",\"dweb:/ipfs/QmeWeu9C96csmBNa6tSJtx4MZosHhCVuDQFoGpYik9Ynv2\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/ILongStrategyEvents.sol\":{\"keccak256\":\"0x42ecb77c95b87dd95d059c88ac704c57ff3cebbf6aec2b80208e7c817ff27324\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://bd1cad8352d8e55270f26bc4e38ee16d15de9d8c77331ba7ef8afbf7f39ffc41\",\"dweb:/ipfs/QmeGum8jB8WzsqhV5eNErifCSjPt8hRS3P73MKxuRDevyP\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IShortStrategyEvents.sol\":{\"keccak256\":\"0xb8364a03d6510ce6cc06e80d07e1b95eb830846531b538fd89d596341ea7e9b0\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://ec99cfc1ce267318d1b1af8abd703022be278a1dfac467f15369b832b07467b2\",\"dweb:/ipfs/QmWgWfcHtLaV51at58G4UZL25FAGMbAYUKbPXAB7GYg5i7\"]},\"node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IStrategyEvents.sol\":{\"keccak256\":\"0x064b90ebb2a719301c74417bff732323e9af13c79a46675917a6d9afaff79a70\",\"license\":\"BUSL-1.1\",\"urls\":[\"bzz-raw://e0f2657b940b14fd82707f9f84eb6ad2a90d7296d14e18d8da3540c9bfa9a804\",\"dweb:/ipfs/QmSPRT9CcKf9b6BhuZBaTHjfWyNCJ4C4ZsTJQxPcEzh8r9\"]}},\"version\":1}",
+  "metadata": {
+    "compiler": {
+      "version": "0.8.17+commit.8df45f5f"
+    },
+    "language": "Solidity",
+    "output": {
+      "abi": [
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "start",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "end",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getLoansByOwner",
+          "outputs": [
+            {
+              "internalType": "struct IGammaPool.LoanData[]",
+              "name": "_loans",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "poolId",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint96",
+                  "name": "rateIndex",
+                  "type": "uint96"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "initLiquidity",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "liquidity",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lpTokens",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint128[]",
+                  "name": "tokensHeld",
+                  "type": "uint128[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "px",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "tokens",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint8[]",
+                  "name": "decimals",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "string[]",
+                  "name": "symbols",
+                  "type": "string[]"
+                },
+                {
+                  "internalType": "string[]",
+                  "name": "names",
+                  "type": "string[]"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "owner",
+              "type": "address"
+            },
+            {
+              "internalType": "address",
+              "name": "pool",
+              "type": "address"
+            },
+            {
+              "internalType": "uint256",
+              "name": "start",
+              "type": "uint256"
+            },
+            {
+              "internalType": "uint256",
+              "name": "end",
+              "type": "uint256"
+            }
+          ],
+          "stateMutability": "view",
+          "type": "function",
+          "name": "getLoansByOwnerAndPool",
+          "outputs": [
+            {
+              "internalType": "struct IGammaPool.LoanData[]",
+              "name": "_loans",
+              "type": "tuple[]",
+              "components": [
+                {
+                  "internalType": "uint256",
+                  "name": "id",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "tokenId",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address",
+                  "name": "poolId",
+                  "type": "address"
+                },
+                {
+                  "internalType": "uint96",
+                  "name": "rateIndex",
+                  "type": "uint96"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "initLiquidity",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint128",
+                  "name": "liquidity",
+                  "type": "uint128"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "lpTokens",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "uint128[]",
+                  "name": "tokensHeld",
+                  "type": "uint128[]"
+                },
+                {
+                  "internalType": "uint256",
+                  "name": "px",
+                  "type": "uint256"
+                },
+                {
+                  "internalType": "address[]",
+                  "name": "tokens",
+                  "type": "address[]"
+                },
+                {
+                  "internalType": "uint8[]",
+                  "name": "decimals",
+                  "type": "uint8[]"
+                },
+                {
+                  "internalType": "string[]",
+                  "name": "symbols",
+                  "type": "string[]"
+                },
+                {
+                  "internalType": "string[]",
+                  "name": "names",
+                  "type": "string[]"
+                }
+              ]
+            }
+          ]
+        }
+      ],
+      "devdoc": {
+        "kind": "dev",
+        "methods": {
+          "getLoansByOwner(address,uint256,uint256)": {
+            "details": "Get loans belonging to owner",
+            "params": {
+              "end": "- end index of owner's loan array",
+              "owner": "- owner of loans to query loans for",
+              "start": "- start index of owner's loan array"
+            },
+            "returns": {
+              "_loans": "- loans belonging to user"
+            }
+          },
+          "getLoansByOwnerAndPool(address,address,uint256,uint256)": {
+            "details": "Get loans from specific GammaPool belonging to owner.",
+            "params": {
+              "end": "- end index of owner's loan array from `pool`",
+              "owner": "- owner of loans to query loans for",
+              "pool": "- GammaPool to look for loans belonging to owner",
+              "start": "- start index of owner's loan array from `pool`"
+            },
+            "returns": {
+              "_loans": "- loans belonging to user for specific gammaPool"
+            }
+          }
+        },
+        "version": 1
+      },
+      "userdoc": {
+        "kind": "user",
+        "methods": {
+          "getLoansByOwner(address,uint256,uint256)": {
+            "notice": "Loans are added to owner's loan array in the order they're created."
+          },
+          "getLoansByOwnerAndPool(address,address,uint256,uint256)": {
+            "notice": "Loans are added to owner's loan array for a pool in the order they're created. Index = 0 is the first loan created"
+          }
+        },
+        "version": 1
+      }
+    },
+    "settings": {
+      "remappings": [
+        ":@ensdomains/=node_modules/@ensdomains/",
+        ":@gammaswap/=node_modules/@gammaswap/",
+        ":@openzeppelin/=node_modules/@openzeppelin/",
+        ":@uniswap/=node_modules/@uniswap/",
+        ":ds-test/=lib/forge-std/lib/ds-test/src/",
+        ":eth-gas-reporter/=node_modules/eth-gas-reporter/",
+        ":forge-std/=lib/forge-std/src/",
+        ":hardhat/=node_modules/hardhat/"
+      ],
+      "optimizer": {
+        "enabled": true,
+        "runs": 200
+      },
+      "metadata": {
+        "bytecodeHash": "ipfs"
+      },
+      "compilationTarget": {
+        "contracts/interfaces/IGammaPoolQueryableLoans.sol": "IGammaPoolQueryableLoans"
+      },
+      "libraries": {}
+    },
+    "sources": {
+      "contracts/interfaces/IGammaPoolQueryableLoans.sol": {
+        "keccak256": "0xf139303da1c17f9644020a3e6a48b57e641f8a4f44bbe33ee5cc33e91ee5233a",
+        "urls": [
+          "bzz-raw://667e002e61f12dd0bf6c4e40c31c6ca9a6429e743bf00b45b0926eb32b56f320",
+          "dweb:/ipfs/QmZTtiDzpngJb6AV1PEVDcv75YeNikiwFiL1JDZZtdxGFE"
+        ],
+        "license": "GPL-2.0-or-later"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol": {
+        "keccak256": "0xcdb8a1d9a41221b7f0c339065451b1978560c93c202be25a97af8c00ba2d55ef",
+        "urls": [
+          "bzz-raw://01663f10d4d767c9b098bb1ba5440f89b30f3e041b9a1dfd20658b43f4703f87",
+          "dweb:/ipfs/QmRkLu869pW3pDQmGcc8DnekfQTyYojnHrbAT7ePKQoACx"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPoolEvents.sol": {
+        "keccak256": "0xf2ea9ca71d445ec5f8fe5d1ee1f28761b60c8f786902aff34e7438e102bfed79",
+        "urls": [
+          "bzz-raw://aa9cd3e2341355caf94d90d2a21f6aae15259c7345ade628c3977e310d7fd8b1",
+          "dweb:/ipfs/QmQAXKruMhZqjfBaG1T6a8Do7DmNHggSxZWdacfXyQ879E"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IExternalStrategyEvents.sol": {
+        "keccak256": "0x832450347032f3d6178045bcf754ea30b6a74eeb6a786fd23214582780619158",
+        "urls": [
+          "bzz-raw://1afbe6eab83fb06e3353ed9d22b70874efeb5787f51c60785569d86d98cf9399",
+          "dweb:/ipfs/QmeQPwe75onniP9dCjifJuzd4d8BuM7iK2EuMEWcYDws88"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IGammaPoolERC20Events.sol": {
+        "keccak256": "0x9f71a686b572cb99dcf28c87fdbeaf513ec37b0b2a1eea7a442bbfef7e96c466",
+        "urls": [
+          "bzz-raw://ebef3809901f949160b180bbb7206832b4771fa3028c18f76eb6db0c5c6343bc",
+          "dweb:/ipfs/QmRxxzNAuH8JhCjRTX2UtdmRd2DkKUMqxmm8Vga85cRQRL"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/ILiquidationStrategyEvents.sol": {
+        "keccak256": "0x1f009597009c68e642dd0342849a5152d26207156c7b8cdcc3fd0721ddfc0e20",
+        "urls": [
+          "bzz-raw://f00d623be5df1a0817dd32e17f7a3c078dbd417911971c585e68c1537af6abe6",
+          "dweb:/ipfs/QmeWeu9C96csmBNa6tSJtx4MZosHhCVuDQFoGpYik9Ynv2"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/ILongStrategyEvents.sol": {
+        "keccak256": "0x42ecb77c95b87dd95d059c88ac704c57ff3cebbf6aec2b80208e7c817ff27324",
+        "urls": [
+          "bzz-raw://bd1cad8352d8e55270f26bc4e38ee16d15de9d8c77331ba7ef8afbf7f39ffc41",
+          "dweb:/ipfs/QmeGum8jB8WzsqhV5eNErifCSjPt8hRS3P73MKxuRDevyP"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IShortStrategyEvents.sol": {
+        "keccak256": "0xb8364a03d6510ce6cc06e80d07e1b95eb830846531b538fd89d596341ea7e9b0",
+        "urls": [
+          "bzz-raw://ec99cfc1ce267318d1b1af8abd703022be278a1dfac467f15369b832b07467b2",
+          "dweb:/ipfs/QmWgWfcHtLaV51at58G4UZL25FAGMbAYUKbPXAB7GYg5i7"
+        ],
+        "license": "BUSL-1.1"
+      },
+      "node_modules/@gammaswap/v1-core/contracts/interfaces/strategies/events/IStrategyEvents.sol": {
+        "keccak256": "0x064b90ebb2a719301c74417bff732323e9af13c79a46675917a6d9afaff79a70",
+        "urls": [
+          "bzz-raw://e0f2657b940b14fd82707f9f84eb6ad2a90d7296d14e18d8da3540c9bfa9a804",
+          "dweb:/ipfs/QmSPRT9CcKf9b6BhuZBaTHjfWyNCJ4C4ZsTJQxPcEzh8r9"
+        ],
+        "license": "BUSL-1.1"
+      }
+    },
+    "version": 1
+  },
+  "ast": {
+    "absolutePath": "contracts/interfaces/IGammaPoolQueryableLoans.sol",
+    "id": 2791,
+    "exportedSymbols": {
+      "IExternalStrategyEvents": [
+        37392
+      ],
+      "IGammaPool": [
+        37109
+      ],
+      "IGammaPoolERC20Events": [
+        37414
+      ],
+      "IGammaPoolEvents": [
+        37129
+      ],
+      "IGammaPoolQueryableLoans": [
+        2790
+      ],
+      "ILiquidationStrategyEvents": [
+        37438
+      ],
+      "ILongStrategyEvents": [
+        37464
+      ],
+      "IShortStrategyEvents": [
+        37495
+      ],
+      "IStrategyEvents": [
+        37539
+      ]
+    },
+    "nodeType": "SourceUnit",
+    "src": "45:1484:4",
+    "nodes": [
+      {
+        "id": 2757,
+        "nodeType": "PragmaDirective",
+        "src": "45:24:4",
+        "nodes": [],
+        "literals": [
+          "solidity",
+          ">=",
+          "0.8",
+          ".0"
+        ]
+      },
+      {
+        "id": 2758,
+        "nodeType": "ImportDirective",
+        "src": "71:64:4",
+        "nodes": [],
+        "absolutePath": "node_modules/@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol",
+        "file": "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol",
+        "nameLocation": "-1:-1:-1",
+        "scope": 2791,
+        "sourceUnit": 37110,
+        "symbolAliases": [],
+        "unitAlias": ""
+      },
+      {
+        "id": 2790,
+        "nodeType": "ContractDefinition",
+        "src": "331:1197:4",
+        "nodes": [
+          {
+            "id": 2775,
+            "nodeType": "FunctionDefinition",
+            "src": "902:148:4",
+            "nodes": [],
+            "documentation": {
+              "id": 2760,
+              "nodeType": "StructuredDocumentation",
+              "src": "372:525:4",
+              "text": "@notice Loans are added to owner's loan array for a pool in the order they're created. Index = 0 is the first loan created\n @dev Get loans from specific GammaPool belonging to owner.\n @param owner - owner of loans to query loans for\n @param pool - GammaPool to look for loans belonging to owner\n @param start - start index of owner's loan array from `pool`\n @param end - end index of owner's loan array from `pool`\n @return _loans - loans belonging to user for specific gammaPool"
+            },
+            "functionSelector": "c70bdbca",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getLoansByOwnerAndPool",
+            "nameLocation": "911:22:4",
+            "parameters": {
+              "id": 2769,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2762,
+                  "mutability": "mutable",
+                  "name": "owner",
+                  "nameLocation": "942:5:4",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2775,
+                  "src": "934:13:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2761,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "934:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2764,
+                  "mutability": "mutable",
+                  "name": "pool",
+                  "nameLocation": "957:4:4",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2775,
+                  "src": "949:12:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2763,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "949:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2766,
+                  "mutability": "mutable",
+                  "name": "start",
+                  "nameLocation": "971:5:4",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2775,
+                  "src": "963:13:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2765,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "963:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2768,
+                  "mutability": "mutable",
+                  "name": "end",
+                  "nameLocation": "986:3:4",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2775,
+                  "src": "978:11:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2767,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "978:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "933:57:4"
+            },
+            "returnParameters": {
+              "id": 2774,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2773,
+                  "mutability": "mutable",
+                  "name": "_loans",
+                  "nameLocation": "1042:6:4",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2775,
+                  "src": "1013:35:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_LoanData_$36598_memory_ptr_$dyn_memory_ptr",
+                    "typeString": "struct IGammaPool.LoanData[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 2771,
+                      "nodeType": "UserDefinedTypeName",
+                      "pathNode": {
+                        "id": 2770,
+                        "name": "IGammaPool.LoanData",
+                        "nameLocations": [
+                          "1013:10:4",
+                          "1024:8:4"
+                        ],
+                        "nodeType": "IdentifierPath",
+                        "referencedDeclaration": 36598,
+                        "src": "1013:19:4"
+                      },
+                      "referencedDeclaration": 36598,
+                      "src": "1013:19:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LoanData_$36598_storage_ptr",
+                        "typeString": "struct IGammaPool.LoanData"
+                      }
+                    },
+                    "id": 2772,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1013:21:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_struct$_LoanData_$36598_storage_$dyn_storage_ptr",
+                      "typeString": "struct IGammaPool.LoanData[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1012:37:4"
+            },
+            "scope": 2790,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          },
+          {
+            "id": 2789,
+            "nodeType": "FunctionDefinition",
+            "src": "1398:127:4",
+            "nodes": [],
+            "documentation": {
+              "id": 2776,
+              "nodeType": "StructuredDocumentation",
+              "src": "1056:337:4",
+              "text": "@notice Loans are added to owner's loan array in the order they're created.\n @dev Get loans belonging to owner\n @param owner - owner of loans to query loans for\n @param start - start index of owner's loan array\n @param end - end index of owner's loan array\n @return _loans - loans belonging to user"
+            },
+            "functionSelector": "6af35494",
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "getLoansByOwner",
+            "nameLocation": "1407:15:4",
+            "parameters": {
+              "id": 2783,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2778,
+                  "mutability": "mutable",
+                  "name": "owner",
+                  "nameLocation": "1431:5:4",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2789,
+                  "src": "1423:13:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_address",
+                    "typeString": "address"
+                  },
+                  "typeName": {
+                    "id": 2777,
+                    "name": "address",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1423:7:4",
+                    "stateMutability": "nonpayable",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_address",
+                      "typeString": "address"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2780,
+                  "mutability": "mutable",
+                  "name": "start",
+                  "nameLocation": "1446:5:4",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2789,
+                  "src": "1438:13:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2779,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1438:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                },
+                {
+                  "constant": false,
+                  "id": 2782,
+                  "mutability": "mutable",
+                  "name": "end",
+                  "nameLocation": "1461:3:4",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2789,
+                  "src": "1453:11:4",
+                  "stateVariable": false,
+                  "storageLocation": "default",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_uint256",
+                    "typeString": "uint256"
+                  },
+                  "typeName": {
+                    "id": 2781,
+                    "name": "uint256",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "1453:7:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_uint256",
+                      "typeString": "uint256"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1422:43:4"
+            },
+            "returnParameters": {
+              "id": 2788,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 2787,
+                  "mutability": "mutable",
+                  "name": "_loans",
+                  "nameLocation": "1517:6:4",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 2789,
+                  "src": "1488:35:4",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_array$_t_struct$_LoanData_$36598_memory_ptr_$dyn_memory_ptr",
+                    "typeString": "struct IGammaPool.LoanData[]"
+                  },
+                  "typeName": {
+                    "baseType": {
+                      "id": 2785,
+                      "nodeType": "UserDefinedTypeName",
+                      "pathNode": {
+                        "id": 2784,
+                        "name": "IGammaPool.LoanData",
+                        "nameLocations": [
+                          "1488:10:4",
+                          "1499:8:4"
+                        ],
+                        "nodeType": "IdentifierPath",
+                        "referencedDeclaration": 36598,
+                        "src": "1488:19:4"
+                      },
+                      "referencedDeclaration": 36598,
+                      "src": "1488:19:4",
+                      "typeDescriptions": {
+                        "typeIdentifier": "t_struct$_LoanData_$36598_storage_ptr",
+                        "typeString": "struct IGammaPool.LoanData"
+                      }
+                    },
+                    "id": 2786,
+                    "nodeType": "ArrayTypeName",
+                    "src": "1488:21:4",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_array$_t_struct$_LoanData_$36598_storage_$dyn_storage_ptr",
+                      "typeString": "struct IGammaPool.LoanData[]"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "1487:37:4"
+            },
+            "scope": 2790,
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IGammaPoolQueryableLoans",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "documentation": {
+          "id": 2759,
+          "nodeType": "StructuredDocumentation",
+          "src": "137:194:4",
+          "text": "@title Interface for IGammaPoolQueryableLoans\n @author Daniel D. Alcarraz (https://github.com/0xDanr)\n @dev Defines external functions used by PositionManager to query pools and loans"
+        },
+        "fullyImplemented": false,
+        "linearizedBaseContracts": [
+          2790
+        ],
+        "name": "IGammaPoolQueryableLoans",
+        "nameLocation": "341:24:4",
+        "scope": 2791,
+        "usedErrors": []
+      }
+    ],
+    "license": "GPL-2.0-or-later"
+  },
+  "id": 4
+}
