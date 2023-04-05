@@ -1,10 +1,13 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity >=0.8.0;
 
+/// @title IPriceDataQueries interface
+/// @author Daniel D. Alcarraz (https://github.com/0xDanr)
+/// @dev Interface of PriceDataQueries contract that will perform historical price queries
 interface IPriceDataQueries {
 
-    /// @dev Struct to store single time series data point
-    struct TimeSeries {
+    /// @dev Struct to store data points in candle bars
+    struct Candle {
         uint256 timestamp;
         uint256 open;
         uint256 high;
@@ -13,7 +16,7 @@ interface IPriceDataQueries {
     }
 
     /// @dev Struct to store raw time series data obtained from GammaPool
-    struct RawData {
+    struct PriceData {
         /// @dev Timestamp of datapoint
         uint256 timestamp;
         /// @dev Timestamp of datapoint
@@ -31,13 +34,13 @@ interface IPriceDataQueries {
     }
 
     /// @dev Struct to store all time series data in arrays
-    struct TimeSeriesData {
-        RawData[] rawData;
-        TimeSeries[] dailyPrices;
-        TimeSeries[] utilRates;
-        TimeSeries[] borrowRates;
-        TimeSeries[] indexRates;
+    struct TimeSeries {
+        PriceData[] priceSeries;
+        Candle[] dailyPrices;
+        Candle[] utilRates;
+        Candle[] borrowRates;
+        Candle[] indexRates;
     }
 
-    function getTimeSeries(address gammaPool, uint256 _frequency) external view returns(TimeSeriesData memory _timeSeries);
+    function getTimeSeries(address gammaPool, uint256 _frequency) external view returns(TimeSeries memory _timeSeries);
 }

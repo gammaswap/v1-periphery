@@ -4,6 +4,10 @@ coverage
 coverage.json
 typechain
 
+#foundry files
+cache_forge
+out
+
 #Hardhat files
 cache
 artifacts

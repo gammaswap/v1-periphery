@@ -5,13 +5,14 @@ import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "@gammaswap/v1-core/contracts/utils/TwoStepOwnable.sol";
 import "../interfaces/IPriceStore.sol";
 
-/// @title Implementation of ILoanStore interface
+/// @title Implementation of IPriceStore interface
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
-/// @notice It's meant to be inherited by other contracts to create queries
+/// @dev It's meant to be inherited by other contracts to store price information about a GammaPool
+/// @notice The purpose of storing price information is so that it's available in queries
 abstract contract PriceStore is IPriceStore, TwoStepOwnable {
 
     /// @dev mapping of GammaPools to raw data point information
-    mapping(address => PriceInfo[]) public timeSeries;
+    mapping(address => PriceInfo[]) public priceSeries;
 
     /// @dev source of raw data updates
     address public source;
@@ -77,21 +78,21 @@ abstract contract PriceStore is IPriceStore, TwoStepOwnable {
             lastPrice: uint96(data.lastPrice)
         });
 
-        uint256 len = timeSeries[pool].length;
+        uint256 len = priceSeries[pool].length;
         if(len >= maxLen) { // remove data points older than maxLen
-            delete timeSeries[pool][len - maxLen];
+            delete priceSeries[pool][len - maxLen];
         }
 
-        timeSeries[pool].push(info);
+        priceSeries[pool].push(info);
     }
 
     /// @dev See {IPriceStore-size}.
     function size(address pool) external virtual override view returns(uint256) {
-        return timeSeries[pool].length;
+        return priceSeries[pool].length;
     }
 
-    /// @dev See {IPriceStore-getTimeSeriesAt}.
-    function getTimeSeriesAt(address pool, uint256 index) external virtual override view returns(PriceInfo memory data) {
-        return timeSeries[pool][index];
+    /// @dev See {IPriceStore-getPriceAt}.
+    function getPriceAt(address pool, uint256 index) external virtual override view returns(PriceInfo memory data) {
+        return priceSeries[pool][index];
     }
 }

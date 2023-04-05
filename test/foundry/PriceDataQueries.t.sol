@@ -17,6 +17,10 @@ contract PriceDataQueriesTest is Test {
     address _shortStrategy;
     address _liquidationStrategy;
 
+    uint256 maxLen;
+    uint256 frequency;
+    uint256 blocksPerYear;
+
     function setUp() public {
         _protocolId = 1;
         _factory = vm.addr(1);
@@ -25,9 +29,11 @@ contract PriceDataQueriesTest is Test {
         _liquidationStrategy = vm.addr(4);
 
         pool = new TestGammaPool2(_protocolId, _factory, _longStrategy, _shortStrategy, _liquidationStrategy);
-        uint256 maxLen = 10;
-        uint256 frequency = 1;
-        pdq = new PriceDataQueries(address(this), maxLen, frequency);
+
+        maxLen = 7 * 24; // 1 week
+        frequency = 0;
+        blocksPerYear = 60 * 60 * 24 * 365 / 12; // assumes 12 seconds per block
+        pdq = new PriceDataQueries(blocksPerYear, address(this), maxLen, frequency);
 
         // new deployed contracts will have Test as owner
         owner = address(this);

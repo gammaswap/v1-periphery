@@ -4,21 +4,26 @@ pragma solidity 0.8.17;
 import "./PriceStore.sol";
 import "../interfaces/IPriceDataQueries.sol";
 
+/// @title PriceDataQueries contract that implements IPriceDataQueries
+/// @author Daniel D. Alcarraz (https://github.com/0xDanr)
+/// @dev Performs historical price queries from price data stored in PriceStore
 contract PriceDataQueries is IPriceDataQueries, PriceStore {
 
-    uint256 public BLOCKS_PER_YEAR;
+    /// @dev Number of blocks per year in network
+    uint256 public immutable BLOCKS_PER_YEAR;
 
     /// @dev Initializes the contract by setting `_owner`, `_maxLen`, and `_frequency`.
-    constructor(address _owner, uint256 _maxLen, uint256 _frequency) PriceStore(_owner, _maxLen, _frequency) {
+    constructor(uint256 blocksPerYear, address _owner, uint256 _maxLen, uint256 _frequency) PriceStore(_owner, _maxLen, _frequency) {
+        BLOCKS_PER_YEAR = blocksPerYear;
     }
 
     /// @dev See {IPriceDataQueries-getTimeSeries}.
-    function getTimeSeries(address pool, uint256 _frequency) external virtual override view returns(TimeSeriesData memory _data) {
-        require(_frequency >= 1 || _frequency <= 24, "FREQUENCY");
+    function getTimeSeries(address pool, uint256 _frequency) external virtual override view returns(TimeSeries memory _data) {
+        require(_frequency > 0 || _frequency < 25, "FREQUENCY");
         uint256 _firstIdx;
         uint256 _size;
         {
-            uint256 len = timeSeries[pool].length;
+            uint256 len = priceSeries[pool].length;
             uint256 _maxLen = maxLen;
             _size = len;
             if(len == 0 || maxLen == 0) {
@@ -28,10 +33,15 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
                 unchecked{
                     _firstIdx = len - _maxLen;
                 }
+            } else {
+                _size = len;
             }
-            _data = createTimeSeriesData(_size, _size / _frequency);
+            if(_size / _frequency == 0) {
+                return _data;
+            }
+            _data = createTimeSeries(_size, _size / _frequency); // _frequency is multiple of the raw data frequency
             unchecked{
-                _frequency = _frequency * (1 hours);
+                _frequency = _frequency * frequency; // frequency of bars is a multiple of the frequency of raw data
             }
         }
         uint256 accFeeIndex;
@@ -43,8 +53,8 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
             _size = _firstIdx + _size;
         }
         for(uint256 i = _firstIdx; i < _size;) {
-            PriceInfo memory info = timeSeries[pool][i];
-            _data.rawData[j] = createRawData(info);
+            PriceInfo memory info = priceSeries[pool][i];
+            _data.priceSeries[j] = createPriceData(info);
             if(i == _firstIdx) {
                 accFeeIndex = info.accFeeIndex * 1e6;
                 blockNumber = info.blockNumber;
@@ -53,7 +63,7 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
                 accFeeIndex = info.accFeeIndex * 1e6;
                 blockNumber = info.blockNumber;
 
-                _data.rawData[j].indexRate = indexRate;
+                _data.priceSeries[j].indexRate = indexRate;
 
                 if(info.timestamp >= _nextTimestamp) {
                     // start new bar
@@ -67,16 +77,16 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
                         _nextTimestamp = lastTimestamp + _frequency;
                     }
 
-                    _data.dailyPrices[k] = createTimeSeries(lastTimestamp, info.lastPrice);
-                    _data.borrowRates[k] = createTimeSeries(lastTimestamp, info.borrowRate);
-                    _data.utilRates[k] = createTimeSeries(lastTimestamp, info.utilRate);
-                    _data.indexRates[k] = createTimeSeries(lastTimestamp, indexRate);
+                    _data.dailyPrices[k] = createCandle(lastTimestamp, info.lastPrice);
+                    _data.borrowRates[k] = createCandle(lastTimestamp, info.borrowRate);
+                    _data.utilRates[k] = createCandle(lastTimestamp, info.utilRate);
+                    _data.indexRates[k] = createCandle(lastTimestamp, indexRate);
                 } else {
                     // keep filling bar
-                    _data.dailyPrices[k] = updateTimeSeries(_data.dailyPrices[k], info.lastPrice);
-                    _data.borrowRates[k] = updateTimeSeries(_data.borrowRates[k], info.borrowRate);
-                    _data.utilRates[k] = updateTimeSeries(_data.utilRates[k], info.utilRate);
-                    _data.indexRates[k] = updateTimeSeries(_data.indexRates[k], indexRate);
+                    _data.dailyPrices[k] = updateCandle(_data.dailyPrices[k], info.lastPrice);
+                    _data.borrowRates[k] = updateCandle(_data.borrowRates[k], info.borrowRate);
+                    _data.utilRates[k] = updateCandle(_data.utilRates[k], info.utilRate);
+                    _data.indexRates[k] = updateCandle(_data.indexRates[k], indexRate);
                 }
             }
             unchecked {
@@ -86,38 +96,13 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
         }
     }
 
-    /*function getFrequency(uint256 _freq) internal pure returns(uint256 _frequency, uint256 divisor) {
-        if(_freq == 1) {
-            _frequency = 1 hours;
-            divisor = 1;
-        } if(_freq == 2) {
-            _frequency = 2 hours;
-            divisor = 2;
-        } else if(_freq == 3) {
-            _frequency = 4 hours;
-            divisor = 4;
-        }  else if(_freq == 4) {
-            _frequency = 6 hours;
-            divisor = 6;
-        }  else if(_freq == 4) {
-            _frequency = 8 hours;
-            divisor = 8;
-        }  else if(_freq == 5) {
-            _frequency = 12 hours;
-            divisor = 12;
-        }  else {
-            _frequency = 1 days;
-            divisor = 24;
-        }
-    }/**/
-
-    function createTimeSeriesData(uint256 rawLen, uint256 seriesLen) internal pure returns(TimeSeriesData memory _data) {
-        _data = TimeSeriesData({
-            rawData: new RawData[](rawLen),
-            dailyPrices: new TimeSeries[](seriesLen),
-            utilRates: new TimeSeries[](seriesLen),
-            borrowRates: new TimeSeries[](seriesLen),
-            indexRates: new TimeSeries[](seriesLen)
+    function createTimeSeries(uint256 priceSeriesLen, uint256 seriesLen) internal pure returns(TimeSeries memory) {
+        return TimeSeries({
+            priceSeries: new PriceData[](priceSeriesLen),
+            dailyPrices: new Candle[](seriesLen),
+            utilRates: new Candle[](seriesLen),
+            borrowRates: new Candle[](seriesLen),
+            indexRates: new Candle[](seriesLen)
         });
     }
 
@@ -126,8 +111,8 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
         indexRate = feeIndex * BLOCKS_PER_YEAR / (info.blockNumber - blockNumber); // annualized
     }
 
-    function createRawData(PriceInfo memory info) internal pure returns(RawData memory _rawData) {
-        _rawData = RawData({
+    function createPriceData(PriceInfo memory info) internal pure returns(PriceData memory) {
+        return PriceData({
             timestamp: info.timestamp,
             blockNumber: info.blockNumber,
             utilRate: info.utilRate,
@@ -138,23 +123,23 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
         });
     }
 
-    function updateTimeSeries(TimeSeries memory _ts, uint256 data) internal pure returns(TimeSeries memory) {
-        if(data > _ts.high) {
-            _ts.high = data;
-        } else if(data < _ts.low) {
-            _ts.low = data;
+    function updateCandle(Candle memory c, uint256 v) internal pure returns(Candle memory) {
+        if(v > c.high) {
+            c.high = v;
+        } else if(v < c.low) {
+            c.low = v;
         }
-        _ts.close = data;
-        return _ts;
+        c.close = v;
+        return c;
     }
 
-    function createTimeSeries(uint256 timestamp, uint256 data) internal pure returns(TimeSeries memory _timeSeries) {
-        _timeSeries = TimeSeries({
+    function createCandle(uint256 timestamp, uint256 v) internal pure returns(Candle memory) {
+        return Candle({
             timestamp: timestamp,
-            open: data,
-            high: data,
-            low: data,
-            close: data
+            open: v,
+            high: v,
+            low: v,
+            close: v
         });
     }
 }

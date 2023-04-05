@@ -110,7 +110,7 @@ contract PriceStoreTest is Test {
         ps.addPriceInfo(_pool);
         assertEq(1,ps.size(_pool));
 
-        IPriceStore.PriceInfo memory ts = ps.getTimeSeriesAt(_pool,0);
+        IPriceStore.PriceInfo memory ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,1);
         assertEq(ts.utilRate,utilRate0/1e14);
@@ -121,7 +121,7 @@ contract PriceStoreTest is Test {
         ps.addPriceInfo(_pool);
         assertEq(1,ps.size(_pool));
         assertEq(300,ps.nextTimestamp());
-        ts = ps.getTimeSeriesAt(_pool,0);
+        ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,1);
         assertEq(ts.utilRate,utilRate0/1e14);
@@ -135,7 +135,7 @@ contract PriceStoreTest is Test {
         ps.addPriceInfo(_pool);
         assertEq(1,ps.size(_pool));
         assertEq(300,ps.nextTimestamp());
-        ts = ps.getTimeSeriesAt(_pool,0);
+        ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,1);
         assertEq(ts.utilRate,utilRate0/1e14);
@@ -156,7 +156,7 @@ contract PriceStoreTest is Test {
         vm.roll(27); // 12 seconds
         vm.warp(300);
 
-        ts = ps.getTimeSeriesAt(_pool,0);
+        ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,1);
         assertEq(ts.utilRate,utilRate0/1e14);
@@ -170,7 +170,7 @@ contract PriceStoreTest is Test {
         assertEq(2,ps.size(_pool));
         assertEq(600,ps.nextTimestamp());
 
-        ts = ps.getTimeSeriesAt(_pool,0);
+        ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,1);
         assertEq(ts.utilRate,utilRate0/1e14);
@@ -178,7 +178,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,accFeeIndex0/1e6);
         assertEq(ts.lastPrice,lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,1);
+        ts = ps.getPriceAt(_pool,1);
         assertEq(ts.timestamp,300);
         assertEq(ts.blockNumber,27);
         assertEq(ts.utilRate,2*utilRate0/1e14);
@@ -189,7 +189,7 @@ contract PriceStoreTest is Test {
         ps.addPriceInfo(_pool);
         assertEq(2,ps.size(_pool));
 
-        ts = ps.getTimeSeriesAt(_pool,1);
+        ts = ps.getPriceAt(_pool,1);
         assertEq(ts.timestamp,300);
         assertEq(ts.blockNumber,27);
         assertEq(ts.utilRate,2*utilRate0/1e14);
@@ -203,7 +203,7 @@ contract PriceStoreTest is Test {
         ps.addPriceInfo(_pool);
         assertEq(3,ps.size(_pool));
 
-        ts = ps.getTimeSeriesAt(_pool,0);
+        ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,1);
         assertEq(ts.utilRate,utilRate0/1e14);
@@ -211,7 +211,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,accFeeIndex0/1e6);
         assertEq(ts.lastPrice,lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,1);
+        ts = ps.getPriceAt(_pool,1);
         assertEq(ts.timestamp,300);
         assertEq(ts.blockNumber,27);
         assertEq(ts.utilRate,2*utilRate0/1e14);
@@ -219,7 +219,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,2*accFeeIndex0/1e6);
         assertEq(ts.lastPrice,2*lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,2);
+        ts = ps.getPriceAt(_pool,2);
         assertEq(ts.timestamp,600);
         assertEq(ts.blockNumber,28);
         assertEq(ts.utilRate,2*utilRate0/1e14);
@@ -235,7 +235,7 @@ contract PriceStoreTest is Test {
         ps.addPriceInfo(_pool);
         assertEq(4,ps.size(_pool));
 
-        ts = ps.getTimeSeriesAt(_pool,0);
+        ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,1);
         assertEq(ts.utilRate,utilRate0/1e14);
@@ -243,7 +243,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,accFeeIndex0/1e6);
         assertEq(ts.lastPrice,lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,1);
+        ts = ps.getPriceAt(_pool,1);
         assertEq(ts.timestamp,300);
         assertEq(ts.blockNumber,27);
         assertEq(ts.utilRate,2*utilRate0/1e14);
@@ -251,7 +251,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,2*accFeeIndex0/1e6);
         assertEq(ts.lastPrice,2*lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,2);
+        ts = ps.getPriceAt(_pool,2);
         assertEq(ts.timestamp,600);
         assertEq(ts.blockNumber,28);
         assertEq(ts.utilRate,2*utilRate0/1e14);
@@ -259,7 +259,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,2*accFeeIndex0/1e6);
         assertEq(ts.lastPrice,2*lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,3);
+        ts = ps.getPriceAt(_pool,3);
         assertEq(ts.timestamp,900);
         assertEq(ts.blockNumber,29);
         assertEq(ts.utilRate,3*utilRate0/1e14);
@@ -297,7 +297,7 @@ contract PriceStoreTest is Test {
         ps.addPriceInfo(_pool);
         assertEq(10,ps.size(_pool));
 
-        ts = ps.getTimeSeriesAt(_pool,0);
+        ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,1);
         assertEq(ts.utilRate,utilRate0/1e14);
@@ -305,7 +305,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,accFeeIndex0/1e6);
         assertEq(ts.lastPrice,lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,9);
+        ts = ps.getPriceAt(_pool,9);
         assertEq(ts.timestamp,2700);
         assertEq(ts.blockNumber,35);
         assertEq(ts.utilRate,3*utilRate0/1e14);
@@ -321,7 +321,7 @@ contract PriceStoreTest is Test {
         ps.addPriceInfo(_pool);
         assertEq(11,ps.size(_pool));
 
-        ts = ps.getTimeSeriesAt(_pool,9);
+        ts = ps.getPriceAt(_pool,9);
         assertEq(ts.timestamp,2700);
         assertEq(ts.blockNumber,35);
         assertEq(ts.utilRate,3*utilRate0/1e14);
@@ -329,7 +329,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,3*accFeeIndex0/1e6);
         assertEq(ts.lastPrice,3*lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,10);
+        ts = ps.getPriceAt(_pool,10);
         assertEq(ts.timestamp,3000);
         assertEq(ts.blockNumber,36);
         assertEq(ts.utilRate,4*utilRate0/1e14);
@@ -337,7 +337,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,4*accFeeIndex0/1e6);
         assertEq(ts.lastPrice,4*lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,1);
+        ts = ps.getPriceAt(_pool,1);
         assertEq(ts.timestamp,300);
         assertEq(ts.blockNumber,27);
         assertEq(ts.utilRate,2*utilRate0/1e14);
@@ -345,7 +345,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,2*accFeeIndex0/1e6);
         assertEq(ts.lastPrice,2*lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,0);
+        ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,0);
         assertEq(ts.utilRate,0);
@@ -359,7 +359,7 @@ contract PriceStoreTest is Test {
         ps.addPriceInfo(_pool);
         assertEq(12,ps.size(_pool));
 
-        ts = ps.getTimeSeriesAt(_pool,0);
+        ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,0);
         assertEq(ts.utilRate,0);
@@ -367,7 +367,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,0);
         assertEq(ts.lastPrice,0);
 
-        ts = ps.getTimeSeriesAt(_pool,1);
+        ts = ps.getPriceAt(_pool,1);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,0);
         assertEq(ts.utilRate,0);
@@ -375,7 +375,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,0);
         assertEq(ts.lastPrice,0);
 
-        ts = ps.getTimeSeriesAt(_pool,10);
+        ts = ps.getPriceAt(_pool,10);
         assertEq(ts.timestamp,3000);
         assertEq(ts.blockNumber,36);
         assertEq(ts.utilRate,4*utilRate0/1e14);
@@ -383,7 +383,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,4*accFeeIndex0/1e6);
         assertEq(ts.lastPrice,4*lastPrice0);
 
-        ts = ps.getTimeSeriesAt(_pool,11);
+        ts = ps.getPriceAt(_pool,11);
         assertEq(ts.timestamp,3300);
         assertEq(ts.blockNumber,37);
         assertEq(ts.utilRate,4*utilRate0/1e14);
