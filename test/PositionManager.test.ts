@@ -8,7 +8,9 @@ describe("PositionManager", function () {
     let GammaPoolFactory: any;
     let TestPositionManager: any;
     let PositionManagerQueries: any;
+    let PriceDataQueries: any;
     let store: any;
+    let priceStore: any;
     let factory: any;
     let tokenA: any;
     let tokenB: any;
@@ -41,6 +43,7 @@ describe("PositionManager", function () {
         GammaPoolFactory = await ethers.getContractFactory("TestGammaPoolFactory");
         TestPositionManager = await ethers.getContractFactory("TestPositionManager");
         PositionManagerQueries = await ethers.getContractFactory("PositionManagerQueries");
+        PriceDataQueries = await ethers.getContractFactory("PriceDataQueries");
         GammaPool = await ethers.getContractFactory("TestGammaPool");
         GammaPool2 = await ethers.getContractFactory("TestGammaPool2");
         [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
@@ -59,13 +62,20 @@ describe("PositionManager", function () {
 
         store = await PositionManagerQueries.deploy(factory.address, owner.address);
 
+        const maxLen = 7 * 24; // 1 week
+        const frequency = 0;
+        const blocksPerYear = 60 * 60 * 24 * 365 / 12; // assumes 12 seconds per block
+        priceStore = await PriceDataQueries.deploy(blocksPerYear, owner.address, maxLen, frequency);
+
         const implementation = await GammaPool.deploy(1, factory.address, addr1.address, addr2.address, addr3.address);
 
         await (await factory.addProtocol(implementation.address)).wait();
 
-        posMgr = await TestPositionManager.deploy(factory.address, WETH.address, store.address);
+        posMgr = await TestPositionManager.deploy(factory.address, WETH.address, store.address, priceStore.address);
 
         await (await store.setSource(posMgr.address)).wait();
+
+        await (await priceStore.setSource(posMgr.address)).wait();
 
         const createPoolParams = {
             cfmm: cfmm.address,
