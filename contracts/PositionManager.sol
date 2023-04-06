@@ -55,8 +55,9 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     }
 
     /// @dev Initializes the contract by setting `factory`, `WETH`, and `dataStore`.
-    constructor(address _factory, address _WETH, address _dataStore) Transfers(_WETH) GammaPoolQueryableLoans(_dataStore) {
+    constructor(address _factory, address _WETH, address _dataStore, address _priceStore) Transfers(_WETH) GammaPoolQueryableLoans(_dataStore) {
         factory = _factory;
+        priceStore = _priceStore;
     }
 
     /// @dev See {IERC721Metadata-name}.

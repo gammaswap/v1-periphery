@@ -5,7 +5,8 @@ import "../PositionManager.sol";
 
 contract TestPositionManager is PositionManager {
 
-    constructor(address _factory, address _WETH, address _dataStore) PositionManager( _factory,  _WETH, _dataStore) {
+    constructor(address _factory, address _WETH, address _dataStore, address _priceStore)
+        PositionManager( _factory,  _WETH, _dataStore, _priceStore) {
     }
 
     function createTestLoan(address to) external virtual returns(uint256 tokenId) {
