@@ -57,6 +57,9 @@ abstract contract PriceStore is IPriceStore, TwoStepOwnable {
     /// @dev See {IPriceStore-addPriceInfo}.
     function addPriceInfo(address pool) public virtual override {
         require(msg.sender == source, "SOURCE"); // only source can update
+        if(maxLen == 0) {
+            return;
+        }
         uint256 currTime = block.timestamp;
         uint256 _nextTimestamp = nextTimestamp;
         if(currTime < _nextTimestamp) { // don't update if not crossed next timestamp

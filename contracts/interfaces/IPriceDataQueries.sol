@@ -35,12 +35,22 @@ interface IPriceDataQueries {
 
     /// @dev Struct to store all time series data in arrays
     struct TimeSeries {
+        /// @dev Data used to contrcut the candle bars
         PriceData[] priceSeries;
-        Candle[] dailyPrices;
+        /// @dev Candle bars of prices of CFMM
+        Candle[] prices;
+        /// @dev Candle bars of utilization rate of GammaPool
         Candle[] utilRates;
+        /// @dev Candle bars of annual borrow rate of GammaPool
         Candle[] borrowRates;
+        /// @dev Candle bars of accrued interest rate of GammaPool within candle interval (annualized)
         Candle[] indexRates;
     }
 
-    function getTimeSeries(address gammaPool, uint256 _frequency) external view returns(TimeSeries memory _timeSeries);
+    /// @dev Return candle bar information containing prices, utilization rates, borrowRates, accrued return, in `_frequency` intervals
+    /// @notice The `_frequency` interval can't be smaller than the interval at which data is stored in the PriceStore contract
+    /// @param pool - Address of GammaPool to get candle bars for
+    /// @param _frequency - interval of the candle bars, specified as multiples of the `frequency` time interval of data in the PriceStore
+    /// @return _timeSeries - time series struct containing candle bars and the price data used to construct the candle bars
+    function getCandleBars(address pool, uint256 _frequency) external view returns(TimeSeries memory _timeSeries);
 }

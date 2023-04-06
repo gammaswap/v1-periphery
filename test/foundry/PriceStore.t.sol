@@ -98,6 +98,32 @@ contract PriceStoreTest is Test {
         ps.addPriceInfo(address(pool));
     }
 
+    function testAddPriceInfo2(uint8 len, uint8 _maxLen) public {
+        uint256 utilRate0 = 1e18 / 100;
+        uint256 borrowRate0 = 1e18 / 100;
+        uint256 accFeeIndex0 = 1e18;
+        uint256 lastPrice0 = 1e18;
+        pool.setLatestRates(utilRate0, borrowRate0, accFeeIndex0, lastPrice0);
+
+        ps.setMaxLen(_maxLen);
+
+        address _pool = address(pool);
+
+        assertEq(0, ps.size(_pool));
+
+        for(uint256 i = 0; i < len; i++) {
+            vm.roll(i*27); // 12 seconds
+            vm.warp(i*300);
+            ps.addPriceInfo(_pool);
+        }
+
+        uint256 _len = len;
+        if(_maxLen == 0) {
+            _len = 0;
+        }
+        assertEq(_len, ps.size(_pool));
+    }
+
     function testAddPriceInfo(uint256 var1) public {
         address _pool = address(pool);
 
