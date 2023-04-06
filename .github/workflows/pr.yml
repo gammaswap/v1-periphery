@@ -15,7 +15,10 @@ jobs:
           node-version: 16
           registry-url: https://npm.pkg.github.com/
           scope: '@gammaswap'
+      - name: Install Foundry
+        uses: foundry-rs/foundry-toolchain@v1
       - run: npm install
         env:
           NODE_AUTH_TOKEN: ${{secrets.GS_TOKEN}}
       - run: npx hardhat test
+      - run: forge test -vvv

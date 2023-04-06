@@ -499,10 +499,10 @@
     "@ethersproject/properties" "^5.7.0"
     "@ethersproject/strings" "^5.7.0"
 
-"@gammaswap/v1-core@^0.3.19":
-  version "0.3.19"
-  resolved "https://npm.pkg.github.com/download/@gammaswap/v1-core/0.3.19/81ba03e7641abe344247c1c25d363e49c674f381#81ba03e7641abe344247c1c25d363e49c674f381"
-  integrity sha512-YvupVL+acpP2ov9Vfd48wkFw9VRVr/fcwod61I5ZXnHVQGtKqffh0wrdBATRooiv+E4UjxnQyiil7wBE0SNzcQ==
+"@gammaswap/v1-core@^0.4.1":
+  version "0.4.1"
+  resolved "https://npm.pkg.github.com/download/@gammaswap/v1-core/0.4.1/df570b1757cb093168bf259caf25a91c72a005b6#df570b1757cb093168bf259caf25a91c72a005b6"
+  integrity sha512-ioQj0zdQoCDNDpwS6PxCPndlzUs65rbQsQsS33wr+WrzqBXPFjAChvuQPSRG9JOp5TGKEnztezX2TeSBQBhKLw==
   dependencies:
     "@openzeppelin/contracts" "^4.7.0"
 
@@ -716,6 +716,13 @@
     functional-red-black-tree "^1.0.1"
     mcl-wasm "^0.7.1"
     rustbn.js "~0.2.0"
+
+"@nomicfoundation/hardhat-foundry@^1.0.0":
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/@nomicfoundation/hardhat-foundry/-/hardhat-foundry-1.0.0.tgz#14eba643138b09e4a8f2fed2a99bc9c96c487b0a"
+  integrity sha512-/2cmtIZPnsQj/SRIu9idbBan5j19RD35MECAGmZCcuXX4AO6Wn0nOnpUwpcvGomKW403h4+rXh8AHMWC4Vvw0Q==
+  dependencies:
+    chalk "^2.4.2"
 
 "@nomicfoundation/solidity-analyzer-darwin-arm64@0.1.0":
   version "0.1.0"

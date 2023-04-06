@@ -14,10 +14,7 @@ contract TestGammaPoolFactory is AbstractGammaPoolFactory {
     address public tester;
     address private protocol;
 
-    constructor(address _feeToSetter) {
-        feeToSetter = _feeToSetter;
-        feeTo = _feeToSetter;
-        owner = msg.sender;
+    constructor(address _feeToSetter) AbstractGammaPoolFactory(msg.sender, _feeToSetter, _feeToSetter) {
         tester = msg.sender;
     }
 

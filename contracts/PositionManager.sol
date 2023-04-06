@@ -4,6 +4,7 @@ pragma solidity 0.8.17;
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "@gammaswap/v1-core/contracts/libraries/AddressCalculator.sol";
 import "./interfaces/IPositionManager.sol";
+import "./interfaces/IPriceStore.sol";
 import "./base/Transfers.sol";
 import "./base/GammaPoolERC721.sol";
 import "./base/GammaPoolQueryableLoans.sol";
@@ -24,6 +25,8 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
 
     /// @dev See {IPositionManager-factory}.
     address public immutable override factory;
+
+    address public priceStore;
 
     modifier isAuthorizedForToken(uint256 tokenId) {
         checkAuthorization(tokenId);
@@ -71,6 +74,11 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
         dataStore = _dataStore;
     }
 
+    /// @param _priceStore - address of contract holding price information for queries
+    function setPriceStore(address _priceStore) external virtual {
+        priceStore = _priceStore;
+    }
+
     /// @dev See {ITransfers-getGammaPoolAddress}.
     function getGammaPoolAddress(address cfmm, uint16 protocolId) internal virtual override view returns(address) {
         return AddressCalculator.calcAddress(factory, protocolId, AddressCalculator.getGammaPoolKey(cfmm, protocolId));
@@ -114,9 +122,16 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
 
     // **** LONG GAMMA **** //
 
-    function logLoan(address gammaPool, uint256 tokenId, address owner) internal virtual {
-        IGammaPool.LoanData memory _loanData = IGammaPool(gammaPool).loan(tokenId);
-        emit LoanUpdate(tokenId, gammaPool, owner, _loanData.tokensHeld, _loanData.liquidity, _loanData.lpTokens, _loanData.initLiquidity, IGammaPool(gammaPool).getLatestCFMMReserves());
+    function logPrice(address gammaPool) external virtual {
+        if(IGammaPoolFactory(factory).getKey(gammaPool) > 0) {
+            _logPrice(gammaPool);
+        }
+    }
+
+    function _logPrice(address gammaPool) internal virtual {
+        if(priceStore != address(0)) {
+            IPriceStore(priceStore).addPriceInfo(gammaPool);
+        }
     }
 
     /// @notice Slippage protection for uint256[] array. If amounts < amountsMin, less was obtained than expected
@@ -229,42 +244,42 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     function createLoan(uint16 protocolId, address cfmm, address to, uint256 deadline) external virtual override isExpired(deadline) returns(uint256 tokenId) {
         address gammaPool = getGammaPoolAddress(cfmm, protocolId);
         tokenId = createLoan(gammaPool, to);
-        logLoan(gammaPool, tokenId, to);
+        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-borrowLiquidity}.
     function borrowLiquidity(BorrowLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityBorrowed, uint256[] memory amounts) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         (liquidityBorrowed, amounts) = borrowLiquidity(gammaPool, params.tokenId, params.lpTokens, params.minBorrowed);
-        logLoan(gammaPool, params.tokenId, msg.sender);
+        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-repayLiquidity}.
     function repayLiquidity(RepayLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint256[] memory amounts) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.minRepaid, params.fees);
-        logLoan(gammaPool, params.tokenId, msg.sender);
+        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-increaseCollateral}.
     function increaseCollateral(AddRemoveCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint128[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         tokensHeld = increaseCollateral(gammaPool, params.tokenId, params.amounts);
-        logLoan(gammaPool, params.tokenId, msg.sender);
+        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-decreaseCollateral}.
     function decreaseCollateral(AddRemoveCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint128[] memory tokensHeld){
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.amounts);
-        logLoan(gammaPool, params.tokenId, msg.sender);
+        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-rebalanceCollateral}.
     function rebalanceCollateral(RebalanceCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint128[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         tokensHeld = rebalanceCollateral(gammaPool, params.tokenId, params.deltas, params.minCollateral);
-        logLoan(gammaPool, params.tokenId, msg.sender);
+        _logPrice(gammaPool);
     }
 
     // Multi Function Calls
@@ -280,7 +295,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
         if(params.deltas.length != 0) {
             tokensHeld = rebalanceCollateral(gammaPool, tokenId, params.deltas, params.minCollateral);
         }
-        logLoan(gammaPool, tokenId, params.to);
+        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-borrowAndRebalance}.
@@ -298,7 +313,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
         if(params.withdraw.length != 0) {
             tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw);
         }
-        logLoan(gammaPool, params.tokenId, msg.sender);
+        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-rebalanceRepayAndWithdraw}.
@@ -316,7 +331,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
         if(params.withdraw.length != 0) {
             tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw);
         }
-        logLoan(gammaPool, params.tokenId, msg.sender);
+        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-closeLoan}.
@@ -341,6 +356,6 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
         if(withdrawFunds) {
             decreaseCollateral(gammaPool, params.to, params.tokenId, _tokensHeld);
         }
-        logLoan(gammaPool, params.tokenId, msg.sender);
+        _logPrice(gammaPool);
     }
 }

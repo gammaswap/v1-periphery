@@ -4,12 +4,22 @@ coverage
 coverage.json
 typechain
 
+#foundry files
+cache_forge
+out
+
 #Hardhat files
 cache
 artifacts
 
 #IDE
 .idea
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
 
 #access tokens
 .npmrc
