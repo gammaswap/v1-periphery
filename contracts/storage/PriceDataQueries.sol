@@ -4,7 +4,7 @@ pragma solidity 0.8.17;
 import "./PriceStore.sol";
 import "../interfaces/IPriceDataQueries.sol";
 
-/// @title PriceDataQueries contract that implements IPriceDataQueries
+/// @title Implementation of IPriceDataQueries
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @dev Performs historical price queries from price data stored in PriceStore
 /// @notice getCandleBars can return array elements with zero data. This is expected behavior
