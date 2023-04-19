@@ -157,12 +157,12 @@ contract TestGammaPool is IGammaPool, TERC20 {
         _loanData.tokenId = 25;
     }
 
-    function borrowLiquidity(uint256, uint256) external virtual override returns(uint256 liquidityBorrowed, uint256[] memory amounts) {
+    function borrowLiquidity(uint256, uint256, uint256[] calldata) external virtual override returns(uint256 liquidityBorrowed, uint256[] memory amounts) {
         liquidityBorrowed = 23;
         amounts = new uint256[](2);
     }
 
-    function repayLiquidity(uint256, uint256, uint256[] calldata fees) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
+    function repayLiquidity(uint256, uint256, uint256[] calldata fees, uint256, address) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
         liquidityPaid = 24 + fees.length + (fees.length == 2 ? fees[0] + fees[1] : 0);
         amounts = new uint256[](2);
     }
@@ -171,16 +171,12 @@ contract TestGammaPool is IGammaPool, TERC20 {
         tokensHeld = new uint128[](6);
     }
 
-    function decreaseCollateral(uint256, uint256[] calldata, address) external virtual override returns(uint128[] memory tokensHeld) {
+    function decreaseCollateral(uint256, uint128[] calldata, address) external virtual override returns(uint128[] memory tokensHeld) {
         tokensHeld = new uint128[](7);
     }
 
-    function rebalanceCollateral(uint256, int256[] calldata) external virtual override returns(uint128[] memory tokensHeld) {
+    function rebalanceCollateral(uint256, int256[] calldata, uint256[] calldata) external virtual override returns(uint128[] memory tokensHeld) {
         tokensHeld = new uint128[](2);
-    }
-
-    function getRebalanceDeltas(uint256 tokenId) external virtual override view returns(int256[] memory deltas) {
-        deltas = new int256[](2);
     }
 
     function liquidate(uint256, int256[] calldata, uint256[] calldata) external override virtual returns(uint256 loanLiquidity, uint256[] memory refund) {
@@ -216,5 +212,25 @@ contract TestGammaPool is IGammaPool, TERC20 {
     }
 
     function sync() external override {
+    }
+
+    function calcDeltasForRatio(uint128[] memory tokensHeld, uint128[] memory reserves, uint256[] calldata ratio) external override virtual view returns(int256[] memory deltas) {
+        deltas = new int256[](6);
+        deltas[0] = -int128(tokensHeld[0]);
+        deltas[1] = int128(tokensHeld[1]);
+        deltas[2] = int128(reserves[0]);
+        deltas[3] = int128(reserves[1]);
+        deltas[4] = int256(ratio[0]);
+        deltas[5] = int256(ratio[1]);
+    }
+
+    function calcDeltasToClose(uint128[] memory tokensHeld, uint128[] memory reserves, uint256 liquidity, uint256 collateralId) external override virtual view returns(int256[] memory deltas) {
+        deltas = new int256[](6);
+        deltas[0] = -int128(tokensHeld[0]);
+        deltas[1] = int128(tokensHeld[1]);
+        deltas[2] = int128(reserves[0]);
+        deltas[3] = int128(reserves[1]);
+        deltas[4] = int256(liquidity);
+        deltas[5] = int256(collateralId);
     }
 }

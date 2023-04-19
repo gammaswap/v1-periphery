@@ -128,6 +128,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 tokenId;
         /// @dev CFMM LP tokens requesting to borrow to short
         uint256 lpTokens;
+        /// @dev Ratio to rebalance collateral to
+        uint256[] ratio;
         /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
         uint256 deadline;
         /// @dev minimum amounts of reserve tokens expected to have been withdrawn representing the `lpTokens`. Slippage protection
@@ -144,16 +146,20 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 tokenId;
         /// @dev liquidity debt to pay
         uint256 liquidity;
+        /// @dev fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
+        uint256[] fees;
+        /// @dev collateralId - index of collateral token + 1
+        uint256 collateralId;
+        /// @dev to - if repayment type requires withdrawal, the address that will receive the funds. Otherwise can be zero address
+        address to;
         /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
         uint256 deadline;
         /// @dev minimum amounts of reserve tokens expected to have been used to repay the liquidity debt. Slippage protection
         uint256[] minRepaid;
-        /// @dev fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
-        uint256[] fees;
     }
 
     /// @dev Struct parameters for `increaseCollateral` and `decreaseCollateral` function.
-    struct AddRemoveCollateralParams {
+    struct AddCollateralParams {
         /// @dev protocolId of GammaPool (e.g. version of GammaPool)
         uint16 protocolId;
         /// @dev address of CFMM, along with protocolId can be used to calculate GammaPool address
@@ -168,6 +174,22 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256[] amounts;
     }
 
+    /// @dev Struct parameters for `increaseCollateral` and `decreaseCollateral` function.
+    struct RemoveCollateralParams {
+        /// @dev protocolId of GammaPool (e.g. version of GammaPool)
+        uint16 protocolId;
+        /// @dev address of CFMM, along with protocolId can be used to calculate GammaPool address
+        address cfmm;
+        /// @dev receiver of reserve tokens when withdrawing collateral
+        address to;
+        /// @dev tokenId of loan whose collateral will change
+        uint256 tokenId;
+        /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
+        uint256 deadline;
+        /// @dev amounts of reserve tokens requesting to deposit as collateral for a loan or withdraw from a loan's collateral
+        uint128[] amounts;
+    }
+
     /// @dev Struct parameters for `rebalanceCollateral` function.
     struct RebalanceCollateralParams {
         /// @dev protocolId of GammaPool (e.g. version of GammaPool)
@@ -176,10 +198,12 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         address cfmm;
         /// @dev tokenId of loan whose collateral will change
         uint256 tokenId;
-        /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
-        uint256 deadline;
         /// @dev amounts of reserve tokens to swap (>0 buy token, <0 sell token). At least one index value must be set to zero
         int256[] deltas;
+        /// @dev Ratio to rebalance collateral to
+        uint256[] ratio;
+        /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
+        uint256 deadline;
         /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
         uint128[] minCollateral;
     }
@@ -192,18 +216,18 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         address cfmm;
         /// @dev receiver of reserve tokens when withdrawing collateral
         address to;
-        /// @dev CFMM LP tokens requesting to borrow to short
-        uint256 lpTokens;
-        /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
-        uint256 deadline;
         /// @dev amounts of requesting to deposit as collateral for a loan or withdraw from a loan's collateral
         uint256[] amounts;
+        /// @dev CFMM LP tokens requesting to borrow to short
+        uint256 lpTokens;
+        /// @dev Ratio to rebalance collateral to
+        uint256[] ratio;
         /// @dev minimum amounts of reserve tokens expected to have been withdrawn representing the `lpTokens`. Slippage protection
         uint256[] minBorrowed;
-        /// @dev amounts of reserve tokens to swap (>0 buy token, <0 sell token). At least one index value must be set to zero
-        int256[] deltas;
         /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
         uint128[] minCollateral;
+        /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
+        uint256 deadline;
     }
 
     /// @dev Struct parameters for `createLoanBorrowAndRebalance` function.
@@ -222,42 +246,14 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev amounts of reserve tokens requesting to deposit as collateral for a loan
         uint256[] amounts;
+        /// @dev Ratio to rebalance collateral to
+        uint256[] ratio;
         /// @dev amounts of reserve tokens requesting to withdraw from a loan's collateral
-        uint256[] withdraw;
+        uint128[] withdraw;
         /// @dev minimum amounts of reserve tokens expected to have been withdrawn representing the `lpTokens` (borrowing). Slippage protection
         uint256[] minBorrowed;
         /// @dev amounts of reserve tokens to swap (>0 buy token, <0 sell token). At least one index value must be set to zero
-        int256[] deltas;
-        /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
         uint128[] minCollateral;
-    }
-
-    /// @dev Struct parameters for `rebalanceRepayAndWithdraw` function.
-    struct RebalanceRepayAndWithdrawParams {
-        /// @dev protocolId of GammaPool (e.g. version of GammaPool)
-        uint16 protocolId;
-        /// @dev address of CFMM, along with protocolId can be used to calculate GammaPool address
-        address cfmm;
-        /// @dev receiver of reserve tokens when withdrawing collateral
-        address to;
-        /// @dev tokenId of loan whose liquidity will be paid
-        uint256 tokenId;
-        /// @dev liquidity debt to pay
-        uint256 liquidity;
-        /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
-        uint256 deadline;
-        /// @dev amounts of reserve tokens requesting to deposit as collateral for a loan
-        uint256[] amounts;
-        /// @dev amounts of reserve tokens requesting to withdraw from a loan's collateral
-        uint256[] withdraw;
-        /// @dev minimum amounts of reserve tokens expected to have been used to repay the liquidity debt. Slippage protection
-        uint256[] minRepaid;
-        /// @dev amounts of reserve tokens to swap (>0 buy token, <0 sell token). At least one index value must be set to zero
-        int256[] deltas;
-        /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
-        uint128[] minCollateral;
-        /// @dev fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
-        uint256[] fees;
     }
 
     /// @return factory - factory contract that creates all GammaPools this PositionManager interacts with
@@ -313,12 +309,12 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @dev Increase loan collateral by depositing more reserve tokens
     /// @param params - struct containing params to identify a GammaPool and loan to add collateral to
     /// @return tokensHeld - new loan collateral token amounts
-    function increaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
+    function increaseCollateral(AddCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
 
     /// @dev Decrease loan collateral by withdrawing reserve tokens
     /// @param params - struct containing params to identify a GammaPool and loan to remove collateral from
     /// @return tokensHeld - new loan collateral token amounts
-    function decreaseCollateral(AddRemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
+    function decreaseCollateral(RemoveCollateralParams calldata params) external returns(uint128[] memory tokensHeld);
 
     /// @dev Re-balance loan collateral tokens by swapping one for another
     /// @param params - struct containing params to identify a GammaPool and loan to re-balance its collateral
@@ -341,17 +337,4 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @return liquidityBorrowed - liquidity borrowed in exchange for CFMM LP tokens (`lpTokens`)
     /// @return amounts - amounts of reserve tokens received to hold as collateral for liquidity borrowed
     function borrowAndRebalance(BorrowAndRebalanceParams calldata params) external returns(uint128[] memory tokensHeld, uint256 liquidityBorrowed, uint256[] memory amounts);
-
-    /// @notice Aggregate increase collateral, re-balance collateral, repay liquidity debt, and decrease collateral into one transaction
-    /// @dev All transactions are optional but must happen in the order described
-    /// @param params - struct containing params to identify GammaPool to perform transactions on
-    /// @return tokensHeld - new loan collateral token amounts
-    /// @return liquidityPaid - actual liquidity debt paid
-    /// @return amounts - amounts of reserve tokens received to hold as collateral for liquidity borrowed
-    function rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams calldata params) external returns(uint128[] memory tokensHeld, uint256 liquidityPaid, uint256[] memory amounts);
-
-    /// @notice Rebalance's loan's collateral to repay loan completely, repay loan completely, withdraw remaining collateral
-    /// @param params - struct containing params to identify GammaPool to perform transactions on
-    /// @return liquidityPaid - actual liquidity debt paid
-    function closeLoan(RebalanceRepayAndWithdrawParams calldata params) external returns(uint256 liquidityPaid);
 }

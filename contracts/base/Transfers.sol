@@ -56,7 +56,7 @@ abstract contract Transfers is ITransfers {
             revert NotEnoughTokens();
         }
 
-        if (tokenBal > 0) GammaSwapLibrary.safeTransfer(IERC20(token), to, tokenBal);
+        if (tokenBal > 0) GammaSwapLibrary.safeTransfer(token, to, tokenBal);
     }
 
     /// @dev Used to abstract token transfer functions into one function call
@@ -67,13 +67,13 @@ abstract contract Transfers is ITransfers {
     function send(address token, address sender, address to, uint256 amount) internal {
         if (token == WETH && address(this).balance >= amount) {
             IWETH(WETH).deposit{value: amount}(); // wrap only what is needed
-            GammaSwapLibrary.safeTransfer(IERC20(WETH), to, amount);
+            GammaSwapLibrary.safeTransfer(WETH, to, amount);
         } else if (sender == address(this)) {
             // send with tokens already in the contract
-            GammaSwapLibrary.safeTransfer(IERC20(token), to, amount);
+            GammaSwapLibrary.safeTransfer(token, to, amount);
         } else {
             // pull transfer
-            GammaSwapLibrary.safeTransferFrom(IERC20(token), sender, to, amount);
+            GammaSwapLibrary.safeTransferFrom(token, sender, to, amount);
         }
     }
 

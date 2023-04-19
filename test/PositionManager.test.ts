@@ -24,7 +24,6 @@ describe("PositionManager", function () {
     let gammaPool: any;
     let gammaPool2: any;
     let gammaPool3: any;
-    let gammaPool4: any;
     let cfmm: any;
     let cfmm2: any;
     let cfmm3: any;
@@ -32,7 +31,6 @@ describe("PositionManager", function () {
     let gammaPoolAddr: any;
     let gammaPoolAddr2: any;
     let gammaPoolAddr3: any;
-    let gammaPoolAddr4: any;
     let tokenId: any;
 
     // `beforeEach` will run before each test, re-deploying the contract every
@@ -522,6 +520,7 @@ describe("PositionManager", function () {
                 protocolId: protocolId,
                 tokenId: tokenId,
                 lpTokens: 1,
+                ratio: [],
                 minBorrowed: [0,0],
                 deadline: ethers.constants.MaxUint256
             }
@@ -541,6 +540,8 @@ describe("PositionManager", function () {
                 protocolId: protocolId,
                 tokenId: tokenId,
                 liquidity: 1,
+                collateralId: 0,
+                to: ethers.constants.AddressZero,
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
                 fees: [],
@@ -561,6 +562,8 @@ describe("PositionManager", function () {
                 protocolId: protocolId,
                 tokenId: tokenId,
                 liquidity: 1,
+                collateralId: 0,
+                to: ethers.constants.AddressZero,
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
                 fees: [0,0],
@@ -620,6 +623,7 @@ describe("PositionManager", function () {
                 protocolId: protocolId,
                 tokenId: tokenId,
                 deltas: [4, 2],
+                ratio: [],
                 liquidity: 1,
                 minCollateral: [0,0],
                 deadline: ethers.constants.MaxUint256
@@ -645,7 +649,7 @@ describe("PositionManager", function () {
                 deadline: ethers.constants.MaxUint256,
                 amounts: [100,10],
                 minBorrowed: [0,0],
-                deltas: [],
+                ratio: [],
                 minCollateral: []
             }
 
@@ -673,18 +677,6 @@ describe("PositionManager", function () {
             expect(args2.tokenId.toNumber()).to.equal(expTokenId);
             expect(args2.liquidityBorrowed).to.equal(23);
             expect(args2.amounts.length).to.equal(2);
-
-            /*expect(res.events[6].event).to.equal("LoanUpdate");
-            const args3 = res.events[6].args;
-            expect(args3.poolId).to.equal(gammaPool.address);
-            expect(args3.owner).to.equal(owner.address);
-            expect(args3.tokensHeld.length).to.equal(5);
-            expect(args3.liquidity.toNumber()).to.equal(21);
-            expect(args3.lpTokens.toNumber()).to.equal(22);
-            expect(args3.initLiquidity.toNumber()).to.equal(24);
-            expect(args3.cfmmReserves.length).to.equal(2);
-            expect(args3.cfmmReserves[0]).to.equal(0);
-            expect(args3.cfmmReserves[1]).to.equal(0);/**/
 
             const res1 = await store.getLoansByOwnerAndPool(owner.address, gammaPool.address, 0, 10);
             expect(res1.length).to.equal(1);
@@ -709,7 +701,7 @@ describe("PositionManager", function () {
                 deadline: ethers.constants.MaxUint256,
                 amounts: [100,10],
                 minBorrowed: [0,0],
-                deltas: [4,2],
+                ratio: [],
                 minCollateral: [0,0]
             }
 
@@ -737,24 +729,6 @@ describe("PositionManager", function () {
             expect(args2.tokenId.toNumber()).to.equal(expTokenId);
             expect(args2.liquidityBorrowed).to.equal(23);
             expect(args2.amounts.length).to.equal(2);
-
-            expect(res.events[6].event).to.equal("RebalanceCollateral");
-            const args3 = res.events[6].args;
-            expect(args3.pool).to.equal(gammaPool.address);
-            expect(args3.tokenId.toNumber()).to.equal(expTokenId);
-            expect(args3.tokensHeld.length).to.equal(2);
-
-            /*expect(res.events[7].event).to.equal("LoanUpdate");
-            const args4 = res.events[7].args;
-            expect(args4.poolId).to.equal(gammaPool.address);
-            expect(args4.owner).to.equal(owner.address);
-            expect(args4.tokensHeld.length).to.equal(5);
-            expect(args4.liquidity.toNumber()).to.equal(21);
-            expect(args4.lpTokens.toNumber()).to.equal(22);
-            expect(args4.initLiquidity.toNumber()).to.equal(24);
-            expect(args4.cfmmReserves.length).to.equal(2);
-            expect(args4.cfmmReserves[0]).to.equal(0);
-            expect(args4.cfmmReserves[1]).to.equal(0);/**/
         });
 
         it("#borrowAndRebalance should return tokensHeld, amounts. No deltas", async function () {
@@ -771,7 +745,7 @@ describe("PositionManager", function () {
                 amounts: [100,10],
                 withdraw: [],
                 minBorrowed: [0,0],
-                deltas: [],
+                ratio: [],
                 minCollateral: []
             }
 
@@ -789,18 +763,6 @@ describe("PositionManager", function () {
             expect(args2.tokenId.toNumber()).to.equal(1);
             expect(args2.liquidityBorrowed).to.equal(23);
             expect(args2.amounts.length).to.equal(2);
-
-            /*expect(res.events[4].event).to.equal("LoanUpdate");
-            const args3 = res.events[4].args;
-            expect(args3.poolId).to.equal(gammaPool.address);
-            expect(args3.owner).to.equal(owner.address);
-            expect(args3.tokensHeld.length).to.equal(5);
-            expect(args3.liquidity.toNumber()).to.equal(21);
-            expect(args3.lpTokens.toNumber()).to.equal(22);
-            expect(args3.initLiquidity.toNumber()).to.equal(24);
-            expect(args3.cfmmReserves.length).to.equal(2);
-            expect(args3.cfmmReserves[0]).to.equal(0);
-            expect(args3.cfmmReserves[1]).to.equal(0);/**/
         });
 
         it("#borrowAndRebalance should return tokensHeld, amounts. No deltas, withdraws", async function () {
@@ -817,7 +779,7 @@ describe("PositionManager", function () {
                 amounts: [100, 10],
                 withdraw: [2, 2],
                 minBorrowed: [0, 0],
-                deltas: [],
+                ratio: [],
                 minCollateral: []
             }
 
@@ -841,18 +803,6 @@ describe("PositionManager", function () {
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
             expect(args3.tokensHeld.length).to.equal(7);
-
-            /*expect(res.events[5].event).to.equal("LoanUpdate");
-            const args4 = res.events[5].args;
-            expect(args4.poolId).to.equal(gammaPool.address);
-            expect(args4.owner).to.equal(owner.address);
-            expect(args4.tokensHeld.length).to.equal(5);
-            expect(args4.liquidity.toNumber()).to.equal(21);
-            expect(args4.lpTokens.toNumber()).to.equal(22);
-            expect(args4.initLiquidity.toNumber()).to.equal(24);
-            expect(args4.cfmmReserves.length).to.equal(2);
-            expect(args4.cfmmReserves[0]).to.equal(0);
-            expect(args4.cfmmReserves[1]).to.equal(0);/**/
         });
 
         it("#borrowAndRebalance should return tokensHeld, amounts. Has deltas", async function () {
@@ -869,7 +819,7 @@ describe("PositionManager", function () {
                 amounts: [100,10],
                 withdraw: [],
                 minBorrowed: [0,0],
-                deltas: [4,2],
+                ratio: [],
                 minCollateral: [0,0]
             }
 
@@ -887,439 +837,6 @@ describe("PositionManager", function () {
             expect(args2.tokenId.toNumber()).to.equal(1);
             expect(args2.liquidityBorrowed).to.equal(23);
             expect(args2.amounts.length).to.equal(2);
-
-            expect(res.events[4].event).to.equal("RebalanceCollateral");
-            const args3 = res.events[4].args;
-            expect(args3.pool).to.equal(gammaPool.address);
-            expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.tokensHeld.length).to.equal(2);
-
-            /*expect(res.events[5].event).to.equal("LoanUpdate");
-            const args4 = res.events[5].args;
-            expect(args4.poolId).to.equal(gammaPool.address);
-            expect(args4.owner).to.equal(owner.address);
-            expect(args4.tokensHeld.length).to.equal(5);
-            expect(args4.liquidity.toNumber()).to.equal(21);
-            expect(args4.lpTokens.toNumber()).to.equal(22);
-            expect(args4.initLiquidity.toNumber()).to.equal(24);
-            expect(args4.cfmmReserves.length).to.equal(2);
-            expect(args4.cfmmReserves[0]).to.equal(0);
-            expect(args4.cfmmReserves[1]).to.equal(0);/**/
-        });
-
-        it("#rebalanceRepayAndWithdraw should return tokensHeld, liquidityPaid, amounts. No deltas, No Withdraw", async function () {
-            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-
-            const RebalanceRepayAndWithdrawParams = {
-                protocolId: protocolId,
-                cfmm: cfmm.address,
-                to: owner.address,
-                tokenId: 1,
-                liquidity: 1,
-                deadline: ethers.constants.MaxUint256,
-                amounts: [100,10],
-                withdraw: [],
-                minRepaid: [0,0],
-                deltas: [],
-                minCollateral: [],
-                fees: [1,1]
-            }
-
-            const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
-
-            expect(res.events[2].event).to.equal("IncreaseCollateral");
-            const args1 = res.events[2].args;
-            expect(args1.pool).to.equal(gammaPool.address);
-            expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeld.length).to.equal(6);
-
-            expect(res.events[3].event).to.equal("RepayLiquidity");
-            const args2 = res.events[3].args;
-            expect(args2.pool).to.equal(gammaPool.address);
-            expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.liquidityPaid.toNumber()).to.equal(28);
-            expect(args2.amounts.length).to.equal(2);
-
-            /*expect(res.events[4].event).to.equal("LoanUpdate");
-            const args3 = res.events[4].args;
-            expect(args3.poolId).to.equal(gammaPool.address);
-            expect(args3.owner).to.equal(owner.address);
-            expect(args3.tokensHeld.length).to.equal(5);
-            expect(args3.liquidity.toNumber()).to.equal(21);
-            expect(args3.lpTokens.toNumber()).to.equal(22);
-            expect(args3.initLiquidity.toNumber()).to.equal(24);
-            expect(args3.cfmmReserves.length).to.equal(2);
-            expect(args3.cfmmReserves[0]).to.equal(0);
-            expect(args3.cfmmReserves[1]).to.equal(0);/**/
-        });
-
-        it("#rebalanceRepayAndWithdraw should return tokensHeld, liquidityPaid, amounts. No deltas, Has Withdraw", async function () {
-            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-
-            const RebalanceRepayAndWithdrawParams = {
-                protocolId: protocolId,
-                cfmm: cfmm.address,
-                to: owner.address,
-                tokenId: 1,
-                liquidity: 1,
-                deadline: ethers.constants.MaxUint256,
-                amounts: [100,10],
-                withdraw: [100,10],
-                minRepaid: [0,0],
-                deltas: [],
-                minCollateral: [0, 0],
-                fees: []
-            }
-
-            const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
-
-            expect(res.events[2].event).to.equal("IncreaseCollateral");
-            const args1 = res.events[2].args;
-            expect(args1.pool).to.equal(gammaPool.address);
-            expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeld.length).to.equal(6);
-
-            expect(res.events[3].event).to.equal("RepayLiquidity");
-            const args2 = res.events[3].args;
-            expect(args2.pool).to.equal(gammaPool.address);
-            expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.liquidityPaid.toNumber()).to.equal(24);
-            expect(args2.amounts.length).to.equal(2);
-
-            expect(res.events[4].event).to.equal("DecreaseCollateral");
-            const args3 = res.events[4].args;
-            expect(args3.pool).to.equal(gammaPool.address);
-            expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.tokensHeld.length).to.equal(7);
-
-            /*expect(res.events[5].event).to.equal("LoanUpdate");
-            const args4 = res.events[5].args;
-            expect(args4.poolId).to.equal(gammaPool.address);
-            expect(args4.owner).to.equal(owner.address);
-            expect(args4.tokensHeld.length).to.equal(5);
-            expect(args4.liquidity.toNumber()).to.equal(21);
-            expect(args4.lpTokens.toNumber()).to.equal(22);
-            expect(args4.initLiquidity.toNumber()).to.equal(24);
-            expect(args4.cfmmReserves.length).to.equal(2);
-            expect(args4.cfmmReserves[0]).to.equal(0);
-            expect(args4.cfmmReserves[1]).to.equal(0);/**/
-        });
-
-        it("#rebalanceRepayAndWithdraw should return tokensHeld, liquidityPaid, amounts. Has deltas, No Withdraw", async function () {
-            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-
-            const RebalanceRepayAndWithdrawParams = {
-                protocolId: protocolId,
-                cfmm: cfmm.address,
-                to: owner.address,
-                tokenId: 1,
-                liquidity: 1,
-                deadline: ethers.constants.MaxUint256,
-                amounts: [100,10],
-                withdraw: [],
-                minRepaid: [0,0],
-                deltas: [4,2],
-                minCollateral: [0,0],
-                fees: [0,1]
-            }
-
-            const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
-
-            expect(res.events[2].event).to.equal("IncreaseCollateral");
-            const args1 = res.events[2].args;
-            expect(args1.pool).to.equal(gammaPool.address);
-            expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeld.length).to.equal(6);
-
-            expect(res.events[3].event).to.equal("RebalanceCollateral");
-            const args2 = res.events[3].args;
-            expect(args2.pool).to.equal(gammaPool.address);
-            expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.tokensHeld.length).to.equal(2);
-
-            expect(res.events[4].event).to.equal("RepayLiquidity");
-            const args3 = res.events[4].args;
-            expect(args3.pool).to.equal(gammaPool.address);
-            expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.liquidityPaid.toNumber()).to.equal(27);
-            expect(args3.amounts.length).to.equal(2);
-
-            /*expect(res.events[5].event).to.equal("LoanUpdate");
-            const args4 = res.events[5].args;
-            expect(args4.poolId).to.equal(gammaPool.address);
-            expect(args4.owner).to.equal(owner.address);
-            expect(args4.tokensHeld.length).to.equal(5);
-            expect(args4.liquidity.toNumber()).to.equal(21);
-            expect(args4.lpTokens.toNumber()).to.equal(22);
-            expect(args4.initLiquidity.toNumber()).to.equal(24);
-            expect(args4.cfmmReserves.length).to.equal(2);
-            expect(args4.cfmmReserves[0]).to.equal(0);
-            expect(args4.cfmmReserves[1]).to.equal(0);/**/
-        });
-
-        it("#rebalanceRepayAndWithdraw should return tokenId, tokensHeld, amounts. Has deltas, Has Withdraw", async function () {
-            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-
-            const RebalanceRepayAndWithdrawParams = {
-                protocolId: protocolId,
-                cfmm: cfmm.address,
-                to: owner.address,
-                tokenId: 1,
-                liquidity: 1,
-                deadline: ethers.constants.MaxUint256,
-                amounts: [100,10],
-                withdraw: [100,10],
-                minRepaid: [0,0],
-                deltas: [4,2],
-                minCollateral: [0,0],
-                fees: [3,5]
-            }
-
-            const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
-
-            expect(res.events[2].event).to.equal("IncreaseCollateral");
-            const args1 = res.events[2].args;
-            expect(args1.pool).to.equal(gammaPool.address);
-            expect(args1.tokenId.toNumber()).to.equal(1);
-            expect(args1.tokensHeld.length).to.equal(6);
-
-            expect(res.events[3].event).to.equal("RebalanceCollateral");
-            const args2 = res.events[3].args;
-            expect(args2.pool).to.equal(gammaPool.address);
-            expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.tokensHeld.length).to.equal(2);
-
-            expect(res.events[4].event).to.equal("RepayLiquidity");
-            const args3 = res.events[4].args;
-            expect(args3.pool).to.equal(gammaPool.address);
-            expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.liquidityPaid.toNumber()).to.equal(34);
-            expect(args3.amounts.length).to.equal(2);
-
-            expect(res.events[5].event).to.equal("DecreaseCollateral");
-            const args4 = res.events[5].args;
-            expect(args4.pool).to.equal(gammaPool.address);
-            expect(args4.tokenId.toNumber()).to.equal(1);
-            expect(args4.tokensHeld.length).to.equal(7);
-
-            /*expect(res.events[6].event).to.equal("LoanUpdate");
-            const args5 = res.events[6].args;
-            expect(args5.poolId).to.equal(gammaPool.address);
-            expect(args5.owner).to.equal(owner.address);
-            expect(args5.tokensHeld.length).to.equal(5);
-            expect(args5.liquidity.toNumber()).to.equal(21);
-            expect(args5.lpTokens.toNumber()).to.equal(22);
-            expect(args5.initLiquidity.toNumber()).to.equal(24);
-            expect(args5.cfmmReserves.length).to.equal(2);
-            expect(args5.cfmmReserves[0]).to.equal(0);
-            expect(args5.cfmmReserves[1]).to.equal(0);/**/
-        });
-
-        it("#rebalanceRepayAndWithdraw should return tokenId, tokensHeld, amounts. No Deposit, Has deltas, Has Withdraw", async function () {
-            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-
-            const RebalanceRepayAndWithdrawParams = {
-                protocolId: protocolId,
-                cfmm: cfmm.address,
-                to: owner.address,
-                tokenId: 1,
-                liquidity: 1,
-                deadline: ethers.constants.MaxUint256,
-                amounts: [],
-                withdraw: [100,10],
-                minRepaid: [0,0],
-                deltas: [4,2],
-                minCollateral: [0,0],
-                fees: [0,1,10]
-            }
-
-            const res = await (await posMgr.rebalanceRepayAndWithdraw(RebalanceRepayAndWithdrawParams)).wait();
-
-            expect(res.events[0].event).to.equal("RebalanceCollateral");
-            const args2 = res.events[0].args;
-            expect(args2.pool).to.equal(gammaPool.address);
-            expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.tokensHeld.length).to.equal(2);
-
-            expect(res.events[1].event).to.equal("RepayLiquidity");
-            const args3 = res.events[1].args;
-            expect(args3.pool).to.equal(gammaPool.address);
-            expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.liquidityPaid.toNumber()).to.equal(27);
-            expect(args3.amounts.length).to.equal(2);
-
-            expect(res.events[2].event).to.equal("DecreaseCollateral");
-            const args4 = res.events[2].args;
-            expect(args4.pool).to.equal(gammaPool.address);
-            expect(args4.tokenId.toNumber()).to.equal(1);
-            expect(args4.tokensHeld.length).to.equal(7);
-
-            /*expect(res.events[3].event).to.equal("LoanUpdate");
-            const args5 = res.events[3].args;
-            expect(args5.poolId).to.equal(gammaPool.address);
-            expect(args5.owner).to.equal(owner.address);
-            expect(args5.tokensHeld.length).to.equal(5);
-            expect(args5.liquidity.toNumber()).to.equal(21);
-            expect(args5.lpTokens.toNumber()).to.equal(22);
-            expect(args5.initLiquidity.toNumber()).to.equal(24)
-            expect(args5.cfmmReserves.length).to.equal(2);
-            expect(args5.cfmmReserves[0]).to.equal(0);
-            expect(args5.cfmmReserves[1]).to.equal(0);/**/
-        });
-
-        it("#closeLoan should pass empty withdraw array", async function () {
-            const implementation2 = await GammaPool2.deploy(2, factory.address, addr1.address, addr2.address, addr3.address);
-            await (await factory.addProtocol(implementation2.address)).wait();
-            const createPoolParams2 = {
-                cfmm: cfmm3.address,
-                protocolId: 2,
-                tokens: [tokenA.address, tokenB.address]
-            };
-            const data = ethers.utils.defaultAbiCoder.encode(
-                [],
-                []
-            );
-            const res4 = await (await factory.createPool(createPoolParams2.protocolId, cfmm3.address ,createPoolParams2.tokens, data)).wait();
-
-            gammaPoolAddr4 = res4.events[1].args.pool;
-            gammaPool4 = await GammaPool.attach(
-                gammaPoolAddr4 // The deployed contract address
-            );
-            await gammaPool4.approve(posMgr.address, ethers.constants.MaxUint256);
-            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-
-            const RebalanceRepayAndWithdrawParams = {
-                protocolId: 2,
-                cfmm: cfmm3.address,
-                to: owner.address,
-                tokenId: 1,
-                liquidity: 1,
-                deadline: ethers.constants.MaxUint256,
-                amounts: [],
-                withdraw: [100,10],
-                minRepaid: [0,0],
-                deltas: [4,2],
-                minCollateral: [0,0],
-                fees: [0,1]
-            }
-
-            await expect(posMgr.closeLoan(RebalanceRepayAndWithdrawParams)).to.be.revertedWith("AmountsMin");
-
-            RebalanceRepayAndWithdrawParams.withdraw = [];
-
-            const res = await (await posMgr.closeLoan(RebalanceRepayAndWithdrawParams)).wait();
-
-            expect(res.events[0].event).to.equal("RebalanceCollateral");
-            const args2 = res.events[0].args;
-            expect(args2.pool).to.equal(gammaPool4.address);
-            expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.tokensHeld.length).to.equal(2);
-
-            expect(res.events[1].event).to.equal("RepayLiquidity");
-            const args3 = res.events[1].args;
-            expect(args3.pool).to.equal(gammaPool4.address);
-            expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.liquidityPaid.toNumber()).to.equal(27);
-            expect(args3.amounts.length).to.equal(2);
-
-            expect(res.events[2].event).to.equal("DecreaseCollateral");
-            const args4 = res.events[2].args;
-            expect(args4.pool).to.equal(gammaPool4.address);
-            expect(args4.tokenId.toNumber()).to.equal(1);
-            expect(args4.tokensHeld.length).to.equal(7);
-
-            /*expect(res.events[3].event).to.equal("LoanUpdate");
-            const args5 = res.events[3].args;
-            expect(args5.poolId).to.equal(gammaPool4.address);
-            expect(args5.owner).to.equal(owner.address);
-            expect(args5.tokensHeld.length).to.equal(2);
-            expect(args5.liquidity.toNumber()).to.equal(21);
-            expect(args5.lpTokens.toNumber()).to.equal(22);
-            expect(args5.initLiquidity.toNumber()).to.equal(24)
-            expect(args5.cfmmReserves.length).to.equal(2);
-            expect(args5.cfmmReserves[0]).to.equal(0);
-            expect(args5.cfmmReserves[1]).to.equal(0);/**/
-        });
-
-        it("#closeLoan should pass withdraw array of zeroes", async function () {
-            const implementation2 = await GammaPool2.deploy(2, factory.address, addr1.address, addr2.address, addr3.address);
-            await (await factory.addProtocol(implementation2.address)).wait();
-            const createPoolParams2 = {
-                cfmm: cfmm3.address,
-                protocolId: 2,
-                tokens: [tokenA.address, tokenB.address]
-            };
-            const data = ethers.utils.defaultAbiCoder.encode(
-                [],
-                []
-            );
-            const res4 = await (await factory.createPool(createPoolParams2.protocolId, cfmm3.address ,createPoolParams2.tokens, data)).wait();
-
-            gammaPoolAddr4 = res4.events[1].args.pool;
-            gammaPool4 = await GammaPool.attach(
-                gammaPoolAddr4 // The deployed contract address
-            );
-            await gammaPool4.approve(posMgr.address, ethers.constants.MaxUint256);
-            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
-
-            const RebalanceRepayAndWithdrawParams = {
-                protocolId: 2,
-                cfmm: cfmm3.address,
-                to: owner.address,
-                tokenId: 1,
-                liquidity: 1,
-                deadline: ethers.constants.MaxUint256,
-                amounts: [],
-                withdraw: [100,10],
-                minRepaid: [0,0],
-                deltas: [4,2],
-                minCollateral: [0,0],
-                fees: [0,1]
-            }
-
-            await expect(posMgr.closeLoan(RebalanceRepayAndWithdrawParams)).to.be.revertedWith("AmountsMin");
-
-            RebalanceRepayAndWithdrawParams.withdraw = [0, 0];
-
-            const res = await (await posMgr.closeLoan(RebalanceRepayAndWithdrawParams)).wait();
-
-            expect(res.events[0].event).to.equal("RebalanceCollateral");
-            const args2 = res.events[0].args;
-            expect(args2.pool).to.equal(gammaPool4.address);
-            expect(args2.tokenId.toNumber()).to.equal(1);
-            expect(args2.tokensHeld.length).to.equal(2);
-
-            expect(res.events[1].event).to.equal("RepayLiquidity");
-            const args3 = res.events[1].args;
-            expect(args3.pool).to.equal(gammaPool4.address);
-            expect(args3.tokenId.toNumber()).to.equal(1);
-            expect(args3.liquidityPaid.toNumber()).to.equal(27);
-            expect(args3.amounts.length).to.equal(2);
-
-            expect(res.events[2].event).to.equal("DecreaseCollateral");
-            const args4 = res.events[2].args;
-            expect(args4.pool).to.equal(gammaPool4.address);
-            expect(args4.tokenId.toNumber()).to.equal(1);
-            expect(args4.tokensHeld.length).to.equal(7);
-
-            /*expect(res.events[3].event).to.equal("LoanUpdate");
-            const args5 = res.events[3].args;
-            expect(args5.poolId).to.equal(gammaPool4.address);
-            expect(args5.owner).to.equal(owner.address);
-            expect(args5.tokensHeld.length).to.equal(2);
-            expect(args5.liquidity.toNumber()).to.equal(21);
-            expect(args5.lpTokens.toNumber()).to.equal(22);
-            expect(args5.initLiquidity.toNumber()).to.equal(24);
-            expect(args5.cfmmReserves.length).to.equal(2);
-            expect(args5.cfmmReserves[0]).to.equal(0);
-            expect(args5.cfmmReserves[1]).to.equal(0);/**/
         });
     });
 });
