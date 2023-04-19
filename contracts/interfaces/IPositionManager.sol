@@ -256,38 +256,6 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint128[] minCollateral;
     }
 
-    /// @dev Struct parameters for `rebalanceRepayAndWithdraw` function.
-    struct RebalanceRepayAndWithdrawParams {
-        /// @dev protocolId of GammaPool (e.g. version of GammaPool)
-        uint16 protocolId;
-        /// @dev address of CFMM, along with protocolId can be used to calculate GammaPool address
-        address cfmm;
-        /// @dev receiver of reserve tokens when withdrawing collateral
-        address to;
-        /// @dev tokenId of loan whose liquidity will be paid
-        uint256 tokenId;
-        /// @dev liquidity debt to pay
-        uint256 liquidity;
-        /// @param collateralId - index of collateral token + 1
-        uint256 collateralId;
-        /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
-        uint256 deadline;
-        /// @dev amounts of reserve tokens requesting to deposit as collateral for a loan
-        uint128[] amounts;
-        /// @dev Ratio to rebalance collateral to
-        uint256[] ratio;
-        /// @dev amounts of reserve tokens requesting to withdraw from a loan's collateral
-        uint128[] withdraw;
-        /// @dev minimum amounts of reserve tokens expected to have been used to repay the liquidity debt. Slippage protection
-        uint256[] minRepaid;
-        /// @dev amounts of reserve tokens to swap (>0 buy token, <0 sell token). At least one index value must be set to zero
-        int256[] deltas;
-        /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
-        uint128[] minCollateral;
-        /// @dev fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
-        uint256[] fees;
-    }
-
     /// @return factory - factory contract that creates all GammaPools this PositionManager interacts with
     function factory() external view returns (address);
 
