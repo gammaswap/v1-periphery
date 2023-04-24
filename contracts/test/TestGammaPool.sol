@@ -41,12 +41,25 @@ contract TestGammaPool is IGammaPool, TERC20 {
         return tokens_;
     }
 
-    function getLoans(uint256, uint256) external virtual override view returns(IGammaPool.LoanData[] memory _loans) {
+    function getLoans(uint256, uint256, bool) external virtual override view returns(IGammaPool.LoanData[] memory _loans) {
         return(new IGammaPool.LoanData[](0));
+    }
+
+    function getLoansById(uint256[] calldata tokenIds, bool) external virtual override view returns(IGammaPool.LoanData[] memory _loans) {
+        _loans = new IGammaPool.LoanData[](tokenIds.length);
+        for(uint256 i = 0; i < tokenIds.length; i++) {
+            if(tokenIds[i] > 0) {
+                _loans[i] = loan(i);
+            }
+        }
     }
 
     function getLoanCount() external virtual override view returns(uint256) {
         return 0;
+    }
+
+    function canLiquidate(uint256 tokenId) external virtual view returns(bool) {
+        return false;
     }
 
     function getPoolBalances() external virtual override view returns(uint128[] memory tokenBalances, uint256 lpTokenBalance, uint256 lpTokenBorrowed,
@@ -146,7 +159,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
         tokenId = 19 + block.number * 100;
     }
 
-    function loan(uint256) external virtual override view returns(IGammaPool.LoanData memory _loanData) {
+    function loan(uint256) public virtual override view returns(IGammaPool.LoanData memory _loanData) {
         _loanData.id = 20;
         _loanData.poolId = cfmm;
         _loanData.tokensHeld = new uint128[](5);

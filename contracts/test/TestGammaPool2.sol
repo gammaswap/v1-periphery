@@ -15,7 +15,7 @@ contract TestGammaPool2 is TestGammaPool{
 
     }
 
-    function loan(uint256) external virtual override view returns(LoanData memory _loanData) {
+    function loan(uint256) public virtual override view returns(LoanData memory _loanData) {
         _loanData.id = 20;
         _loanData.poolId = cfmm;
         _loanData.tokensHeld = new uint128[](2);
