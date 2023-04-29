@@ -14,14 +14,14 @@ abstract contract PriceStore is IPriceStore, TwoStepOwnable {
     /// @dev mapping of GammaPools to raw data point information
     mapping(address => PriceInfo[]) public priceSeries;
 
+    /// @dev timestamp of next raw data point per GammaPool
+    mapping(address => uint256) public nextTimestamp;
+
     /// @dev source of raw data updates
     address public source;
 
     /// @dev maximum data points per GammaPool. Once it reaches this limit start removing old data points
     uint256 public maxLen;
-
-    /// @dev timestamp of next raw data point
-    uint256 public nextTimestamp;
 
     /// @dev frequency of raw data intervals. E.g. 1 hour, 2 hours, etc. (Should be Enum)
     uint256 public frequency;
@@ -61,14 +61,14 @@ abstract contract PriceStore is IPriceStore, TwoStepOwnable {
             return;
         }
         uint256 currTime = block.timestamp;
-        uint256 _nextTimestamp = nextTimestamp;
+        uint256 _nextTimestamp = nextTimestamp[pool];
         if(currTime < _nextTimestamp) { // don't update if not crossed next timestamp
             return;
         }
 
         uint256 _frequency = frequency; // save gas
         uint256 lastTimestamp =  (currTime / _frequency) * _frequency; // round down to nearest timestamp
-        nextTimestamp = lastTimestamp + _frequency; // add seconds to next timestamp
+        nextTimestamp[pool] = lastTimestamp + _frequency; // add seconds to next timestamp
 
         IGammaPool.RateData memory data = IGammaPool(pool).getLatestRates();
 
