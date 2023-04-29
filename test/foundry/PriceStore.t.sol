@@ -11,6 +11,7 @@ contract PriceStoreTest is Test {
     PriceStore ps;
     address owner;
     address addr1;
+    address _pool2;
 
     uint16 _protocolId;
     address _factory;
@@ -29,6 +30,7 @@ contract PriceStoreTest is Test {
         _liquidationStrategy = vm.addr(4);
 
         pool = new TestGammaPool2(_protocolId, _factory, _longStrategy, _shortStrategy, _liquidationStrategy);
+        _pool2 = address(new TestGammaPool2(_protocolId, _factory, _longStrategy, _shortStrategy, _liquidationStrategy));
         maxLen = 10;
         frequency = 300;
         ps = new TestPriceStore(address(this), maxLen, frequency);
@@ -146,7 +148,7 @@ contract PriceStoreTest is Test {
 
         ps.addPriceInfo(_pool);
         assertEq(1,ps.size(_pool));
-        assertEq(300,ps.nextTimestamp());
+        assertEq(300,ps.nextTimestamp(_pool));
         ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,1);
@@ -155,12 +157,17 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,accFeeIndex0/1e6);
         assertEq(ts.lastPrice,lastPrice0);
 
+        assertEq(0,ps.size(_pool2));
+        ps.addPriceInfo(_pool2);
+        assertEq(1,ps.size(_pool2));
+        assertEq(300,ps.nextTimestamp(_pool2));
+
         vm.roll(10); // 120 seconds
         vm.warp(200);
 
         ps.addPriceInfo(_pool);
         assertEq(1,ps.size(_pool));
-        assertEq(300,ps.nextTimestamp());
+        assertEq(300,ps.nextTimestamp(_pool));
         ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
         assertEq(ts.blockNumber,1);
@@ -194,7 +201,10 @@ contract PriceStoreTest is Test {
 
         ps.addPriceInfo(_pool);
         assertEq(2,ps.size(_pool));
-        assertEq(600,ps.nextTimestamp());
+        assertEq(600,ps.nextTimestamp(_pool));
+
+        assertEq(1,ps.size(_pool2));
+        assertEq(300,ps.nextTimestamp(_pool2));
 
         ts = ps.getPriceAt(_pool,0);
         assertEq(ts.timestamp,0);
@@ -297,6 +307,10 @@ contract PriceStoreTest is Test {
         vm.warp(1200);
         ps.addPriceInfo(_pool);
         assertEq(5,ps.size(_pool));
+
+        ps.addPriceInfo(_pool2);
+        assertEq(2,ps.size(_pool2));
+        assertEq(1500,ps.nextTimestamp(_pool2));
 
         vm.roll(31); // 12 seconds
         vm.warp(1500);
