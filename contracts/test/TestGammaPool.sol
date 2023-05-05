@@ -246,4 +246,13 @@ contract TestGammaPool is IGammaPool, TERC20 {
         deltas[4] = int256(liquidity);
         deltas[5] = int256(collateralId);
     }
+
+    function rateParamsStore() external view returns(address) {
+        return factory;
+    }
+
+    function validateParameters(bytes calldata _data) external view returns(bool) {
+        return true;
+    }
+
 }
