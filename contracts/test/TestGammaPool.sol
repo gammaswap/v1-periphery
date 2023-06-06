@@ -180,11 +180,11 @@ contract TestGammaPool is IGammaPool, TERC20 {
         amounts = new uint256[](2);
     }
 
-    function increaseCollateral(uint256) external virtual override returns(uint128[] memory tokensHeld) {
+    function increaseCollateral(uint256, uint256[] calldata) external virtual override returns(uint128[] memory tokensHeld) {
         tokensHeld = new uint128[](6);
     }
 
-    function decreaseCollateral(uint256, uint128[] calldata, address) external virtual override returns(uint128[] memory tokensHeld) {
+    function decreaseCollateral(uint256, uint128[] calldata, address, uint256[] calldata) external virtual override returns(uint128[] memory tokensHeld) {
         tokensHeld = new uint128[](7);
     }
 

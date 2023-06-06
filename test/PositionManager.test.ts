@@ -588,7 +588,8 @@ describe("PositionManager", function () {
                 tokenId: tokenId,
                 amounts: [100,10],
                 to: owner.address,
-                deadline: ethers.constants.MaxUint256
+                deadline: ethers.constants.MaxUint256,
+                ratio: []
             }
             
             const res = await (await posMgr.increaseCollateral(AddRemoveCollateralParams)).wait();
@@ -606,7 +607,8 @@ describe("PositionManager", function () {
                 tokenId: tokenId,
                 amounts: [100,10],
                 to: owner.address,
-                deadline: ethers.constants.MaxUint256
+                deadline: ethers.constants.MaxUint256,
+                ratio: []
             }
             
             const res = await (await posMgr.decreaseCollateral(AddRemoveCollateralParams)).wait();

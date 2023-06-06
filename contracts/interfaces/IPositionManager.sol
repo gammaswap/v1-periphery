@@ -172,6 +172,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev amounts of reserve tokens requesting to deposit as collateral for a loan or withdraw from a loan's collateral
         uint256[] amounts;
+        /// @dev ratio - ratio of loan collateral to be maintained after increasing collateral
+        uint256[] ratio;
     }
 
     /// @dev Struct parameters for `increaseCollateral` and `decreaseCollateral` function.
@@ -188,6 +190,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev amounts of reserve tokens requesting to deposit as collateral for a loan or withdraw from a loan's collateral
         uint128[] amounts;
+        /// @dev ratio - ratio of loan collateral to be maintained after decreasing collateral
+        uint256[] ratio;
     }
 
     /// @dev Struct parameters for `rebalanceCollateral` function.
