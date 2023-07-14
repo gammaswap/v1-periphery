@@ -2,6 +2,7 @@
 pragma solidity >=0.8.4;
 
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
+import "@gammaswap/v1-core/contracts/interfaces/IPoolViewer.sol";
 import "@gammaswap/v1-core/contracts/utils/TwoStepOwnable.sol";
 import "../interfaces/IPriceStore.sol";
 
@@ -70,7 +71,7 @@ abstract contract PriceStore is IPriceStore, TwoStepOwnable {
         uint256 lastTimestamp =  (currTime / _frequency) * _frequency; // round down to nearest timestamp
         nextTimestamp[pool] = lastTimestamp + _frequency; // add seconds to next timestamp
 
-        IGammaPool.RateData memory data = IGammaPool(pool).getLatestRates();
+        IGammaPool.RateData memory data = IPoolViewer(IGammaPool(pool).viewer()).getLatestRates(pool);
 
         PriceInfo memory info = PriceInfo({
             timestamp: uint32(lastTimestamp),

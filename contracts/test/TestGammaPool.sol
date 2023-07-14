@@ -13,19 +13,28 @@ contract TestGammaPool is IGammaPool, TERC20 {
     uint8[] public decimals_;
     uint16 immutable public override protocolId;
     address immutable public override factory;
-    address immutable public override longStrategy;
+    address immutable public override borrowStrategy;
+    address immutable public override repayStrategy;
+    address immutable public override rebalanceStrategy;
     address immutable public override shortStrategy;
-    address immutable public override liquidationStrategy;
+    address immutable public override singleLiquidationStrategy;
+    address immutable public override batchLiquidationStrategy;
+    address immutable public override viewer;
 
     address public tester;
     address public owner;
 
-    constructor(uint16 _protocolId, address _factory, address _longStrategy, address _shortStrategy, address _liquidationStrategy) TERC20("TestGammaPool","TGP-V1") {
-        protocolId = _protocolId;
-        factory = _factory;
-        longStrategy = _longStrategy;
-        shortStrategy = _shortStrategy;
-        liquidationStrategy = _liquidationStrategy;
+    constructor(uint16 protocolId_, address factory_,  address borrowStrategy_, address repayStrategy_, address rebalanceStrategy_,
+        address shortStrategy_, address singleLiquidationStrategy_, address batchLiquidationStrategy_, address viewer_) TERC20("TestGammaPool","TGP-V1") {
+        protocolId = protocolId_;
+        factory = factory_;
+        borrowStrategy = borrowStrategy_;
+        repayStrategy = repayStrategy_;
+        rebalanceStrategy = rebalanceStrategy_;
+        shortStrategy = shortStrategy_;
+        singleLiquidationStrategy = singleLiquidationStrategy_;
+        batchLiquidationStrategy = batchLiquidationStrategy_;
+        viewer = viewer_;
     }
 
     function initialize(address _cfmm, address[] calldata _tokens, uint8[] calldata _decimals, bytes calldata) external virtual override {
@@ -98,24 +107,29 @@ contract TestGammaPool is IGammaPool, TERC20 {
     function _getPoolData() internal virtual view returns(PoolData memory data) {
         data.poolId = address(this);
         data.protocolId = protocolId;
-        data.longStrategy = longStrategy;
+        data.borrowStrategy = borrowStrategy;
+        data.repayStrategy = repayStrategy;
+        data.rebalanceStrategy = rebalanceStrategy;
         data.shortStrategy = shortStrategy;
-        data.liquidationStrategy = liquidationStrategy;
+        data.singleLiquidationStrategy = singleLiquidationStrategy;
+        data.batchLiquidationStrategy = batchLiquidationStrategy;
         data.cfmm = cfmm;
         data.LAST_BLOCK_NUMBER = 14;
         data.factory = factory;
+        data.currBlockNumber = uint48(block.number);
         data.LP_TOKEN_BALANCE = 1;
         data.LP_TOKEN_BORROWED = 2;
         data.LP_TOKEN_BORROWED_PLUS_INTEREST = 3;
         data.BORROWED_INVARIANT = 4;
         data.LP_INVARIANT = 5;
+        data.totalSupply = totalSupply();
+        data.TOKEN_BALANCE = new uint128[](1);
+        data.tokens = tokens_;
+        data.decimals = decimals_;
         data.accFeeIndex = 9;
+        data.lastCFMMFeeIndex = 14;
         data.lastCFMMInvariant = 12;
         data.lastCFMMTotalSupply = 13;
-        data.totalSupply = totalSupply();
-        data.decimals = decimals_;
-        data.tokens = tokens_;
-        data.TOKEN_BALANCE = new uint128[](1);
         data.CFMM_RESERVES = new uint128[](2);
     }
 
@@ -155,7 +169,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
     }
 
     //Long Gamma
-    function createLoan() external virtual override returns(uint256 tokenId) {
+    function createLoan(uint16) external virtual override returns(uint256 tokenId) {
         tokenId = 19 + block.number * 100;
     }
 
@@ -192,16 +206,16 @@ contract TestGammaPool is IGammaPool, TERC20 {
         tokensHeld = new uint128[](2);
     }
 
-    function liquidate(uint256, int256[] calldata, uint256[] calldata) external override virtual returns(uint256 loanLiquidity, uint256[] memory refund) {
-        return (1, new uint256[](2));
+    function liquidate(uint256) external override virtual returns(uint256 loanLiquidity) {
+        return (1);
     }
 
     function liquidateWithLP(uint256) external override virtual returns(uint256 loanLiquidity, uint256[] memory refund) {
         return (2, new uint256[](2));
     }
 
-    function batchLiquidations(uint256[] calldata) external override virtual returns(uint256 totalLoanLiquidity, uint256 totalCollateral, uint256[] memory refund) {
-        return (3, 4, new uint256[](2));
+    function batchLiquidations(uint256[] calldata) external override virtual returns(uint256 totalLoanLiquidity, uint256[] memory refund) {
+        return (3, new uint256[](2));
     }
 
     function validateCFMM(address[] calldata, address, bytes calldata) external override pure returns(address[] memory) {
@@ -227,26 +241,6 @@ contract TestGammaPool is IGammaPool, TERC20 {
     function sync() external override {
     }
 
-    function calcDeltasForRatio(uint128[] memory tokensHeld, uint128[] memory reserves, uint256[] calldata ratio) external override virtual view returns(int256[] memory deltas) {
-        deltas = new int256[](6);
-        deltas[0] = -int128(tokensHeld[0]);
-        deltas[1] = int128(tokensHeld[1]);
-        deltas[2] = int128(reserves[0]);
-        deltas[3] = int128(reserves[1]);
-        deltas[4] = int256(ratio[0]);
-        deltas[5] = int256(ratio[1]);
-    }
-
-    function calcDeltasToClose(uint128[] memory tokensHeld, uint128[] memory reserves, uint256 liquidity, uint256 collateralId) external override virtual view returns(int256[] memory deltas) {
-        deltas = new int256[](6);
-        deltas[0] = -int128(tokensHeld[0]);
-        deltas[1] = int128(tokensHeld[1]);
-        deltas[2] = int128(reserves[0]);
-        deltas[3] = int128(reserves[1]);
-        deltas[4] = int256(liquidity);
-        deltas[5] = int256(collateralId);
-    }
-
     function rateParamsStore() external view returns(address) {
         return factory;
     }
@@ -255,4 +249,22 @@ contract TestGammaPool is IGammaPool, TERC20 {
         return true;
     }
 
+    function repayLiquidityWithLP(uint256 tokenId, uint256 liquidity, uint256 collateralId, address to) external returns(uint256 liquidityPaid) {
+
+    }
+
+    function repayLiquiditySetRatio(uint256 tokenId, uint256 liquidity, uint256[] calldata fees, uint256[] calldata ratio) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
+    }
+
+    function getLoanData(uint256 _tokenId) external override virtual view returns(LoanData memory _loanData) {
+
+    }
+
+    function getFeeIndexUpdateParams() external override virtual view returns(FeeIndexUpdateParams memory data) {
+
+    }
+
+    function calcInvariant(uint128[] memory tokensHeld) external override virtual view returns(uint256) {
+
+    }
 }

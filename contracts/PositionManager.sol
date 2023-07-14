@@ -173,7 +173,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     /// @param to - recipient of NFT token
     /// @return tokenId - tokenId from creation of loan
     function createLoan(address gammaPool, address to) internal virtual returns(uint256 tokenId) {
-        tokenId = IGammaPool(gammaPool).createLoan();
+        tokenId = IGammaPool(gammaPool).createLoan(0);
         mintQueryableLoan(gammaPool, tokenId, to);
         emit CreateLoan(gammaPool, to, tokenId);
     }

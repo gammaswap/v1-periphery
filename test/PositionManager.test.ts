@@ -3,6 +3,7 @@ import { expect } from "chai";
 
 describe("PositionManager", function () {
     let TestERC20: any;
+    let TestPoolViewer: any;
     let GammaPool: any;
     let GammaPool2: any;
     let GammaPoolFactory: any;
@@ -20,10 +21,15 @@ describe("PositionManager", function () {
     let addr2: any;
     let addr3: any;
     let addr4: any;
+    let addr5: any;
+    let addr6: any;
+    let addr7: any;
+    let addr8: any;
     let posMgr: any;
     let gammaPool: any;
     let gammaPool2: any;
     let gammaPool3: any;
+    let poolViewer: any;
     let cfmm: any;
     let cfmm2: any;
     let cfmm3: any;
@@ -38,13 +44,14 @@ describe("PositionManager", function () {
     beforeEach(async function () {
         // Get the ContractFactory and Signers here.
         TestERC20 = await ethers.getContractFactory("TestERC20");
+        TestPoolViewer = await ethers.getContractFactory("TestPoolViewer");
         GammaPoolFactory = await ethers.getContractFactory("TestGammaPoolFactory");
         TestPositionManager = await ethers.getContractFactory("TestPositionManager");
         PositionManagerQueries = await ethers.getContractFactory("PositionManagerQueries");
         PriceDataQueries = await ethers.getContractFactory("PriceDataQueries");
         GammaPool = await ethers.getContractFactory("TestGammaPool");
         GammaPool2 = await ethers.getContractFactory("TestGammaPool2");
-        [owner, addr1, addr2, addr3, addr4] = await ethers.getSigners();
+        [owner, addr1, addr2, addr3, addr4, addr5, addr6, addr7, addr8] = await ethers.getSigners();
 
         // To deploy our contract, we just have to call Token.deploy() and await
         // for it to be deployed(), which happens onces its transaction has been
@@ -58,6 +65,8 @@ describe("PositionManager", function () {
 
         factory = await GammaPoolFactory.deploy(owner.address);
 
+        poolViewer = await TestPoolViewer.deploy();
+
         store = await PositionManagerQueries.deploy(factory.address, owner.address);
 
         const maxLen = 7 * 24; // 1 week
@@ -65,7 +74,7 @@ describe("PositionManager", function () {
         const blocksPerYear = 60 * 60 * 24 * 365 / 12; // assumes 12 seconds per block
         priceStore = await PriceDataQueries.deploy(blocksPerYear, owner.address, maxLen, frequency);
 
-        const implementation = await GammaPool.deploy(1, factory.address, addr1.address, addr2.address, addr3.address);
+        const implementation = await GammaPool.deploy(1, factory.address, addr1.address, addr2.address, addr3.address, addr5.address, addr6.address, addr7.address, poolViewer.address);
 
         await (await factory.addProtocol(implementation.address)).wait();
 
