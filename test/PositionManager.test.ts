@@ -407,7 +407,7 @@ describe("PositionManager", function () {
     // You can nest describe calls to create subsections.
     describe("Long Gamma Functions", function () {
         it("#createLoan should return tokenId", async function () {
-            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
+            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
 
             const latestBlock = await ethers.provider.getBlock("latest");
             const num = latestBlock.number * 100;
@@ -422,9 +422,9 @@ describe("PositionManager", function () {
             expect(res1.length).to.equal(1);
             expect(res1[0].tokenId.toNumber()).to.equal(25);
 
-            await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
 
             const res2 = await store.getLoansByOwnerAndPool(owner.address, gammaPool.address, 0, 10);
             expect(res2.length).to.equal(4);
@@ -432,17 +432,17 @@ describe("PositionManager", function () {
             const res3 = await store.getLoansByOwnerAndPool(addr1.address, gammaPool.address, 0, 10);
             expect(res3.length).to.equal(0);
 
-            await (await posMgr.createLoan(1, cfmm.address, addr1.address, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm.address, addr1.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
 
             const res4 = await store.getLoansByOwnerAndPool(addr1.address, gammaPool.address, 0, 10);
             expect(res4.length).to.equal(2);
 
-            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
 
             const res5 = await store.getLoansByOwnerAndPool(addr1.address, gammaPool2.address, 0, 10);
             expect(res5.length).to.equal(5);
@@ -453,7 +453,7 @@ describe("PositionManager", function () {
             const res7 = await store.getLoansByOwner(addr1.address, 0, 100);
             expect(res7.length).to.equal(7);
 
-            await (await posMgr.createLoan(1, cfmm3.address, addr1.address, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(1, cfmm3.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
 
             const res8 = await store.getLoansByOwner(addr1.address, 0, 100);
             expect(res8.length).to.equal(8);
@@ -472,7 +472,7 @@ describe("PositionManager", function () {
             const res1b = await store.getLoansByOwner(addr4.address, 0, 10);
             expect(res1b.length).to.eq(0);
 
-            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, ethers.constants.MaxUint256)).wait();
+            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
             const latestBlock = await ethers.provider.getBlock("latest");
             const num = latestBlock.number * 100;
             const expTokenId = num + 19;
@@ -554,6 +554,9 @@ describe("PositionManager", function () {
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
                 fees: [],
+                lpTokens: 0,
+                isRatio: false,
+                ratio: []
             }
             
             const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
@@ -576,6 +579,9 @@ describe("PositionManager", function () {
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
                 fees: [0,0],
+                lpTokens: 0,
+                isRatio: false,
+                ratio: []
             }
 
             const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
@@ -656,6 +662,7 @@ describe("PositionManager", function () {
                 protocolId: protocolId,
                 cfmm: cfmm.address,
                 to: owner.address,
+                refId: 0,
                 lpTokens: 1,
                 deadline: ethers.constants.MaxUint256,
                 amounts: [100,10],
@@ -708,6 +715,7 @@ describe("PositionManager", function () {
                 protocolId: protocolId,
                 cfmm: cfmm.address,
                 to: owner.address,
+                refId: 0,
                 lpTokens: 1,
                 deadline: ethers.constants.MaxUint256,
                 amounts: [100,10],

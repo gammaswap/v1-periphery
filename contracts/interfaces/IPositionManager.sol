@@ -69,6 +69,19 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @param amounts - liquidity repaid in terms of reserve token amounts
     event RepayLiquidity(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint256[] amounts);
 
+    /// @dev Emitted when repaying liquidity debt from a pool
+    /// @param pool - address of pool whose liquidity debt was paid
+    /// @param tokenId - id identifying loan in pool that will track liquidity debt
+    /// @param liquidityPaid - liquidity repaid in invariant terms
+    /// @param amounts - liquidity repaid in terms of reserve token amounts
+    event RepayLiquiditySetRatio(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint256[] amounts);
+
+    /// @dev Emitted when repaying liquidity debt from a pool
+    /// @param pool - address of pool whose liquidity debt was paid
+    /// @param tokenId - id identifying loan in pool that will track liquidity debt
+    /// @param liquidityPaid - liquidity repaid in invariant terms
+    event RepayLiquidityWihtLP(address indexed pool, uint256 tokenId, uint256 liquidityPaid);
+
     event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld,
         uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint128[] cfmmReserves);
 
@@ -146,6 +159,12 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 tokenId;
         /// @dev liquidity debt to pay
         uint256 liquidity;
+        /// @dev if using LP tokens to repay liquidity set this to > 0
+        uint256 lpTokens;
+        /// @dev if true re-balance collateral to `ratio`
+        bool isRatio;
+        /// @dev If re-balancing to a desired ratio set this to the ratio you'd like, otherwise leave as an empty array
+        uint256[] ratio;
         /// @dev fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
         uint256[] fees;
         /// @dev collateralId - index of collateral token + 1
@@ -220,6 +239,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         address cfmm;
         /// @dev receiver of reserve tokens when withdrawing collateral
         address to;
+        /// @dev reference id of loan observer to track loan
+        uint16 refId;
         /// @dev amounts of requesting to deposit as collateral for a loan or withdraw from a loan's collateral
         uint256[] amounts;
         /// @dev CFMM LP tokens requesting to borrow to short
@@ -294,9 +315,10 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @param protocolId - protocolId (version) of GammaPool where loan will be created (used with `cfmm` to calculate GammaPool address)
     /// @param cfmm - address of CFMM, GammaPool is for (used with `protocolId` to calculate GammaPool address)
     /// @param to - recipient of NFT token that will be created
+    /// @param refId - reference Id of loan observer to track loan lifecycle
     /// @param deadline - timestamp after which transaction expires. Can't be executed anymore. Removes stale transactions
     /// @return tokenId - tokenId of newly created loan
-    function createLoan(uint16 protocolId, address cfmm, address to, uint256 deadline) external returns(uint256 tokenId);
+    function createLoan(uint16 protocolId, address cfmm, address to, uint16 refId, uint256 deadline) external returns(uint256 tokenId);
 
     /// @dev Borrow liquidity from GammaPool, can be used with a newly created loan or a loan already holding some liquidity debt
     /// @param params - struct containing params to identify a GammaPool and borrow liquidity from it
