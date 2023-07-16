@@ -303,12 +303,11 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     }
 
     /// @dev See {IPositionManager-repayLiquidityWithLP}.
-    function repayLiquidityWithLP(RepayLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint128[] memory tokensHeld) {
-        /*else if(params.lpTokens > 0) {
-        liquidityPaid = repayLiquidityWithLP(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to);
-        }/**/
-        //(liquidityPaid, tokensHeld) = repayLiquidityWithLP(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to);
-        //_logPrice(gammaPool);
+    function repayLiquidityWithLP(RepayLiquidityWithLPParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint128[] memory tokensHeld) {
+        address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
+        send(params.cfmm, msg.sender, gammaPool, params.lpTokens);
+        (liquidityPaid, tokensHeld) = repayLiquidityWithLP(gammaPool, params.tokenId, params.collateralId, params.to, params.minCollateral);
+        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-increaseCollateral}.
