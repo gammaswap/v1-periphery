@@ -4,6 +4,7 @@ import "forge-std/Test.sol";
 import "../../contracts/test/TestGammaPool2.sol";
 import "../../contracts/interfaces/IPriceStore.sol";
 import "../../contracts/test/TestPriceStore.sol";
+import "../../contracts/test/TestPoolViewer2.sol";
 
 contract PriceStoreTest is Test {
 
@@ -15,9 +16,13 @@ contract PriceStoreTest is Test {
 
     uint16 _protocolId;
     address _factory;
-    address _longStrategy;
+    address _borrowStrategy;
+    address _repayStrategy;
+    address _rebalanceStrategy;
     address _shortStrategy;
     address _liquidationStrategy;
+    address _batchLiquidationStrategy;
+    address _viewer;
 
     uint256 frequency;
     uint256 maxLen;
@@ -25,12 +30,16 @@ contract PriceStoreTest is Test {
     function setUp() public {
         _protocolId = 1;
         _factory = vm.addr(1);
-        _longStrategy = vm.addr(2);
+        _borrowStrategy = vm.addr(2);
         _shortStrategy = vm.addr(3);
         _liquidationStrategy = vm.addr(4);
+        _repayStrategy = vm.addr(100);
+        _rebalanceStrategy = vm.addr(111);
+        _batchLiquidationStrategy = vm.addr(122);
+        _viewer = address(new TestPoolViewer2());
 
-        pool = new TestGammaPool2(_protocolId, _factory, _longStrategy, _shortStrategy, _liquidationStrategy);
-        _pool2 = address(new TestGammaPool2(_protocolId, _factory, _longStrategy, _shortStrategy, _liquidationStrategy));
+        pool = new TestGammaPool2(_protocolId, _factory, _borrowStrategy, _repayStrategy, _rebalanceStrategy, _shortStrategy, _liquidationStrategy, _batchLiquidationStrategy, _viewer);
+        _pool2 = address(new TestGammaPool2(_protocolId, _factory, _borrowStrategy, _repayStrategy, _rebalanceStrategy, _shortStrategy, _liquidationStrategy, _batchLiquidationStrategy, _viewer));
         maxLen = 10;
         frequency = 300;
         ps = new TestPriceStore(address(this), maxLen, frequency);
@@ -105,7 +114,7 @@ contract PriceStoreTest is Test {
         uint256 borrowRate0 = 1e18 / 100;
         uint256 accFeeIndex0 = 1e18;
         uint256 lastPrice0 = 1e18;
-        pool.setLatestRates(utilRate0, borrowRate0, accFeeIndex0, lastPrice0);
+        TestPoolViewer2(pool.viewer()).setLatestRates(utilRate0, borrowRate0, accFeeIndex0, lastPrice0);
 
         ps.setMaxLen(_maxLen);
 
@@ -133,7 +142,7 @@ contract PriceStoreTest is Test {
         uint256 borrowRate0 = 1e18 / 100;
         uint256 accFeeIndex0 = 1e18;
         uint256 lastPrice0 = 1e18;
-        pool.setLatestRates(utilRate0, borrowRate0, accFeeIndex0, lastPrice0);
+        TestPoolViewer2(pool.viewer()).setLatestRates(utilRate0, borrowRate0, accFeeIndex0, lastPrice0);
 
         ps.addPriceInfo(_pool);
         assertEq(1,ps.size(_pool));
@@ -197,7 +206,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,accFeeIndex0/1e6);
         assertEq(ts.lastPrice,lastPrice0);
 
-        pool.setLatestRates(2*utilRate0, 2*borrowRate0, 2*accFeeIndex0, 2*lastPrice0);
+        TestPoolViewer2(pool.viewer()).setLatestRates(2*utilRate0, 2*borrowRate0, 2*accFeeIndex0, 2*lastPrice0);
 
         ps.addPriceInfo(_pool);
         assertEq(2,ps.size(_pool));
@@ -266,7 +275,7 @@ contract PriceStoreTest is Test {
         vm.roll(29); // 12 seconds
         vm.warp(901);
 
-        pool.setLatestRates(3*utilRate0, 3*borrowRate0, 3*accFeeIndex0, 3*lastPrice0);
+        TestPoolViewer2(pool.viewer()).setLatestRates(3*utilRate0, 3*borrowRate0, 3*accFeeIndex0, 3*lastPrice0);
 
         ps.addPriceInfo(_pool);
         assertEq(4,ps.size(_pool));
@@ -353,7 +362,7 @@ contract PriceStoreTest is Test {
         assertEq(ts.accFeeIndex,3*accFeeIndex0/1e6);
         assertEq(ts.lastPrice,3*lastPrice0);
 
-        pool.setLatestRates(4*utilRate0, 4*borrowRate0, 4*accFeeIndex0, 4*lastPrice0);
+        TestPoolViewer2(pool.viewer()).setLatestRates(4*utilRate0, 4*borrowRate0, 4*accFeeIndex0, 4*lastPrice0);
 
         vm.roll(36); // 12 seconds
         vm.warp(3000);
