@@ -264,13 +264,15 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     /// @dev Repay liquidity debt from GammaPool with LP Tokens
     /// @param gammaPool - address of GammaPool of the loan
     /// @param tokenId - id to identify the loan in the GammaPool
-    /// @param liquidity - desired liquidity to pay
     /// @param collateralId - index of collateral token + 1
     /// @param to - if repayment type requires withdrawal, the address that will receive the funds. Otherwise can be zero address
+    /// @param minCollateral - minimum collateral amounts in loan after repayment
     /// @return liquidityPaid - actual liquidity debt paid
-    function repayLiquidityWithLP(address gammaPool, uint256 tokenId, uint256 liquidity, uint256 collateralId, address to) internal virtual returns (uint256 liquidityPaid) {
-        liquidityPaid = IGammaPool(gammaPool).repayLiquidityWithLP(tokenId, liquidity, collateralId, to);
-        emit RepayLiquidityWihtLP(gammaPool, tokenId, liquidityPaid);
+    /// @return tokensHeld - reserve tokens used to pay liquidity debt
+    function repayLiquidityWithLP(address gammaPool, uint256 tokenId, uint256 collateralId, address to, uint128[] memory minCollateral) internal virtual returns (uint256 liquidityPaid, uint128[] memory tokensHeld) {
+        (liquidityPaid, tokensHeld) = IGammaPool(gammaPool).repayLiquidityWithLP(tokenId, collateralId, to);
+        checkMinCollateral(tokensHeld, minCollateral);
+        emit RepayLiquidityWihtLP(gammaPool, tokenId, liquidityPaid, tokensHeld);
     }
 
     // Individual Function Calls
@@ -294,12 +296,19 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         if(params.isRatio) {
             (liquidityPaid, amounts) = repayLiquiditySetRatio(gammaPool, params.tokenId, params.liquidity, params.fees, params.ratio, params.minRepaid);
-        } else if(params.lpTokens > 0) {
-            liquidityPaid = repayLiquidityWithLP(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to);
         } else {
             (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.fees, params.collateralId, params.to, params.minRepaid);
         }
         _logPrice(gammaPool);
+    }
+
+    /// @dev See {IPositionManager-repayLiquidityWithLP}.
+    function repayLiquidityWithLP(RepayLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint128[] memory tokensHeld) {
+        /*else if(params.lpTokens > 0) {
+        liquidityPaid = repayLiquidityWithLP(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to);
+        }/**/
+        //(liquidityPaid, tokensHeld) = repayLiquidityWithLP(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to);
+        //_logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-increaseCollateral}.

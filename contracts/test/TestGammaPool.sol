@@ -249,7 +249,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
         return true;
     }
 
-    function repayLiquidityWithLP(uint256 tokenId, uint256 liquidity, uint256 collateralId, address to) external returns(uint256 liquidityPaid) {
+    function repayLiquidityWithLP(uint256 tokenId, uint256 collateralId, address to) external returns(uint256 liquidityPaid, uint128[] memory tokensHeld) {
 
     }
 

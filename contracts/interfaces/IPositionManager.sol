@@ -80,7 +80,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @param pool - address of pool whose liquidity debt was paid
     /// @param tokenId - id identifying loan in pool that will track liquidity debt
     /// @param liquidityPaid - liquidity repaid in invariant terms
-    event RepayLiquidityWihtLP(address indexed pool, uint256 tokenId, uint256 liquidityPaid);
+    /// @param tokensHeld - new loan collateral amounts
+    event RepayLiquidityWihtLP(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint128[] tokensHeld);
 
     event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld,
         uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint128[] cfmmReserves);
@@ -331,6 +332,12 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @return liquidityPaid - actual liquidity debt paid
     /// @return amounts - reserve tokens used to pay liquidity debt
     function repayLiquidity(RepayLiquidityParams calldata params) external returns (uint256 liquidityPaid, uint256[] memory amounts);
+
+    /// @dev Repay liquidity debt from GammaPool using LP tokens
+    /// @param params - struct containing params to identify a GammaPool and loan to pay its liquidity debt
+    /// @return liquidityPaid - actual liquidity debt paid
+    /// @return tokensHeld - reserve tokens used to pay liquidity debt
+    function repayLiquidityWithLP(RepayLiquidityParams calldata params) external returns (uint256 liquidityPaid, uint128[] memory tokensHeld);
 
     /// @dev Increase loan collateral by depositing more reserve tokens
     /// @param params - struct containing params to identify a GammaPool and loan to add collateral to
