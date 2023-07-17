@@ -206,8 +206,8 @@ contract TestGammaPool is IGammaPool, TERC20 {
         tokensHeld = new uint128[](2);
     }
 
-    function liquidate(uint256) external override virtual returns(uint256 loanLiquidity) {
-        return (1);
+    function liquidate(uint256) external override virtual returns(uint256 loanLiquidity, uint256 refund) {
+        return (1, 2);
     }
 
     function liquidateWithLP(uint256) external override virtual returns(uint256 loanLiquidity, uint256[] memory refund) {
