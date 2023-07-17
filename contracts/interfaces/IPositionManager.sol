@@ -69,6 +69,20 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @param amounts - liquidity repaid in terms of reserve token amounts
     event RepayLiquidity(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint256[] amounts);
 
+    /// @dev Emitted when repaying liquidity debt from a pool
+    /// @param pool - address of pool whose liquidity debt was paid
+    /// @param tokenId - id identifying loan in pool that will track liquidity debt
+    /// @param liquidityPaid - liquidity repaid in invariant terms
+    /// @param amounts - liquidity repaid in terms of reserve token amounts
+    event RepayLiquiditySetRatio(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint256[] amounts);
+
+    /// @dev Emitted when repaying liquidity debt from a pool
+    /// @param pool - address of pool whose liquidity debt was paid
+    /// @param tokenId - id identifying loan in pool that will track liquidity debt
+    /// @param liquidityPaid - liquidity repaid in invariant terms
+    /// @param tokensHeld - new loan collateral amounts
+    event RepayLiquidityWithLP(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint128[] tokensHeld);
+
     event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld,
         uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint128[] cfmmReserves);
 
@@ -146,6 +160,10 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 tokenId;
         /// @dev liquidity debt to pay
         uint256 liquidity;
+        /// @dev if true re-balance collateral to `ratio`
+        bool isRatio;
+        /// @dev If re-balancing to a desired ratio set this to the ratio you'd like, otherwise leave as an empty array
+        uint256[] ratio;
         /// @dev fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
         uint256[] fees;
         /// @dev collateralId - index of collateral token + 1
@@ -156,6 +174,26 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev minimum amounts of reserve tokens expected to have been used to repay the liquidity debt. Slippage protection
         uint256[] minRepaid;
+    }
+
+    /// @dev Struct parameters for `repayLiquidityWithLP` function. Repaying liquidity with CFMM LP tokens
+    struct RepayLiquidityWithLPParams {
+        /// @dev protocolId of GammaPool (e.g. version of GammaPool)
+        uint16 protocolId;
+        /// @dev address of CFMM, along with protocolId can be used to calculate GammaPool address
+        address cfmm;
+        /// @dev tokenId of loan whose liquidity debt will be paid
+        uint256 tokenId;
+        /// @dev if using LP tokens to repay liquidity set this to > 0
+        uint256 lpTokens;
+        /// @dev collateralId - index of collateral token + 1
+        uint256 collateralId;
+        /// @dev to - if repayment type requires withdrawal, the address that will receive the funds. Otherwise can be zero address
+        address to;
+        /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
+        uint256 deadline;
+        /// @dev minimum amounts of reserve tokens expected to have been used to repay the liquidity debt. Slippage protection
+        uint128[] minCollateral;
     }
 
     /// @dev Struct parameters for `increaseCollateral` and `decreaseCollateral` function.
@@ -220,6 +258,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         address cfmm;
         /// @dev receiver of reserve tokens when withdrawing collateral
         address to;
+        /// @dev reference id of loan observer to track loan
+        uint16 refId;
         /// @dev amounts of requesting to deposit as collateral for a loan or withdraw from a loan's collateral
         uint256[] amounts;
         /// @dev CFMM LP tokens requesting to borrow to short
@@ -294,9 +334,10 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @param protocolId - protocolId (version) of GammaPool where loan will be created (used with `cfmm` to calculate GammaPool address)
     /// @param cfmm - address of CFMM, GammaPool is for (used with `protocolId` to calculate GammaPool address)
     /// @param to - recipient of NFT token that will be created
+    /// @param refId - reference Id of loan observer to track loan lifecycle
     /// @param deadline - timestamp after which transaction expires. Can't be executed anymore. Removes stale transactions
     /// @return tokenId - tokenId of newly created loan
-    function createLoan(uint16 protocolId, address cfmm, address to, uint256 deadline) external returns(uint256 tokenId);
+    function createLoan(uint16 protocolId, address cfmm, address to, uint16 refId, uint256 deadline) external returns(uint256 tokenId);
 
     /// @dev Borrow liquidity from GammaPool, can be used with a newly created loan or a loan already holding some liquidity debt
     /// @param params - struct containing params to identify a GammaPool and borrow liquidity from it
@@ -309,6 +350,12 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @return liquidityPaid - actual liquidity debt paid
     /// @return amounts - reserve tokens used to pay liquidity debt
     function repayLiquidity(RepayLiquidityParams calldata params) external returns (uint256 liquidityPaid, uint256[] memory amounts);
+
+    /// @dev Repay liquidity debt from GammaPool using CFMM LP tokens
+    /// @param params - struct containing params to identify a GammaPool and loan to pay its liquidity debt
+    /// @return liquidityPaid - actual liquidity debt paid
+    /// @return tokensHeld - reserve tokens used to pay liquidity debt
+    function repayLiquidityWithLP(RepayLiquidityWithLPParams calldata params) external returns (uint256 liquidityPaid, uint128[] memory tokensHeld);
 
     /// @dev Increase loan collateral by depositing more reserve tokens
     /// @param params - struct containing params to identify a GammaPool and loan to add collateral to

@@ -3,6 +3,7 @@ pragma solidity 0.8.17;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPoolFactory.sol";
+import "@gammaswap/v1-core/contracts/interfaces/IPoolViewer.sol";
 import "../libraries/QueryUtils.sol";
 import "../interfaces/IPositionManagerQueries.sol";
 import "../interfaces/IGammaPoolQueryableLoans.sol";
@@ -34,11 +35,11 @@ contract PositionManagerQueries is IPositionManagerQueries, LoanStore {
                     _tokenIdsReq[k] = _tokenIds[i];
                 }
                 unchecked {
-                    k++;
-                    i++;
+                    ++k;
+                    ++i;
                 }
             }
-            _loans = IGammaPool(gammaPool).getLoansById(_tokenIdsReq, false);
+            _loans = IPoolViewer(IGammaPool(gammaPool).viewer()).getLoansById(gammaPool, _tokenIdsReq, false);
         } else {
             _loans = new IGammaPool.LoanData[](0);
         }
@@ -54,11 +55,12 @@ contract PositionManagerQueries is IPositionManagerQueries, LoanStore {
             for(uint256 i = _start; i <= _end;) {
                 uint256 _tokenId = _loanList[i];
                 if(_tokenId > 0) {
-                    _loans[k] = IGammaPool(loanToInfo[_tokenId].pool).loan(_tokenId);
+                    address pool = loanToInfo[_tokenId].pool;
+                    _loans[k] = IPoolViewer(IGammaPool(pool).viewer()).loan(pool, _tokenId);
                 }
                 unchecked {
-                    k++;
-                    i++;
+                    ++k;
+                    ++i;
                 }
             }
         } else {
@@ -68,12 +70,12 @@ contract PositionManagerQueries is IPositionManagerQueries, LoanStore {
 
     /// @dev See {IPositionManagerQueries-getPools}.
     function getPools(uint256 start, uint256 end) external override virtual view returns(IGammaPool.PoolData[] memory _pools) {
-        address[] memory _poolAddresses = IGammaPoolFactory(factory).getPools(start, end);
-        _pools = new IGammaPool.PoolData[](_poolAddresses.length);
-        for(uint256 i = 0; i < _poolAddresses.length;) {
-            _pools[i] = IGammaPool(_poolAddresses[i]).getLatestPoolData();
+        address[] memory poolAddresses = IGammaPoolFactory(factory).getPools(start, end);
+        _pools = new IGammaPool.PoolData[](poolAddresses.length);
+        for(uint256 i = 0; i < poolAddresses.length;) {
+            _pools[i] = IPoolViewer(IGammaPool(poolAddresses[i]).viewer()).getLatestPoolData(poolAddresses[i]);
             unchecked {
-                i++;
+                ++i;
             }
         }
     }
@@ -82,9 +84,9 @@ contract PositionManagerQueries is IPositionManagerQueries, LoanStore {
     function getPoolsByAddresses(address[] calldata poolAddresses) external override virtual view returns(IGammaPool.PoolData[] memory _pools) {
         _pools = new IGammaPool.PoolData[](poolAddresses.length);
         for(uint256 i = 0; i < poolAddresses.length;) {
-            _pools[i] = IGammaPool(poolAddresses[i]).getLatestPoolData();
+            _pools[i] = IPoolViewer(IGammaPool(poolAddresses[i]).viewer()).getLatestPoolData(poolAddresses[i]);
             unchecked {
-                i++;
+                ++i;
             }
         }
     }
@@ -95,9 +97,9 @@ contract PositionManagerQueries is IPositionManagerQueries, LoanStore {
         _balances = new uint256[](poolAddresses.length);
         for(uint256 i = 0; i < poolAddresses.length;) {
             _balances[i] = IERC20(poolAddresses[i]).balanceOf(owner);
-            _pools[i] = IGammaPool(poolAddresses[i]).getLatestPoolData();
+            _pools[i] = IPoolViewer(IGammaPool(poolAddresses[i]).viewer()).getLatestPoolData(poolAddresses[i]);
             unchecked {
-                i++;
+                ++i;
             }
         }
     }

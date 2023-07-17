@@ -22,7 +22,7 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
     /// @dev Candle bars arrays can have zero data fields at the last elements of the array since they're at least of size 2.
     /// @dev This is to avoid edge cases. Therefore candle bars can have 1 or 2 more elements than the source priceSeries data array returned
     function getCandleBars(address pool, uint256 _frequency) external virtual override view returns(TimeSeries memory _data) {
-        require(_frequency > 0 && _frequency < 25, "FREQUENCY"); // can't rebuild candle bars to be greatr than 24 units of PriceStore data
+        require(_frequency > 0 && _frequency < 25, "FREQUENCY"); // can't rebuild candle bars to be greater than 24 units of PriceStore data
         uint256 _firstIdx;
         uint256 _size;
         {
@@ -69,7 +69,7 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
                 // start new bar
                 if(_nextTimestamp > 0) { // don't increase first one
                     unchecked {
-                        k++;
+                        ++k;
                     }
                 }
                 uint256 lastTimestamp = (info.timestamp / _frequency) * _frequency;
@@ -89,8 +89,8 @@ contract PriceDataQueries is IPriceDataQueries, PriceStore {
                 _data.indexRates[k] = updateCandle(_data.indexRates[k], indexRate);
             }
             unchecked {
-                j++;
-                i++;
+                ++j;
+                ++i;
             }
         }
     }

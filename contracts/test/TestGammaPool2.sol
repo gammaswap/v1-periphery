@@ -10,9 +10,10 @@ contract TestGammaPool2 is TestGammaPool{
     uint256 public accFeeIndex;
     uint256 public lastPrice;
 
-    constructor(uint16 _protocolId, address _factory, address _longStrategy, address _shortStrategy, address _liquidationStrategy)
-        TestGammaPool(_protocolId, _factory, _longStrategy, _shortStrategy, _liquidationStrategy) {
-
+    constructor(uint16 protocolId_, address factory_,  address borrowStrategy_, address repayStrategy_, address rebalanceStrategy_,
+        address shortStrategy_, address singleLiquidationStrategy_, address batchLiquidationStrategy_, address viewer_)
+        TestGammaPool(protocolId_, factory_, borrowStrategy_, repayStrategy_, rebalanceStrategy_, shortStrategy_,
+            singleLiquidationStrategy_, batchLiquidationStrategy_, viewer_) {
     }
 
     function loan(uint256) public virtual override view returns(LoanData memory _loanData) {
