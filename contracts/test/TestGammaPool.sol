@@ -250,10 +250,13 @@ contract TestGammaPool is IGammaPool, TERC20 {
     }
 
     function repayLiquidityWithLP(uint256 tokenId, uint256 collateralId, address to) external returns(uint256 liquidityPaid, uint128[] memory tokensHeld) {
-
+        liquidityPaid = 2400 + collateralId;
+        tokensHeld = new uint128[](2);
     }
 
     function repayLiquiditySetRatio(uint256 tokenId, uint256 liquidity, uint256[] calldata fees, uint256[] calldata ratio) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
+        liquidityPaid = 240 + (fees.length == 2 ? fees[0] + fees[1] : 0) + (ratio.length == 2 ? ratio[0] + ratio[1] : 0);
+        amounts = new uint256[](2);
     }
 
     function getLoanData(uint256 _tokenId) external override virtual view returns(LoanData memory _loanData) {

@@ -272,7 +272,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     function repayLiquidityWithLP(address gammaPool, uint256 tokenId, uint256 collateralId, address to, uint128[] memory minCollateral) internal virtual returns (uint256 liquidityPaid, uint128[] memory tokensHeld) {
         (liquidityPaid, tokensHeld) = IGammaPool(gammaPool).repayLiquidityWithLP(tokenId, collateralId, to);
         checkMinCollateral(tokensHeld, minCollateral);
-        emit RepayLiquidityWihtLP(gammaPool, tokenId, liquidityPaid, tokensHeld);
+        emit RepayLiquidityWithLP(gammaPool, tokenId, liquidityPaid, tokensHeld);
     }
 
     // Individual Function Calls

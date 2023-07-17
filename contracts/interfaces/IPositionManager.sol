@@ -81,7 +81,7 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @param tokenId - id identifying loan in pool that will track liquidity debt
     /// @param liquidityPaid - liquidity repaid in invariant terms
     /// @param tokensHeld - new loan collateral amounts
-    event RepayLiquidityWihtLP(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint128[] tokensHeld);
+    event RepayLiquidityWithLP(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint128[] tokensHeld);
 
     event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld,
         uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint128[] cfmmReserves);
@@ -160,8 +160,6 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 tokenId;
         /// @dev liquidity debt to pay
         uint256 liquidity;
-        /// @dev if using LP tokens to repay liquidity set this to > 0
-        uint256 lpTokens;
         /// @dev if true re-balance collateral to `ratio`
         bool isRatio;
         /// @dev If re-balancing to a desired ratio set this to the ratio you'd like, otherwise leave as an empty array
@@ -188,8 +186,6 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 tokenId;
         /// @dev if using LP tokens to repay liquidity set this to > 0
         uint256 lpTokens;
-        /// @dev fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
-        uint256[] fees;
         /// @dev collateralId - index of collateral token + 1
         uint256 collateralId;
         /// @dev to - if repayment type requires withdrawal, the address that will receive the funds. Otherwise can be zero address

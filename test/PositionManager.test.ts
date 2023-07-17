@@ -382,7 +382,7 @@ describe("PositionManager", function () {
             expect(res2._balances[0]).to.equal(18);
         });
 
-        it("#withdrawReserves should return assets and lenght of reserves", async function () {
+        it("#withdrawReserves should return assets and length of reserves", async function () {
             const WithdrawReservesParams = {
                 cfmm: cfmm.address,
                 protocolId: protocolId,
@@ -554,14 +554,14 @@ describe("PositionManager", function () {
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
                 fees: [],
-                lpTokens: 0,
                 isRatio: false,
                 ratio: []
             }
-            
+
             const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
-            
+
             const { args } = res.events[0];
+            expect(res.events[0].event).to.equal("RepayLiquidity");
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.liquidityPaid).to.equal(24);
@@ -579,7 +579,6 @@ describe("PositionManager", function () {
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
                 fees: [0,0],
-                lpTokens: 0,
                 isRatio: false,
                 ratio: []
             }
@@ -587,10 +586,132 @@ describe("PositionManager", function () {
             const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
 
             const { args } = res.events[0];
+            expect(res.events[0].event).to.equal("RepayLiquidity");
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.liquidityPaid).to.equal(26);
             expect(args.amounts.length).to.equal(2);
+        });
+
+        it("#repayLiquiditySetRatio should return tokenId, paid liquidity, paid lp tokens and length of amounts array", async function () {
+            const RepayLiquidityParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolId,
+                tokenId: tokenId,
+                liquidity: 1,
+                collateralId: 0,
+                to: ethers.constants.AddressZero,
+                minRepaid: [0,0],
+                deadline: ethers.constants.MaxUint256,
+                fees: [],
+                isRatio: true,
+                ratio: []
+            }
+
+            const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
+
+            const { args } = res.events[0];
+            expect(res.events[0].event).to.equal("RepayLiquiditySetRatio");
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
+            expect(args.liquidityPaid).to.equal(240);
+            expect(args.amounts.length).to.equal(2);
+        });
+
+        it("#repayLiquiditySetRatio should return tokenId, paid liquidity, paid lp tokens and length of amounts array with fees", async function () {
+            const RepayLiquidityParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolId,
+                tokenId: tokenId,
+                liquidity: 1,
+                collateralId: 0,
+                to: ethers.constants.AddressZero,
+                minRepaid: [0,0],
+                deadline: ethers.constants.MaxUint256,
+                fees: [1, 0],
+                isRatio: true,
+                ratio: []
+            }
+
+            const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
+
+            const { args } = res.events[0];
+            expect(res.events[0].event).to.equal("RepayLiquiditySetRatio");
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
+            expect(args.liquidityPaid).to.equal(241);
+            expect(args.amounts.length).to.equal(2);
+        });
+
+        it("#repayLiquiditySetRatio should return tokenId, paid liquidity, paid lp tokens and length of amounts array with fees and ratio", async function () {
+            const RepayLiquidityParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolId,
+                tokenId: tokenId,
+                liquidity: 1,
+                collateralId: 0,
+                to: ethers.constants.AddressZero,
+                minRepaid: [0,0],
+                deadline: ethers.constants.MaxUint256,
+                fees: [0, 1],
+                isRatio: true,
+                ratio: [1, 0]
+            }
+
+            const res = await (await posMgr.repayLiquidity(RepayLiquidityParams)).wait();
+
+            const { args } = res.events[0];
+            expect(res.events[0].event).to.equal("RepayLiquiditySetRatio");
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
+            expect(args.liquidityPaid).to.equal(242);
+            expect(args.amounts.length).to.equal(2);
+        });
+
+        it("#repayLiquidityWithLP should return tokenId, paid liquidity, paid lp tokens and length of amounts array", async function () {
+            const RepayLiquidityWithLPParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolId,
+                tokenId: tokenId,
+                collateralId: 0,
+                to: ethers.constants.AddressZero,
+                minCollateral: [0,0],
+                deadline: ethers.constants.MaxUint256,
+                lpTokens: 0,
+            }
+
+            const res = await (await posMgr.repayLiquidityWithLP(RepayLiquidityWithLPParams)).wait();
+
+            const eventIdx = res.events.length - 1;
+            const { args } = res.events[eventIdx];
+            expect(res.events[eventIdx].event).to.equal("RepayLiquidityWithLP");
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
+            expect(args.liquidityPaid).to.equal(2400);
+            expect(args.tokensHeld.length).to.equal(2);
+        });
+
+        it("#repayLiquidityWithLP should return tokenId, paid liquidity, paid lp tokens and length of amounts array & collateralId > 0", async function () {
+            const RepayLiquidityWithLPParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolId,
+                tokenId: tokenId,
+                collateralId: 1,
+                to: ethers.constants.AddressZero,
+                minCollateral: [0,0],
+                deadline: ethers.constants.MaxUint256,
+                lpTokens: 0,
+            }
+
+            const res = await (await posMgr.repayLiquidityWithLP(RepayLiquidityWithLPParams)).wait();
+
+            const eventIdx = res.events.length - 1;
+            const { args } = res.events[eventIdx];
+            expect(res.events[eventIdx].event).to.equal("RepayLiquidityWithLP");
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
+            expect(args.liquidityPaid).to.equal(2401);
+            expect(args.tokensHeld.length).to.equal(2);
         });
 
         it("#increaseCollateral should return tokenId and length of tokens held", async function () {
