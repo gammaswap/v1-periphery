@@ -407,7 +407,7 @@ describe("PositionManager", function () {
     // You can nest describe calls to create subsections.
     describe("Long Gamma Functions", function () {
         it("#createLoan should return tokenId", async function () {
-            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
+            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, 1786, ethers.constants.MaxUint256)).wait();
 
             const latestBlock = await ethers.provider.getBlock("latest");
             const num = latestBlock.number * 100;
@@ -417,6 +417,8 @@ describe("PositionManager", function () {
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.owner).to.equal(owner.address);
             expect(args.tokenId.toNumber()).to.equal(expTokenId);
+            expect(args.refId).to.equal(1786);
+
 
             const res1 = await store.getLoansByOwnerAndPool(owner.address, gammaPool.address, 0, 10);
             expect(res1.length).to.equal(1);
@@ -472,7 +474,7 @@ describe("PositionManager", function () {
             const res1b = await store.getLoansByOwner(addr4.address, 0, 10);
             expect(res1b.length).to.eq(0);
 
-            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
+            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, 2, ethers.constants.MaxUint256)).wait();
             const latestBlock = await ethers.provider.getBlock("latest");
             const num = latestBlock.number * 100;
             const expTokenId = num + 19;
@@ -480,6 +482,7 @@ describe("PositionManager", function () {
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.owner).to.equal(owner.address);
             expect(args.tokenId.toNumber()).to.equal(expTokenId);
+            expect(args.refId).to.equal(2);
 
             const res1 = await store.getLoansByOwnerAndPool(owner.address, gammaPool.address, 0, 10);
             expect(res1.length).to.eq(1);
@@ -542,6 +545,31 @@ describe("PositionManager", function () {
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.liquidityBorrowed).to.equal(23);
             expect(args.amounts.length).to.equal(2);
+        });
+
+        it("#borrowLiquidity, too much liquidity, should error", async function () {
+            const BorrowLiquidityParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolId,
+                tokenId: tokenId,
+                lpTokens: 1,
+                ratio: [],
+                minBorrowed: [0,0],
+                deadline: ethers.constants.MaxUint256,
+                maxBorrowed: 22
+            }
+
+            await expect(posMgr.borrowLiquidity(BorrowLiquidityParams)).to.be.revertedWith("MAX_BORROWED");
+
+            BorrowLiquidityParams.maxBorrowed = 0;
+            await expect(posMgr.borrowLiquidity(BorrowLiquidityParams)).to.be.revertedWith("MAX_BORROWED");
+
+
+            BorrowLiquidityParams.maxBorrowed = 23;
+            const res = await (await posMgr.borrowLiquidity(BorrowLiquidityParams)).wait();
+
+            const { event } = res.events[0];
+            expect(event).to.equal("BorrowLiquidity")
         });
 
         it("#repayLiquidity should return tokenId, paid liquidity, paid lp tokens and length of amounts array", async function () {
@@ -735,6 +763,9 @@ describe("PositionManager", function () {
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.tokensHeld.length).to.equal(6);
+            expect(args.amounts.length).to.equal(2);
+            expect(args.amounts[0]).to.equal(100);
+            expect(args.amounts[1]).to.equal(10);
         });
 
         it("#decreaseCollateral should return tokenId and length of tokens held", async function () {
@@ -754,6 +785,9 @@ describe("PositionManager", function () {
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.tokensHeld.length).to.equal(7);
+            expect(args.amounts.length).to.equal(2);
+            expect(args.amounts[0]).to.equal(100);
+            expect(args.amounts[1]).to.equal(10);
         });
 
         it("#rebalanceCollateral should return tokenId and length of tokens held", async function () {
@@ -811,6 +845,9 @@ describe("PositionManager", function () {
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(expTokenId);
             expect(args1.tokensHeld.length).to.equal(6);
+            expect(args1.amounts.length).to.equal(2);
+            expect(args1.amounts[0]).to.equal(100);
+            expect(args1.amounts[1]).to.equal(10);
 
             expect(res.events[5].event).to.equal("BorrowLiquidity");
             const args2 = res.events[5].args;
@@ -859,12 +896,16 @@ describe("PositionManager", function () {
             expect(args0.pool).to.equal(gammaPool.address);
             expect(args0.owner).to.equal(owner.address);
             expect(args0.tokenId.toNumber()).to.equal(expTokenId);
+            expect(args0.refId).to.equal(0);
 
             expect(res.events[4].event).to.equal("IncreaseCollateral");
             const args1 = res.events[4].args;
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(expTokenId);
             expect(args1.tokensHeld.length).to.equal(6);
+            expect(args1.amounts.length).to.equal(2);
+            expect(args1.amounts[0]).to.equal(100);
+            expect(args1.amounts[1]).to.equal(10);
 
             expect(res.events[5].event).to.equal("BorrowLiquidity");
             const args2 = res.events[5].args;
@@ -900,6 +941,9 @@ describe("PositionManager", function () {
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(1);
             expect(args1.tokensHeld.length).to.equal(6);
+            expect(args1.amounts.length).to.equal(2);
+            expect(args1.amounts[0]).to.equal(100);
+            expect(args1.amounts[1]).to.equal(10);
 
             expect(res.events[3].event).to.equal("BorrowLiquidity");
             const args2 = res.events[3].args;
@@ -935,6 +979,9 @@ describe("PositionManager", function () {
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(1);
             expect(args1.tokensHeld.length).to.equal(6);
+            expect(args1.amounts.length).to.equal(2);
+            expect(args1.amounts[0]).to.equal(100);
+            expect(args1.amounts[1]).to.equal(10);
 
             expect(res.events[3].event).to.equal("BorrowLiquidity");
             const args2 = res.events[3].args;
@@ -948,6 +995,9 @@ describe("PositionManager", function () {
             expect(args3.pool).to.equal(gammaPool.address);
             expect(args3.tokenId.toNumber()).to.equal(1);
             expect(args3.tokensHeld.length).to.equal(7);
+            expect(args3.amounts.length).to.equal(2);
+            expect(args3.amounts[0]).to.equal(2);
+            expect(args3.amounts[1]).to.equal(2);
         });
 
         it("#borrowAndRebalance should return tokensHeld, amounts. Has deltas", async function () {
@@ -976,6 +1026,9 @@ describe("PositionManager", function () {
             expect(args1.pool).to.equal(gammaPool.address);
             expect(args1.tokenId.toNumber()).to.equal(1);
             expect(args1.tokensHeld.length).to.equal(6);
+            expect(args1.amounts.length).to.equal(2);
+            expect(args1.amounts[0]).to.equal(100);
+            expect(args1.amounts[1]).to.equal(10);
 
             expect(res.events[3].event).to.equal("BorrowLiquidity");
             const args2 = res.events[3].args;
