@@ -531,7 +531,8 @@ describe("PositionManager", function () {
                 lpTokens: 1,
                 ratio: [],
                 minBorrowed: [0,0],
-                deadline: ethers.constants.MaxUint256
+                deadline: ethers.constants.MaxUint256,
+                maxBorrowed: ethers.constants.MaxUint256
             }
             
             const res = await (await posMgr.borrowLiquidity(BorrowLiquidityParams)).wait();
@@ -789,7 +790,8 @@ describe("PositionManager", function () {
                 amounts: [100,10],
                 minBorrowed: [0,0],
                 ratio: [],
-                minCollateral: []
+                minCollateral: [],
+                maxBorrowed: ethers.constants.MaxUint256
             }
 
             const res = await (await posMgr.createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams)).wait();
@@ -842,7 +844,8 @@ describe("PositionManager", function () {
                 amounts: [100,10],
                 minBorrowed: [0,0],
                 ratio: [],
-                minCollateral: [0,0]
+                minCollateral: [0,0],
+                maxBorrowed: ethers.constants.MaxUint256
             }
 
             const res = await (await posMgr.createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams)).wait();
@@ -886,7 +889,8 @@ describe("PositionManager", function () {
                 withdraw: [],
                 minBorrowed: [0,0],
                 ratio: [],
-                minCollateral: []
+                minCollateral: [],
+                maxBorrowed: ethers.constants.MaxUint256
             }
 
             const res = await (await posMgr.borrowAndRebalance(BorrowAndRebalanceParams)).wait();
@@ -920,7 +924,8 @@ describe("PositionManager", function () {
                 withdraw: [2, 2],
                 minBorrowed: [0, 0],
                 ratio: [],
-                minCollateral: []
+                minCollateral: [],
+                maxBorrowed: ethers.constants.MaxUint256
             }
 
             const res = await (await posMgr.borrowAndRebalance(BorrowAndRebalanceParams)).wait();
@@ -960,7 +965,8 @@ describe("PositionManager", function () {
                 withdraw: [],
                 minBorrowed: [0,0],
                 ratio: [],
-                minCollateral: [0,0]
+                minCollateral: [0,0],
+                maxBorrowed: ethers.constants.MaxUint256
             }
 
             const res = await (await posMgr.borrowAndRebalance(BorrowAndRebalanceParams)).wait();

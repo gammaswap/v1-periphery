@@ -152,6 +152,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev minimum amounts of reserve tokens expected to have been withdrawn representing the `lpTokens`. Slippage protection
         uint256[] minBorrowed;
+        /// @dev max borrowed liquidity
+        uint256 maxBorrowed;
     }
 
     /// @dev Struct parameters for `repayLiquidity` function. Repaying liquidity
@@ -276,6 +278,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint128[] minCollateral;
         /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
         uint256 deadline;
+        /// @dev max borrowed liquidity
+        uint256 maxBorrowed;
     }
 
     /// @dev Struct parameters for `createLoanBorrowAndRebalance` function.
@@ -302,6 +306,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256[] minBorrowed;
         /// @dev amounts of reserve tokens to swap (>0 buy token, <0 sell token). At least one index value must be set to zero
         uint128[] minCollateral;
+        /// @dev max borrowed liquidity
+        uint256 maxBorrowed;
     }
 
     /// @return factory - factory contract that creates all GammaPools this PositionManager interacts with
