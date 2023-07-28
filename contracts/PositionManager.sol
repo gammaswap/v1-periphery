@@ -176,7 +176,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     function createLoan(address gammaPool, address to, uint16 refId) internal virtual returns(uint256 tokenId) {
         tokenId = IGammaPool(gammaPool).createLoan(refId);
         mintQueryableLoan(gammaPool, tokenId, to);
-        emit CreateLoan(gammaPool, to, tokenId);
+        emit CreateLoan(gammaPool, to, tokenId, refId);
     }
 
     /// @dev Increase loan collateral by depositing more reserve tokens
@@ -188,7 +188,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     function increaseCollateral(address gammaPool, uint256 tokenId, uint256[] calldata amounts, uint256[] memory ratio) internal virtual returns(uint128[] memory tokensHeld) {
         sendTokens(IGammaPool(gammaPool).tokens(), msg.sender, gammaPool, amounts);
         tokensHeld = IGammaPool(gammaPool).increaseCollateral(tokenId, ratio);
-        emit IncreaseCollateral(gammaPool, tokenId, tokensHeld);
+        emit IncreaseCollateral(gammaPool, tokenId, tokensHeld, amounts);
     }
 
     /// @dev Decrease loan collateral by withdrawing reserve tokens
@@ -200,7 +200,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     /// @return tokensHeld - new loan collateral token amounts
     function decreaseCollateral(address gammaPool, address to, uint256 tokenId, uint128[] memory amounts, uint256[] memory ratio) internal virtual returns(uint128[] memory tokensHeld) {
         tokensHeld = IGammaPool(gammaPool).decreaseCollateral(tokenId, amounts, to, ratio);
-        emit DecreaseCollateral(gammaPool, tokenId, tokensHeld);
+        emit DecreaseCollateral(gammaPool, tokenId, tokensHeld, amounts);
     }
 
     /// @dev Re-balance loan collateral tokens by swapping one for another
@@ -267,12 +267,13 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     /// @param collateralId - index of collateral token + 1
     /// @param to - if repayment type requires withdrawal, the address that will receive the funds. Otherwise can be zero address
     /// @param minCollateral - minimum collateral amounts in loan after repayment
+    /// @param lpTokens - CFMM LP tokens used to repay liquidity debt
     /// @return liquidityPaid - actual liquidity debt paid
     /// @return tokensHeld - reserve tokens used to pay liquidity debt
-    function repayLiquidityWithLP(address gammaPool, uint256 tokenId, uint256 collateralId, address to, uint128[] memory minCollateral) internal virtual returns (uint256 liquidityPaid, uint128[] memory tokensHeld) {
+    function repayLiquidityWithLP(address gammaPool, uint256 tokenId, uint256 collateralId, address to, uint128[] memory minCollateral, uint256 lpTokens) internal virtual returns (uint256 liquidityPaid, uint128[] memory tokensHeld) {
         (liquidityPaid, tokensHeld) = IGammaPool(gammaPool).repayLiquidityWithLP(tokenId, collateralId, to);
         checkMinCollateral(tokensHeld, minCollateral);
-        emit RepayLiquidityWithLP(gammaPool, tokenId, liquidityPaid, tokensHeld);
+        emit RepayLiquidityWithLP(gammaPool, tokenId, liquidityPaid, tokensHeld, lpTokens);
     }
 
     // Individual Function Calls
@@ -306,7 +307,7 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     function repayLiquidityWithLP(RepayLiquidityWithLPParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint128[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         send(params.cfmm, msg.sender, gammaPool, params.lpTokens);
-        (liquidityPaid, tokensHeld) = repayLiquidityWithLP(gammaPool, params.tokenId, params.collateralId, params.to, params.minCollateral);
+        (liquidityPaid, tokensHeld) = repayLiquidityWithLP(gammaPool, params.tokenId, params.collateralId, params.to, params.minCollateral, params.lpTokens);
         _logPrice(gammaPool);
     }
 
