@@ -35,19 +35,22 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @param pool - address of pool where loan will be created
     /// @param owner - address of owner of newly minted NFT that manages newly created loan
     /// @param tokenId - unique id that identifies new loan in GammaPool
-    event CreateLoan(address indexed pool, address indexed owner, uint256 tokenId);
+    /// @param refId - Reference id of post transaction activities attached to this loan
+    event CreateLoan(address indexed pool, address indexed owner, uint256 tokenId, uint16 refId);
 
     /// @dev Emitted when increasing a loan's collateral amounts
     /// @param pool - address of pool collateral amounts are deposited to
     /// @param tokenId - id identifying loan in pool
     /// @param tokensHeld - new loan collateral amounts
-    event IncreaseCollateral(address indexed pool, uint256 tokenId, uint128[] tokensHeld);
+    /// @param amounts - collateral amounts being deposited
+    event IncreaseCollateral(address indexed pool, uint256 tokenId, uint128[] tokensHeld, uint256[] amounts);
 
     /// @dev Emitted when decreasing a loan's collateral amounts
     /// @param pool - address of pool collateral amounts are withdrawn from
     /// @param tokenId - id identifying loan in pool
     /// @param tokensHeld - new loan collateral amounts
-    event DecreaseCollateral(address indexed pool, uint256 tokenId, uint128[] tokensHeld);
+    /// @param amounts - amounts of reserve tokens withdraws from loan
+    event DecreaseCollateral(address indexed pool, uint256 tokenId, uint128[] tokensHeld, uint128[] amounts);
 
     /// @dev Emitted when re-balancing a loan's collateral amounts (swapping one collateral token for another)
     /// @param pool - loan's pool address
@@ -81,7 +84,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @param tokenId - id identifying loan in pool that will track liquidity debt
     /// @param liquidityPaid - liquidity repaid in invariant terms
     /// @param tokensHeld - new loan collateral amounts
-    event RepayLiquidityWithLP(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint128[] tokensHeld);
+    /// @param lpTokens - CFMM LP tokens used to repay liquidity debt
+    event RepayLiquidityWithLP(address indexed pool, uint256 tokenId, uint256 liquidityPaid, uint128[] tokensHeld, uint256 lpTokens);
 
     event LoanUpdate(uint256 indexed tokenId, address indexed poolId, address indexed owner, uint128[] tokensHeld,
         uint256 liquidity, uint256 lpTokens, uint256 initLiquidity, uint128[] cfmmReserves);
@@ -148,6 +152,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev minimum amounts of reserve tokens expected to have been withdrawn representing the `lpTokens`. Slippage protection
         uint256[] minBorrowed;
+        /// @dev max borrowed liquidity
+        uint256 maxBorrowed;
     }
 
     /// @dev Struct parameters for `repayLiquidity` function. Repaying liquidity
@@ -272,6 +278,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint128[] minCollateral;
         /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
         uint256 deadline;
+        /// @dev max borrowed liquidity
+        uint256 maxBorrowed;
     }
 
     /// @dev Struct parameters for `createLoanBorrowAndRebalance` function.
@@ -298,6 +306,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256[] minBorrowed;
         /// @dev amounts of reserve tokens to swap (>0 buy token, <0 sell token). At least one index value must be set to zero
         uint128[] minCollateral;
+        /// @dev max borrowed liquidity
+        uint256 maxBorrowed;
     }
 
     /// @return factory - factory contract that creates all GammaPools this PositionManager interacts with

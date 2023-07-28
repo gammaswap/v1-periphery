@@ -46,6 +46,10 @@ contract TestGammaPool is IGammaPool, TERC20 {
         _mint(tester, 100000 * (10 ** 18));
     }
 
+    function setOrigFeeParams(uint16 origFee, uint8 extSwapFee, uint8 emaMultiplier, uint8 minUtilRate, uint8 maxUtilRate) external virtual override {
+
+    }
+
     function tokens() external virtual override view returns(address[] memory){
         return tokens_;
     }
@@ -116,7 +120,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
         data.cfmm = cfmm;
         data.LAST_BLOCK_NUMBER = 14;
         data.factory = factory;
-        data.currBlockNumber = uint48(block.number);
+        data.currBlockNumber = uint40(block.number);
         data.LP_TOKEN_BALANCE = 1;
         data.LP_TOKEN_BORROWED = 2;
         data.LP_TOKEN_BORROWED_PLUS_INTEREST = 3;
@@ -127,10 +131,16 @@ contract TestGammaPool is IGammaPool, TERC20 {
         data.tokens = tokens_;
         data.decimals = decimals_;
         data.accFeeIndex = 9;
+        data.origFee = 10;
+        data.extSwapFee = 11;
         data.lastCFMMFeeIndex = 14;
         data.lastCFMMInvariant = 12;
         data.lastCFMMTotalSupply = 13;
         data.CFMM_RESERVES = new uint128[](2);
+        data.emaUtilRate = 15;
+        data.emaMultiplier = 16;
+        data.minUtilRate = 17;
+        data.feeDivisor = 18;
     }
 
     function getTokensMetaData() external view returns(address[] memory _tokens, string[] memory _symbols, string[] memory _names, uint8[] memory _decimals) {
