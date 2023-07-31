@@ -46,7 +46,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
         _mint(tester, 100000 * (10 ** 18));
     }
 
-    function setOrigFeeParams(uint16 origFee, uint8 extSwapFee, uint8 emaMultiplier, uint8 minUtilRate, uint8 maxUtilRate) external virtual override {
+    function setPoolParams(uint16 origFee, uint8 extSwapFee, uint8 emaMultiplier, uint8 minUtilRate, uint8 maxUtilRate, uint8 liquidationFee, uint8 ltvThreshold) external virtual override {
 
     }
 
