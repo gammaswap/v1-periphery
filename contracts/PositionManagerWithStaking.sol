@@ -2,41 +2,29 @@
 pragma solidity 0.8.17;
 
 import "./interfaces/IStakingRouter.sol";
+import "./interfaces/IAutoStakable.sol";
 import "./PositionManager.sol";
 
-contract PositionManagerWithStaking is PositionManager {
+/// @title PositionManagerWithStaking
+/// @author Simon Mall
+/// @dev Extension of PositionManager that adds staking and unstaking functionality for automated operations.
+contract PositionManagerWithStaking is PositionManager, IAutoStakable {
     IStakingRouter stakingRouter;
 
+    /// @dev Constructs the PositionManagerWithStaking contract.
+    /// @param _factory Address of the contract factory.
+    /// @param _WETH Address of the Wrapped Ether (WETH) contract.
+    /// @param _dataStore Address of the data store contract.
+    /// @param _priceStore Address of the price store contract.
     constructor(address _factory, address _WETH, address _dataStore, address _priceStore) PositionManager(_factory, _WETH, _dataStore, _priceStore) {}
 
+    /// @dev See {IAutoStakable-setStakingRouter}
     function setStakingRouter(address _stakingRouter) external onlyOwner {
         stakingRouter = IStakingRouter(_stakingRouter);
     }
 
-    function depositNoPull(DepositWithdrawParams calldata params) external override isExpired(params.deadline) returns(uint256 shares) {
-        address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
-        send(params.cfmm, msg.sender, gammaPool, params.lpTokens); // send lp tokens to pool
-
-        shares = IGammaPool(gammaPool).depositNoPull(address(stakingRouter));
-        emit DepositNoPull(gammaPool, shares);
-
-        stakingRouter.stakeLpForAccount(params.to, gammaPool, shares);
-    }
-
-    /// @dev See {IPositionManager-withdrawNoPull}.
-    function withdrawNoPull(DepositWithdrawParams calldata params) external override isExpired(params.deadline) returns(uint256 assets) {
-        address user = msg.sender;
-
-        address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
-        stakingRouter.unstakeLpForAccount(user, gammaPool, params.lpTokens);
-
-        send(gammaPool, user, gammaPool, params.lpTokens); // send gs tokens to pool
-        assets = IGammaPool(gammaPool).withdrawNoPull(params.to);
-        emit WithdrawNoPull(gammaPool, assets);
-    }
-
-    /// @dev See {IPositionManager-depositReserves}.
-    function depositReserves(DepositReservesParams calldata params) external override isExpired(params.deadline) returns(uint256[] memory reserves, uint256 shares) {
+    /// @dev See {IAutoStakable-depositReservesAndStake}.
+    function depositReservesAndStake(DepositReservesParams calldata params) external isExpired(params.deadline) returns(uint256[] memory reserves, uint256 shares) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         (reserves, shares) = IGammaPool(gammaPool)
         .depositReserves(address(stakingRouter), params.amountsDesired, params.amountsMin,
@@ -46,8 +34,8 @@ contract PositionManagerWithStaking is PositionManager {
         stakingRouter.stakeLpForAccount(params.to, gammaPool, shares);
     }
 
-    /// @dev See {IPositionManager-withdrawReserves}.
-    function withdrawReserves(WithdrawReservesParams calldata params) external override isExpired(params.deadline) returns (uint256[] memory reserves, uint256 assets) {
+    /// @dev See {IAutoStakable-withdrawReservesAndUnstake}.
+    function withdrawReservesAndUnstake(WithdrawReservesParams calldata params) external isExpired(params.deadline) returns (uint256[] memory reserves, uint256 assets) {
         address user = msg.sender;
 
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
