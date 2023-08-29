@@ -75,14 +75,14 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
         return _symbol;
     }
 
-    /// @param _dataStore - address of contract holding loan information for queries
-    function setDataStore(address _dataStore) external virtual onlyOwner {
-        dataStore = _dataStore;
+    /// @dev Clear data store contract from PositionManager. PM will no longer update dataStore if cleared
+    function removeDataStore() external virtual onlyOwner {
+        dataStore = address(0);
     }
 
-    /// @param _priceStore - address of contract holding price information for queries
-    function setPriceStore(address _priceStore) external virtual onlyOwner {
-        priceStore = _priceStore;
+    /// @dev Clear price store contract from PositionManager. PM will no longer update priceStore if cleared
+    function removePriceStore() external virtual onlyOwner {
+        priceStore = address(0);
     }
 
     /// @dev See {ITransfers-getGammaPoolAddress}.
