@@ -132,8 +132,11 @@ describe("PositionManager", function () {
             expect(await posMgr.factory()).to.be.equal(factory.address);
             expect(await posMgr.WETH()).to.be.equal(WETH.address);
             expect(await posMgr.dataStore()).to.be.equal(store.address);
-            await (await posMgr.setDataStore(addr4.address)).wait();
-            expect(await posMgr.dataStore()).to.be.equal(addr4.address);
+            await (await posMgr.removeDataStore()).wait();
+            expect(await posMgr.dataStore()).to.be.equal(ethers.constants.AddressZero);
+            expect(await posMgr.priceStore()).to.be.equal(priceStore.address);
+            await (await posMgr.removePriceStore()).wait();
+            expect(await posMgr.priceStore()).to.be.equal(ethers.constants.AddressZero);
         })
 
         it("#sendTokensCallback should revert with NotGammaPool when calling outside Gamma Pool", async function () {

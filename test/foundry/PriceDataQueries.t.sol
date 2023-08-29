@@ -1,4 +1,4 @@
-pragma solidity 0.8.17;
+pragma solidity 0.8.21;
 
 import "forge-std/Test.sol";
 import "../../contracts/test/TestGammaPool2.sol";

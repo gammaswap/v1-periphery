@@ -1,8 +1,10 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-pragma solidity 0.8.17;
+pragma solidity 0.8.21;
 
+import "@gammaswap/v1-core/contracts/utils/TwoStepOwnable.sol";
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "@gammaswap/v1-core/contracts/libraries/AddressCalculator.sol";
+
 import "./interfaces/IPositionManager.sol";
 import "./interfaces/IPriceStore.sol";
 import "./base/Transfers.sol";
@@ -14,7 +16,7 @@ import "./base/GammaPoolQueryableLoans.sol";
 /// @notice Periphery contract used to aggregate function calls to a GammaPool and give NFT (ERC721) functionality to loans
 /// @notice Loans created through PositionManager become NFTs and can only be managed through PositionManager
 /// @dev PositionManager is owner of loan and user is owner of NFT that represents loan in a GammaPool
-contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans {
+contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPoolQueryableLoans {
 
     error Forbidden();
     error Expired();
@@ -55,7 +57,10 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
     }
 
     /// @dev Initializes the contract by setting `factory`, `WETH`, and `dataStore`.
-    constructor(address _factory, address _WETH, address _dataStore, address _priceStore) Transfers(_WETH) GammaPoolQueryableLoans(_dataStore) {
+    constructor(address _factory, address _WETH, address _dataStore, address _priceStore)
+        TwoStepOwnable(msg.sender)
+        Transfers(_WETH)
+        GammaPoolQueryableLoans(_dataStore) {
         factory = _factory;
         priceStore = _priceStore;
     }
@@ -70,14 +75,14 @@ contract PositionManager is IPositionManager, Transfers, GammaPoolQueryableLoans
         return _symbol;
     }
 
-    /// @param _dataStore - address of contract holding loan information for queries
-    function setDataStore(address _dataStore) external virtual {
-        dataStore = _dataStore;
+    /// @dev Clear data store contract from PositionManager. PM will no longer update dataStore if cleared
+    function removeDataStore() external virtual onlyOwner {
+        dataStore = address(0);
     }
 
-    /// @param _priceStore - address of contract holding price information for queries
-    function setPriceStore(address _priceStore) external virtual {
-        priceStore = _priceStore;
+    /// @dev Clear price store contract from PositionManager. PM will no longer update priceStore if cleared
+    function removePriceStore() external virtual onlyOwner {
+        priceStore = address(0);
     }
 
     /// @dev See {ITransfers-getGammaPoolAddress}.
