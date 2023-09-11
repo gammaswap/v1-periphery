@@ -1,9 +1,8 @@
 {
   "name": "@gammaswap/v1-periphery",
-  "version": "0.5.12",
+  "version": "0.5.13",
   "description": "Periphery contracts for the GammaSwapV1 protocol",
   "homepage": "https://gammaswap.com",
-  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -67,7 +66,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@gammaswap/v1-core": "^0.5.34",
+    "@gammaswap/v1-core": "^0.5.35",
     "@openzeppelin/contracts": "^4.7.0"
   }
 }
