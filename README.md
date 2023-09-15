@@ -11,7 +11,13 @@
 ## Description
 This is the repository for the periphery smart contracts of the GammaSwap V1 protocol.
 
-This repository contains concrete implementations of periphery contracts to interact with deployed GammaPools
+This repository contains concrete implementations of periphery contracts to interact with deployed GammaPools.
+
+Contracts in this repository do not contain core GammaSwap logic. Instead, they enhance the functionality of existing 
+core logic by implementing safety checks when calling certain GammaPool functions and increase composability by extending
+the ERC721 implementation towards GammaPool loans.
+
+Users are encouraged to interact with the GammaPools via the contracts in this repository to ensure a safe user experience.
 
 ## Steps to Run GammaSwap Tests Locally
 
