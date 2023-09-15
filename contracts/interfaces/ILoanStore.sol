@@ -1,6 +1,9 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity >=0.8.0;
 
+/// @title Interface for Loan Store
+/// @author Daniel D. Alcarraz (https://github.com/0xDanr)
+/// @dev Interface to interact with contract that stores all loans on chain, if enabled in PositionManager
 interface ILoanStore {
 
     /// @dev Struct to store identifiable information about loan to perform queries in PositionManager
