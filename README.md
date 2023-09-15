@@ -1,20 +1,47 @@
-<p align="center"><a href="https://gammaswap.com" target="_blank" rel="noopener noreferrer"><img width="100" src="https://gammaswap.com/assets/images/image02.svg" alt="Gammaswap logo"></a></p>
+<p align="center"><a href="https://gammaswap.com" target="_blank" rel="noopener noreferrer"><img width="100" src="https://app.gammaswap.com/logo.svg" alt="Gammaswap logo"></a></p>
 
 <p align="center">
-  <a href="https://github.com/gammaswap/v1-periphery/actions/workflows/main.yml"><img src="https://github.com/gammaswap/v1-periphery/actions/workflows/main.yml/badge.svg?branch=main" alt="Compile/Test/Publish">
+  <a href="https://github.com/gammaswap/v1-periphery/actions/workflows/main.yml">
+    <img src="https://github.com/gammaswap/v1-periphery/actions/workflows/main.yml/badge.svg?branch=main" alt="Compile/Test/Publish">
+  </a>
 </p>
 
-# Steps to Run GammaSwap Tests Locally
+<h1 align="center">V1-Periphery</h1>
 
-1. Run ```npm install``` to install dependencies including hardhat.
-2. Optional: copy [.env.example](.env.example) to .env. Fill details as needed.
-3. Add .npmrc file in root folder with the following contents:
-```
-   @gammaswap:registry=https://npm.pkg.github.com/
-   //npm.pkg.github.com/:_authToken=<GITHUB_ACCESS_TOKEN>
-```
-4. Run ```npx hardhat test```
-5. Run ```forge test```
+## Description
+This is the repository for the periphery smart contracts of the GammaSwap V1 protocol.
 
-# Steps to Run GammaSwap Foundry Specific Tests
-Run ```forge test --match-test optionalSpecificTest --match-contract optionalSpecificContract```
+This repository contains concrete implementations of periphery contracts to interact with deployed GammaPools
+
+## Steps to Run GammaSwap Tests Locally
+
+1. Run `yarn` to install GammaSwap dependencies
+2. Run `yarn test` to run hardhat tests
+3. Run `yarn fuzz` to run foundry tests (Need foundry binaries installed locally)
+
+To deploy contracts to local live network use v1-deployment repository
+
+### Note
+To install foundry locally go to [getfoundry.sh](https://getfoundry.sh/)
+
+## Solidity Versions
+Code is tested with solidity version 0.8.19.
+
+Concrete contracts support only solidity version 0.8.19.
+
+Abstract contracts support solidity version 0.8.4 and up.
+
+Interfaces support solidity version 0.8.0 and up.
+
+## Publishing NPM Packages
+
+To publish an npm package follow the following steps
+
+1. Bump the package.json version to the next level (either major, minor, or patch version)
+2. commit to the main branch adding 'publish package' in the comment section of the commit (e.g. when merging a pull request)
+
+### Rules for updating package.json version
+
+1. If change does not break interface, then it's a patch version update
+2. If change breaks interface, then it's a minor version update
+3. If change is for a new product release to public, it's a major version update
