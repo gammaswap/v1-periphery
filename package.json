@@ -1,6 +1,6 @@
 {
   "name": "@gammaswap/v1-periphery",
-  "version": "0.5.13",
+  "version": "0.5.14",
   "description": "Periphery contracts for the GammaSwap V1 protocol",
   "homepage": "https://gammaswap.com",
   "scripts": {
@@ -30,6 +30,7 @@
     "gammaswap-v1"
   ],
   "author": "Daniel D. Alcarraz (https://github.com/0xDanr)",
+  "contributors": ["Simon Mall"],
   "license": "GPL-v3",
   "devDependencies": {
     "@nomicfoundation/hardhat-foundry": "^1.0.0",
@@ -66,7 +67,7 @@
     "typescript": "^4.7.4"
   },
   "dependencies": {
-    "@gammaswap/v1-core": "^0.5.35",
+    "@gammaswap/v1-core": "^0.5.38",
     "@openzeppelin/contracts": "^4.7.0"
   }
 }
