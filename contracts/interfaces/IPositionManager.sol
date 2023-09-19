@@ -262,7 +262,7 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint16 protocolId;
         /// @dev address of CFMM, along with protocolId can be used to calculate GammaPool address
         address cfmm;
-        /// @dev receiver of reserve tokens when withdrawing collateral
+        /// @dev owner of NFT created by PositionManager. Owns loan through PositionManager
         address to;
         /// @dev reference id of loan observer to track loan
         uint16 refId;
