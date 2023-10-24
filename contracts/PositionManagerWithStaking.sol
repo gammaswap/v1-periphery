@@ -27,11 +27,13 @@ contract PositionManagerWithStaking is PositionManager, IAutoStakable {
     function depositReservesAndStake(DepositReservesParams calldata params) external isExpired(params.deadline) returns(uint256[] memory reserves, uint256 shares) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         (reserves, shares) = IGammaPool(gammaPool)
-        .depositReserves(address(stakingRouter), params.amountsDesired, params.amountsMin,
+        .depositReserves(address(this), params.amountsDesired, params.amountsMin,
             abi.encode(SendTokensCallbackData({cfmm: params.cfmm, protocolId: params.protocolId, payer: msg.sender})));
-        emit DepositReserve(gammaPool, reserves, shares);
+
+        GammaSwapLibrary.safeApprove(gammaPool, address(stakingRouter), shares);
 
         stakingRouter.stakeLpForAccount(params.to, gammaPool, shares);
+        emit DepositReserve(gammaPool, reserves, shares);
     }
 
     /// @dev See {IAutoStakable-withdrawReservesAndUnstake}.
@@ -41,7 +43,6 @@ contract PositionManagerWithStaking is PositionManager, IAutoStakable {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         stakingRouter.unstakeLpForAccount(user, gammaPool, params.amount);
 
-        send(gammaPool, user, gammaPool, params.amount); // send gs tokens to pool
         (reserves, assets) = IGammaPool(gammaPool).withdrawReserves(params.to);
         checkMinReserves(reserves, params.amountsMin);
         emit WithdrawReserve(gammaPool, reserves, assets);
