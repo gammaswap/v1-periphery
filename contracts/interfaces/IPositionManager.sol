@@ -170,8 +170,6 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         bool isRatio;
         /// @dev If re-balancing to a desired ratio set this to the ratio you'd like, otherwise leave as an empty array
         uint256[] ratio;
-        /// @dev fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
-        uint256[] fees;
         /// @dev collateralId - index of collateral token + 1
         uint256 collateralId;
         /// @dev to - if repayment type requires withdrawal, the address that will receive the funds. Otherwise can be zero address

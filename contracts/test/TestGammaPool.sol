@@ -203,8 +203,8 @@ contract TestGammaPool is IGammaPool, TERC20 {
         amounts = new uint256[](2);
     }
 
-    function repayLiquidity(uint256, uint256, uint256[] calldata fees, uint256, address) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
-        liquidityPaid = 24 + fees.length + (fees.length == 2 ? fees[0] + fees[1] : 0);
+    function repayLiquidity(uint256, uint256, uint256, address) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
+        liquidityPaid = 24;
         amounts = new uint256[](2);
     }
 
@@ -268,8 +268,8 @@ contract TestGammaPool is IGammaPool, TERC20 {
         tokensHeld = new uint128[](2);
     }
 
-    function repayLiquiditySetRatio(uint256 tokenId, uint256 liquidity, uint256[] calldata fees, uint256[] calldata ratio) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
-        liquidityPaid = 240 + (fees.length == 2 ? fees[0] + fees[1] : 0) + (ratio.length == 2 ? ratio[0] + ratio[1] : 0);
+    function repayLiquiditySetRatio(uint256 tokenId, uint256 liquidity, uint256[] calldata ratio) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {
+        liquidityPaid = 240;
         amounts = new uint256[](2);
     }
 

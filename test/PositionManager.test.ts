@@ -585,7 +585,6 @@ describe("PositionManager", function () {
                 to: ethers.constants.AddressZero,
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
-                fees: [],
                 isRatio: false,
                 ratio: []
             }
@@ -610,7 +609,6 @@ describe("PositionManager", function () {
                 to: ethers.constants.AddressZero,
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
-                fees: [0,0],
                 isRatio: false,
                 ratio: []
             }
@@ -621,7 +619,7 @@ describe("PositionManager", function () {
             expect(res.events[0].event).to.equal("RepayLiquidity");
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
-            expect(args.liquidityPaid).to.equal(26);
+            expect(args.liquidityPaid).to.equal(24);
             expect(args.amounts.length).to.equal(2);
         });
 
@@ -635,7 +633,6 @@ describe("PositionManager", function () {
                 to: ethers.constants.AddressZero,
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
-                fees: [],
                 isRatio: true,
                 ratio: []
             }
@@ -660,7 +657,6 @@ describe("PositionManager", function () {
                 to: ethers.constants.AddressZero,
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
-                fees: [1, 0],
                 isRatio: true,
                 ratio: []
             }
@@ -671,7 +667,7 @@ describe("PositionManager", function () {
             expect(res.events[0].event).to.equal("RepayLiquiditySetRatio");
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
-            expect(args.liquidityPaid).to.equal(241);
+            expect(args.liquidityPaid).to.equal(240);
             expect(args.amounts.length).to.equal(2);
         });
 
@@ -685,7 +681,6 @@ describe("PositionManager", function () {
                 to: ethers.constants.AddressZero,
                 minRepaid: [0,0],
                 deadline: ethers.constants.MaxUint256,
-                fees: [0, 1],
                 isRatio: true,
                 ratio: [1, 0]
             }
@@ -696,7 +691,7 @@ describe("PositionManager", function () {
             expect(res.events[0].event).to.equal("RepayLiquiditySetRatio");
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
-            expect(args.liquidityPaid).to.equal(242);
+            expect(args.liquidityPaid).to.equal(240);
             expect(args.amounts.length).to.equal(2);
         });
 

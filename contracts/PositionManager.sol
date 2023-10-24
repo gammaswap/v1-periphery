@@ -241,14 +241,13 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
     /// @param gammaPool - address of GammaPool of the loan
     /// @param tokenId - id to identify the loan in the GammaPool
     /// @param liquidity - desired liquidity to pay
-    /// @param fees - fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
     /// @param collateralId - index of collateral token + 1
     /// @param to - if repayment type requires withdrawal, the address that will receive the funds. Otherwise can be zero address
     /// @param minRepaid - minimum amount of expected collateral to have used as payment. Used for slippage control
     /// @return liquidityPaid - actual liquidity debt paid
     /// @return amounts - reserve tokens used to pay liquidity debt
-    function repayLiquidity(address gammaPool, uint256 tokenId, uint256 liquidity, uint256[] calldata fees, uint256 collateralId, address to, uint256[] calldata minRepaid) internal virtual returns (uint256 liquidityPaid, uint256[] memory amounts) {
-        (liquidityPaid, amounts) = IGammaPool(gammaPool).repayLiquidity(tokenId, liquidity, fees, collateralId, to);
+    function repayLiquidity(address gammaPool, uint256 tokenId, uint256 liquidity, uint256 collateralId, address to, uint256[] calldata minRepaid) internal virtual returns (uint256 liquidityPaid, uint256[] memory amounts) {
+        (liquidityPaid, amounts) = IGammaPool(gammaPool).repayLiquidity(tokenId, liquidity, collateralId, to);
         checkMinReserves(amounts, minRepaid);
         emit RepayLiquidity(gammaPool, tokenId, liquidityPaid, amounts);
     }
@@ -257,13 +256,12 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
     /// @param gammaPool - address of GammaPool of the loan
     /// @param tokenId - id to identify the loan in the GammaPool
     /// @param liquidity - desired liquidity to pay
-    /// @param fees - fee on transfer for tokens[i]. Send empty array or array of zeroes if no token in pool has fee on transfer
     /// @param ratio - weights of collateral after repaying liquidity
     /// @param minRepaid - minimum amount of expected collateral to have used as payment. Used for slippage control
     /// @return liquidityPaid - actual liquidity debt paid
     /// @return amounts - reserve tokens used to pay liquidity debt
-    function repayLiquiditySetRatio(address gammaPool, uint256 tokenId, uint256 liquidity, uint256[] calldata fees, uint256[] calldata ratio, uint256[] calldata minRepaid) internal virtual returns (uint256 liquidityPaid, uint256[] memory amounts) {
-        (liquidityPaid, amounts) = IGammaPool(gammaPool).repayLiquiditySetRatio(tokenId, liquidity, fees, ratio);
+    function repayLiquiditySetRatio(address gammaPool, uint256 tokenId, uint256 liquidity, uint256[] calldata ratio, uint256[] calldata minRepaid) internal virtual returns (uint256 liquidityPaid, uint256[] memory amounts) {
+        (liquidityPaid, amounts) = IGammaPool(gammaPool).repayLiquiditySetRatio(tokenId, liquidity, ratio);
         checkMinReserves(amounts, minRepaid);
         emit RepayLiquiditySetRatio(gammaPool, tokenId, liquidityPaid, amounts);
     }
@@ -303,9 +301,9 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
     function repayLiquidity(RepayLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint256[] memory amounts) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         if(params.isRatio) {
-            (liquidityPaid, amounts) = repayLiquiditySetRatio(gammaPool, params.tokenId, params.liquidity, params.fees, params.ratio, params.minRepaid);
+            (liquidityPaid, amounts) = repayLiquiditySetRatio(gammaPool, params.tokenId, params.liquidity, params.ratio, params.minRepaid);
         } else {
-            (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.fees, params.collateralId, params.to, params.minRepaid);
+            (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to, params.minRepaid);
         }
         _logPrice(gammaPool);
     }
