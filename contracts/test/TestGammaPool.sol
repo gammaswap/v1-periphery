@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
-pragma solidity 0.8.19;
+pragma solidity 0.8.21;
 
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "@gammaswap/v1-core/contracts/interfaces/periphery/ISendTokensCallback.sol";
@@ -274,10 +274,6 @@ contract TestGammaPool is IGammaPool, TERC20 {
     }
 
     function getLoanData(uint256 _tokenId) external override virtual view returns(LoanData memory _loanData) {
-
-    }
-
-    function getFeeIndexUpdateParams() external override virtual view returns(FeeIndexUpdateParams memory data) {
 
     }
 
