@@ -5,7 +5,7 @@ pragma solidity >=0.8.0;
 /// @title Interface for Staking Router contract
 /// @author Simon Mall
 /// @dev Interface for staking router contract that deposits and withdraws from GammaSwap staking pools
-interface IStakingRouter {
+interface IStakingPoolRouter {
   /// @dev Stake GS_LP tokens on behalf of user
   /// @param _account User address for query
   /// @param _gsPool GammaPool address
