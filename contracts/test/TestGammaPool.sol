@@ -37,7 +37,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
         viewer = viewer_;
     }
 
-    function initialize(address _cfmm, address[] calldata _tokens, uint8[] calldata _decimals, bytes calldata) external virtual override {
+    function initialize(address _cfmm, address[] calldata _tokens, uint8[] calldata _decimals, uint72 _minBorrow, bytes calldata) external virtual override {
         cfmm = _cfmm;
         tokens_ = _tokens;
         decimals_ = _decimals;
@@ -46,7 +46,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
         _mint(tester, 100000 * (10 ** 18));
     }
 
-    function setPoolParams(uint16 origFee, uint8 extSwapFee, uint8 emaMultiplier, uint8 minUtilRate1, uint8 minUtilRate2, uint16 feeDivisor, uint8 liquidationFee, uint8 ltvThreshold) external virtual override {
+    function setPoolParams(uint16 origFee, uint8 extSwapFee, uint8 emaMultiplier, uint8 minUtilRate1, uint8 minUtilRate2, uint16 feeDivisor, uint8 liquidationFee, uint8 ltvThreshold, uint72 minBorrow) external virtual override {
 
     }
 
