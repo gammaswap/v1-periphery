@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity 0.8.21;
 
-import "./interfaces/IStakingRouter.sol";
+import "./interfaces/IStakingPoolRouter.sol";
 import "./interfaces/IAutoStakable.sol";
 import "./PositionManager.sol";
 
@@ -9,7 +9,7 @@ import "./PositionManager.sol";
 /// @author Simon Mall
 /// @dev Extension of PositionManager that adds staking and unstaking functionality for automated operations.
 contract PositionManagerWithStaking is PositionManager, IAutoStakable {
-    IStakingRouter stakingRouter;
+    IStakingPoolRouter stakingRouter;
 
     /// @dev Constructs the PositionManagerWithStaking contract.
     /// @param _factory Address of the contract factory.
@@ -20,7 +20,7 @@ contract PositionManagerWithStaking is PositionManager, IAutoStakable {
 
     /// @dev See {IAutoStakable-setStakingRouter}
     function setStakingRouter(address _stakingRouter) external onlyOwner {
-        stakingRouter = IStakingRouter(_stakingRouter);
+        stakingRouter = IStakingPoolRouter(_stakingRouter);
     }
 
     /// @dev See {IAutoStakable-depositReservesAndStake}.
