@@ -1,6 +1,8 @@
 import { ethers } from "hardhat";
 import { expect } from "chai";
 
+const PROTOCOL_ID = 10000;
+
 describe("PositionManager", function () {
     let TestERC20: any;
     let TestPoolViewer: any;
@@ -74,7 +76,7 @@ describe("PositionManager", function () {
         const blocksPerYear = 60 * 60 * 24 * 365 / 12; // assumes 12 seconds per block
         priceStore = await PriceDataQueries.deploy(blocksPerYear, owner.address, maxLen, frequency);
 
-        const implementation = await GammaPool.deploy(1, factory.address, addr1.address, addr2.address, addr3.address, addr5.address, addr6.address, addr7.address, poolViewer.address);
+        const implementation = await GammaPool.deploy(PROTOCOL_ID, factory.address, addr1.address, addr2.address, addr3.address, addr5.address, addr6.address, addr7.address, poolViewer.address);
 
         await (await factory.addProtocol(implementation.address)).wait();
 
@@ -86,7 +88,7 @@ describe("PositionManager", function () {
 
         const createPoolParams = {
             cfmm: cfmm.address,
-            protocolId: 1,
+            protocolId: PROTOCOL_ID,
             tokens: [tokenA.address, tokenB.address]
         };
 
@@ -410,7 +412,7 @@ describe("PositionManager", function () {
     // You can nest describe calls to create subsections.
     describe("Long Gamma Functions", function () {
         it("#createLoan should return tokenId", async function () {
-            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, 1786, ethers.constants.MaxUint256)).wait();
+            const res = await (await posMgr.createLoan(protocolId, cfmm.address, owner.address, 1786, ethers.constants.MaxUint256)).wait();
 
             const latestBlock = await ethers.provider.getBlock("latest");
             const num = latestBlock.number * 100;
@@ -427,9 +429,9 @@ describe("PositionManager", function () {
             expect(res1.length).to.equal(1);
             expect(res1[0].tokenId.toNumber()).to.equal(25);
 
-            await (await posMgr.createLoan(1, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm.address, owner.address, 0, ethers.constants.MaxUint256)).wait();
 
             const res2 = await store.getLoansByOwnerAndPool(owner.address, gammaPool.address, 0, 10);
             expect(res2.length).to.equal(4);
@@ -437,17 +439,17 @@ describe("PositionManager", function () {
             const res3 = await store.getLoansByOwnerAndPool(addr1.address, gammaPool.address, 0, 10);
             expect(res3.length).to.equal(0);
 
-            await (await posMgr.createLoan(1, cfmm.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
 
             const res4 = await store.getLoansByOwnerAndPool(addr1.address, gammaPool.address, 0, 10);
             expect(res4.length).to.equal(2);
 
-            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
-            await (await posMgr.createLoan(1, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm2.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
 
             const res5 = await store.getLoansByOwnerAndPool(addr1.address, gammaPool2.address, 0, 10);
             expect(res5.length).to.equal(5);
@@ -458,7 +460,7 @@ describe("PositionManager", function () {
             const res7 = await store.getLoansByOwner(addr1.address, 0, 100);
             expect(res7.length).to.equal(7);
 
-            await (await posMgr.createLoan(1, cfmm3.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
+            await (await posMgr.createLoan(protocolId, cfmm3.address, addr1.address, 0, ethers.constants.MaxUint256)).wait();
 
             const res8 = await store.getLoansByOwner(addr1.address, 0, 100);
             expect(res8.length).to.equal(8);
@@ -477,7 +479,7 @@ describe("PositionManager", function () {
             const res1b = await store.getLoansByOwner(addr4.address, 0, 10);
             expect(res1b.length).to.eq(0);
 
-            const res = await (await posMgr.createLoan(1, cfmm.address, owner.address, 2, ethers.constants.MaxUint256)).wait();
+            const res = await (await posMgr.createLoan(protocolId, cfmm.address, owner.address, 2, ethers.constants.MaxUint256)).wait();
             const latestBlock = await ethers.provider.getBlock("latest");
             const num = latestBlock.number * 100;
             const expTokenId = num + 19;
