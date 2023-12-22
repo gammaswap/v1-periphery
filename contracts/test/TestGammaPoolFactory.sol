@@ -29,6 +29,9 @@ contract TestGammaPoolFactory is AbstractGammaPoolFactory {
     function setIsProtocolRestricted(uint16, bool) external virtual override {
     }
 
+    function updateProtocol(uint16 _protocolId, address _newImplementation) external override virtual {
+    }
+
     function addProtocol(address _protocol) external virtual override {
         implementation = _protocol;
     }
@@ -43,7 +46,7 @@ contract TestGammaPoolFactory is AbstractGammaPoolFactory {
         uint8[] memory decimals = new uint8[](2);
         decimals[0] = 18;
         decimals[1] = 18;
-        pool = cloneDeterministic(implementation, key);
+        pool = cloneDeterministic2(implementation, key);
         IGammaPool(pool).initialize(cfmm, tokens, decimals, 1e18, _data);
 
         getPool[key] = pool;
