@@ -1,6 +1,7 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity 0.8.21;
 
+import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
 import "@gammaswap/v1-core/contracts/utils/TwoStepOwnable.sol";
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "@gammaswap/v1-core/contracts/libraries/AddressCalculator.sol";
@@ -16,7 +17,7 @@ import "./base/GammaPoolQueryableLoans.sol";
 /// @notice Periphery contract used to aggregate function calls to a GammaPool and give NFT (ERC721) functionality to loans
 /// @notice Loans created through PositionManager become NFTs and can only be managed through PositionManager
 /// @dev PositionManager is owner of loan and user is owner of NFT that represents loan in a GammaPool
-contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPoolQueryableLoans {
+contract PositionManager is UUPSUpgradeable, TwoStepOwnable, IPositionManager, Transfers, GammaPoolQueryableLoans {
 
     error Forbidden();
     error Expired();
@@ -366,4 +367,6 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
         }
         _logPrice(gammaPool);
     }
+
+    function _authorizeUpgrade(address) internal override onlyOwner {}
 }
