@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity 0.8.21;
 
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
+
 import "@gammaswap/v1-core/contracts/utils/TwoStepOwnable.sol";
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "@gammaswap/v1-core/contracts/libraries/AddressCalculator.sol";
@@ -172,6 +174,20 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
         }
     }
 
+    /// @notice Slippage protection for uint256[] array. If amounts < amountsMin, less was obtained than expected
+    /// @dev Used to check quantities of tokens not used as collateral
+    /// @param cfmm - array containing uint256 amounts received from GammaPool
+    /// @param maxSlip - minimum amounts acceptable to be received from uint256 before reverting transaction
+    function checkMaxSlippage(address pool, address cfmm, uint256[] memory maxSlip) internal virtual view {
+        if(maxSlip.length == 4) {
+            address[] memory tokens = IGammaPool(pool).tokens();
+            uint256 balance0 = IERC20(tokens[0]).balanceOf(cfmm);
+            uint256 balance1 = IERC20(tokens[1]).balanceOf(cfmm);
+            require(maxSlip[1] * balance0 >= maxSlip[0] * balance1, "MAX_SLIP_UP");
+            require(maxSlip[3] * balance0 <= maxSlip[2] * balance1, "MAX_SLIP_DOWN");
+        }
+    }
+
     /// @notice Create a loan in GammaPool and turn it into an NFT issued to address `to`
     /// @dev Loans created here are actually owned by PositionManager and wrapped as an NFT issued to address `to`
     /// @param gammaPool - address of GammaPool we are creating gammaloan for
@@ -294,6 +310,9 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
     function borrowLiquidity(BorrowLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityBorrowed, uint256[] memory amounts) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         (liquidityBorrowed, amounts) = borrowLiquidity(gammaPool, params.tokenId, params.lpTokens, params.ratio, params.minBorrowed, params.maxBorrowed);
+        if(params.ratio.length != 0) {
+            checkMaxSlippage(gammaPool, params.cfmm, params.maxSlip);
+        }
         _logPrice(gammaPool);
     }
 
@@ -320,6 +339,9 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
     function increaseCollateral(AddCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint128[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         tokensHeld = increaseCollateral(gammaPool, params.tokenId, params.amounts, params.ratio);
+        if(params.ratio.length != 0) {
+            checkMaxSlippage(gammaPool, params.cfmm, params.maxSlip);
+        }
         _logPrice(gammaPool);
     }
 
@@ -327,6 +349,9 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
     function decreaseCollateral(RemoveCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint128[] memory tokensHeld){
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.amounts, params.ratio);
+        if(params.ratio.length != 0) {
+            checkMaxSlippage(gammaPool, params.cfmm, params.maxSlip);
+        }
         _logPrice(gammaPool);
     }
 
@@ -334,6 +359,9 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
     function rebalanceCollateral(RebalanceCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint128[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         tokensHeld = rebalanceCollateral(gammaPool, params.tokenId, params.deltas, params.ratio, params.minCollateral);
+        if(params.maxSlip.length != 0) {
+            checkMaxSlippage(gammaPool, params.cfmm, params.maxSlip);
+        }
         _logPrice(gammaPool);
     }
 
@@ -346,6 +374,9 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
         tokensHeld = increaseCollateral(gammaPool, tokenId, params.amounts, new uint256[](0));
         if(params.lpTokens != 0) {
             (liquidityBorrowed, amounts) = borrowLiquidity(gammaPool, tokenId, params.lpTokens, params.ratio, params.minBorrowed, params.maxBorrowed);
+        }
+        if(params.ratio.length != 0) {
+            checkMaxSlippage(gammaPool, params.cfmm, params.maxSlip);
         }
         _logPrice(gammaPool);
     }
@@ -363,6 +394,9 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
         }
         if(params.withdraw.length != 0) {
             tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw, params.ratio);
+        }
+        if(params.ratio.length != 0) {
+            checkMaxSlippage(gammaPool, params.cfmm, params.maxSlip);
         }
         _logPrice(gammaPool);
     }

@@ -154,6 +154,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256[] minBorrowed;
         /// @dev max borrowed liquidity
         uint256 maxBorrowed;
+        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
+        uint256[] maxSlip;
     }
 
     /// @dev Struct parameters for `repayLiquidity` function. Repaying liquidity
@@ -216,6 +218,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256[] amounts;
         /// @dev ratio - ratio of loan collateral to be maintained after increasing collateral
         uint256[] ratio;
+        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
+        uint256[] maxSlip;
     }
 
     /// @dev Struct parameters for `increaseCollateral` and `decreaseCollateral` function.
@@ -234,6 +238,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint128[] amounts;
         /// @dev ratio - ratio of loan collateral to be maintained after decreasing collateral
         uint256[] ratio;
+        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
+        uint256[] maxSlip;
     }
 
     /// @dev Struct parameters for `rebalanceCollateral` function.
@@ -252,6 +258,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
         uint128[] minCollateral;
+        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
+        uint256[] maxSlip;
     }
 
     /// @dev Struct parameters for `borrowAndRebalance` function.
@@ -278,6 +286,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev max borrowed liquidity
         uint256 maxBorrowed;
+        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
+        uint256[] maxSlip;
     }
 
     /// @dev Struct parameters for `createLoanBorrowAndRebalance` function.
@@ -306,6 +316,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint128[] minCollateral;
         /// @dev max borrowed liquidity
         uint256 maxBorrowed;
+        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
+        uint256[] maxSlip;
     }
 
     /// @return factory - factory contract that creates all GammaPools this PositionManager interacts with

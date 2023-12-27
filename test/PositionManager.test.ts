@@ -540,7 +540,8 @@ describe("PositionManager", function () {
                 ratio: [],
                 minBorrowed: [0,0],
                 deadline: ethers.constants.MaxUint256,
-                maxBorrowed: ethers.constants.MaxUint256
+                maxBorrowed: ethers.constants.MaxUint256,
+                maxSlip: []
             }
             
             const res = await (await posMgr.borrowLiquidity(BorrowLiquidityParams)).wait();
@@ -561,7 +562,8 @@ describe("PositionManager", function () {
                 ratio: [],
                 minBorrowed: [0,0],
                 deadline: ethers.constants.MaxUint256,
-                maxBorrowed: 22
+                maxBorrowed: 22,
+                maxSlip: []
             }
 
             await expect(posMgr.borrowLiquidity(BorrowLiquidityParams)).to.be.revertedWith("MAX_BORROWED");
@@ -754,7 +756,8 @@ describe("PositionManager", function () {
                 amounts: [100,10],
                 to: owner.address,
                 deadline: ethers.constants.MaxUint256,
-                ratio: []
+                ratio: [],
+                maxSlip: []
             }
             
             const res = await (await posMgr.increaseCollateral(AddRemoveCollateralParams)).wait();
@@ -776,7 +779,8 @@ describe("PositionManager", function () {
                 amounts: [100,10],
                 to: owner.address,
                 deadline: ethers.constants.MaxUint256,
-                ratio: []
+                ratio: [],
+                maxSlip: []
             }
             
             const res = await (await posMgr.decreaseCollateral(AddRemoveCollateralParams)).wait();
@@ -799,7 +803,8 @@ describe("PositionManager", function () {
                 ratio: [],
                 liquidity: 1,
                 minCollateral: [0,0],
-                deadline: ethers.constants.MaxUint256
+                deadline: ethers.constants.MaxUint256,
+                maxSlip: []
             }
             
             const res = await (await posMgr.rebalanceCollateral(RebalanceCollateralParams)).wait();
@@ -825,7 +830,8 @@ describe("PositionManager", function () {
                 minBorrowed: [0,0],
                 ratio: [],
                 minCollateral: [],
-                maxBorrowed: ethers.constants.MaxUint256
+                maxBorrowed: ethers.constants.MaxUint256,
+                maxSlip: []
             }
 
             const res = await (await posMgr.createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams)).wait();
@@ -882,7 +888,8 @@ describe("PositionManager", function () {
                 minBorrowed: [0,0],
                 ratio: [],
                 minCollateral: [0,0],
-                maxBorrowed: ethers.constants.MaxUint256
+                maxBorrowed: ethers.constants.MaxUint256,
+                maxSlip: []
             }
 
             const res = await (await posMgr.createLoanBorrowAndRebalance(CreateLoanBorrowAndRebalanceParams)).wait();
@@ -931,7 +938,8 @@ describe("PositionManager", function () {
                 minBorrowed: [0,0],
                 ratio: [],
                 minCollateral: [],
-                maxBorrowed: ethers.constants.MaxUint256
+                maxBorrowed: ethers.constants.MaxUint256,
+                maxSlip: []
             }
 
             const res = await (await posMgr.borrowAndRebalance(BorrowAndRebalanceParams)).wait();
@@ -969,7 +977,8 @@ describe("PositionManager", function () {
                 minBorrowed: [0, 0],
                 ratio: [],
                 minCollateral: [],
-                maxBorrowed: ethers.constants.MaxUint256
+                maxBorrowed: ethers.constants.MaxUint256,
+                maxSlip: []
             }
 
             const res = await (await posMgr.borrowAndRebalance(BorrowAndRebalanceParams)).wait();
@@ -1016,7 +1025,8 @@ describe("PositionManager", function () {
                 minBorrowed: [0,0],
                 ratio: [],
                 minCollateral: [0,0],
-                maxBorrowed: ethers.constants.MaxUint256
+                maxBorrowed: ethers.constants.MaxUint256,
+                maxSlip: []
             }
 
             const res = await (await posMgr.borrowAndRebalance(BorrowAndRebalanceParams)).wait();
