@@ -198,7 +198,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
         _loanData.tokenId = 25;
     }
 
-    function borrowLiquidity(uint256, uint256, uint256[] calldata) external virtual override returns(uint256 liquidityBorrowed, uint256[] memory amounts) {
+    function borrowLiquidity(uint256, uint256, uint256[] calldata) external virtual override returns(uint256 liquidityBorrowed, uint256[] memory amounts, uint128[] memory tokensHeld) {
         liquidityBorrowed = 23;
         amounts = new uint256[](2);
     }

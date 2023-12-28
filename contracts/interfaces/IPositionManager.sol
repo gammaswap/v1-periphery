@@ -154,8 +154,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256[] minBorrowed;
         /// @dev max borrowed liquidity
         uint256 maxBorrowed;
-        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
-        uint256[] maxSlip;
+        /// @dev minimum amounts of reserve tokens expected to have been used to repay the liquidity debt. Slippage protection
+        uint128[] minCollateral;
     }
 
     /// @dev Struct parameters for `repayLiquidity` function. Repaying liquidity
@@ -218,8 +218,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256[] amounts;
         /// @dev ratio - ratio of loan collateral to be maintained after increasing collateral
         uint256[] ratio;
-        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
-        uint256[] maxSlip;
+        /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
+        uint128[] minCollateral;
     }
 
     /// @dev Struct parameters for `increaseCollateral` and `decreaseCollateral` function.
@@ -238,8 +238,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint128[] amounts;
         /// @dev ratio - ratio of loan collateral to be maintained after decreasing collateral
         uint256[] ratio;
-        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
-        uint256[] maxSlip;
+        /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
+        uint128[] minCollateral;
     }
 
     /// @dev Struct parameters for `rebalanceCollateral` function.
@@ -258,8 +258,6 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
         uint128[] minCollateral;
-        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
-        uint256[] maxSlip;
     }
 
     /// @dev Struct parameters for `borrowAndRebalance` function.
@@ -286,8 +284,6 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint256 deadline;
         /// @dev max borrowed liquidity
         uint256 maxBorrowed;
-        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
-        uint256[] maxSlip;
     }
 
     /// @dev Struct parameters for `createLoanBorrowAndRebalance` function.
@@ -316,8 +312,6 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
         uint128[] minCollateral;
         /// @dev max borrowed liquidity
         uint256 maxBorrowed;
-        /// @dev max price change (slippage) after transaction. Must have 4 elements, corresponding to the ratio of price check. First 2 elements for slip up, last 2 elements for slip down
-        uint256[] maxSlip;
     }
 
     /// @return factory - factory contract that creates all GammaPools this PositionManager interacts with
@@ -363,7 +357,8 @@ interface IPositionManager is IGammaPoolEvents, ITransfers {
     /// @param params - struct containing params to identify a GammaPool and borrow liquidity from it
     /// @return liquidityBorrowed - liquidity borrowed in exchange for CFMM LP tokens (`lpTokens`)
     /// @return amounts - amounts of reserve tokens received to hold as collateral for liquidity borrowed
-    function borrowLiquidity(BorrowLiquidityParams calldata params) external returns (uint256 liquidityBorrowed, uint256[] memory amounts);
+    /// @return tokensHeld - new loan collateral token amounts
+    function borrowLiquidity(BorrowLiquidityParams calldata params) external returns (uint256 liquidityBorrowed, uint256[] memory amounts, uint128[] memory tokensHeld);
 
     /// @dev Repay liquidity debt from GammaPool
     /// @param params - struct containing params to identify a GammaPool and loan to pay its liquidity debt
