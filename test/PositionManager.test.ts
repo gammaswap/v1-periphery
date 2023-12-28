@@ -540,7 +540,8 @@ describe("PositionManager", function () {
                 ratio: [],
                 minBorrowed: [0,0],
                 deadline: ethers.constants.MaxUint256,
-                maxBorrowed: ethers.constants.MaxUint256
+                maxBorrowed: ethers.constants.MaxUint256,
+                minCollateral: []
             }
             
             const res = await (await posMgr.borrowLiquidity(BorrowLiquidityParams)).wait();
@@ -561,7 +562,8 @@ describe("PositionManager", function () {
                 ratio: [],
                 minBorrowed: [0,0],
                 deadline: ethers.constants.MaxUint256,
-                maxBorrowed: 22
+                maxBorrowed: 22,
+                minCollateral: []
             }
 
             await expect(posMgr.borrowLiquidity(BorrowLiquidityParams)).to.be.revertedWith("MAX_BORROWED");
@@ -754,7 +756,8 @@ describe("PositionManager", function () {
                 amounts: [100,10],
                 to: owner.address,
                 deadline: ethers.constants.MaxUint256,
-                ratio: []
+                ratio: [],
+                minCollateral: [0,0,0,0,0,0]
             }
             
             const res = await (await posMgr.increaseCollateral(AddRemoveCollateralParams)).wait();
@@ -776,7 +779,8 @@ describe("PositionManager", function () {
                 amounts: [100,10],
                 to: owner.address,
                 deadline: ethers.constants.MaxUint256,
-                ratio: []
+                ratio: [],
+                minCollateral: [0,0,0,0,0,0,0]
             }
             
             const res = await (await posMgr.decreaseCollateral(AddRemoveCollateralParams)).wait();
@@ -824,7 +828,7 @@ describe("PositionManager", function () {
                 amounts: [100,10],
                 minBorrowed: [0,0],
                 ratio: [],
-                minCollateral: [],
+                minCollateral: [0,0],
                 maxBorrowed: ethers.constants.MaxUint256
             }
 
@@ -930,7 +934,7 @@ describe("PositionManager", function () {
                 withdraw: [],
                 minBorrowed: [0,0],
                 ratio: [],
-                minCollateral: [],
+                minCollateral: [0,0],
                 maxBorrowed: ethers.constants.MaxUint256
             }
 
@@ -968,7 +972,7 @@ describe("PositionManager", function () {
                 withdraw: [2, 2],
                 minBorrowed: [0, 0],
                 ratio: [],
-                minCollateral: [],
+                minCollateral: [0,0],
                 maxBorrowed: ethers.constants.MaxUint256
             }
 
