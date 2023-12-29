@@ -2,6 +2,7 @@
 pragma solidity 0.8.21;
 
 import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@gammaswap/v1-core/contracts/utils/TwoStepOwnable.sol";
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "@gammaswap/v1-core/contracts/libraries/AddressCalculator.sol";
@@ -17,7 +18,7 @@ import "./base/GammaPoolQueryableLoans.sol";
 /// @notice Periphery contract used to aggregate function calls to a GammaPool and give NFT (ERC721) functionality to loans
 /// @notice Loans created through PositionManager become NFTs and can only be managed through PositionManager
 /// @dev PositionManager is owner of loan and user is owner of NFT that represents loan in a GammaPool
-contract PositionManager is UUPSUpgradeable, TwoStepOwnable, IPositionManager, Transfers, GammaPoolQueryableLoans {
+contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPositionManager, Transfers, GammaPoolQueryableLoans {
 
     error Forbidden();
     error Expired();
@@ -27,7 +28,7 @@ contract PositionManager is UUPSUpgradeable, TwoStepOwnable, IPositionManager, T
     string constant private _symbol = "PM-V1";
 
     /// @dev See {IPositionManager-factory}.
-    address public immutable override factory;
+    address public override factory;
 
     address public priceStore;
 
@@ -57,12 +58,13 @@ contract PositionManager is UUPSUpgradeable, TwoStepOwnable, IPositionManager, T
         }
     }
 
-    /// @dev Initializes the contract by setting `factory`, `WETH`, and `dataStore`.
-    constructor(address _factory, address _WETH, address _dataStore, address _priceStore)
-        TwoStepOwnable(msg.sender)
-        Transfers(_WETH)
-        GammaPoolQueryableLoans(_dataStore) {
+    constructor() TwoStepOwnable(msg.sender) {}
+
+    function initialize(address _factory, address _WETH, address _dataStore, address _priceStore) public initializer {
+        owner = msg.sender;
         factory = _factory;
+        WETH = _WETH;
+        dataStore = _dataStore;
         priceStore = _priceStore;
     }
 

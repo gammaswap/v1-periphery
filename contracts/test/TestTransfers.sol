@@ -5,7 +5,8 @@ import "../base/Transfers.sol";
 import "../interfaces/ITransfers.sol";
 
 contract TestTransfers is Transfers {
-    constructor(address _WETH) Transfers(_WETH) {
+    constructor(address _WETH) {
+        WETH = _WETH;
     }
 
 

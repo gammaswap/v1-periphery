@@ -80,7 +80,8 @@ describe("PositionManager", function () {
 
         await (await factory.addProtocol(implementation.address)).wait();
 
-        posMgr = await TestPositionManager.deploy(factory.address, WETH.address, store.address, priceStore.address);
+        posMgr = await TestPositionManager.deploy();
+        await posMgr.initialize(factory.address, WETH.address, store.address, priceStore.address)
 
         await (await store.setSource(posMgr.address)).wait();
 
