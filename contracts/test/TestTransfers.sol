@@ -5,8 +5,7 @@ import "../base/Transfers.sol";
 import "../interfaces/ITransfers.sol";
 
 contract TestTransfers is Transfers {
-    constructor(address _WETH) Transfers(_WETH) {
-    }
+    constructor(address _WETH) Transfers(_WETH) {}
 
 
     function getGammaPoolAddress(address cfmm, uint16) internal virtual override view returns(address) {

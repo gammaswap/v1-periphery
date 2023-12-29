@@ -1,6 +1,8 @@
 // SPDX-License-Identifier: GPL-2.0-or-later
 pragma solidity 0.8.21;
 
+import "@openzeppelin/contracts/proxy/utils/UUPSUpgradeable.sol";
+import "@openzeppelin/contracts/proxy/utils/Initializable.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
 import "@gammaswap/v1-core/contracts/utils/TwoStepOwnable.sol";
@@ -18,11 +20,11 @@ import "./base/GammaPoolQueryableLoans.sol";
 /// @notice Periphery contract used to aggregate function calls to a GammaPool and give NFT (ERC721) functionality to loans
 /// @notice Loans created through PositionManager become NFTs and can only be managed through PositionManager
 /// @dev PositionManager is owner of loan and user is owner of NFT that represents loan in a GammaPool
-contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPoolQueryableLoans {
+contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPositionManager, Transfers, GammaPoolQueryableLoans {
 
     error Forbidden();
     error Expired();
-    error AmountsMin();
+    error AmountsMin(uint8 id);
 
     string constant private _name = "PositionManager";
     string constant private _symbol = "PM-V1";
@@ -31,6 +33,17 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
     address public immutable override factory;
 
     address public priceStore;
+
+    /// @dev Initializes the contract by setting `factory`, `WETH`.
+    constructor(address _factory, address _WETH) TwoStepOwnable(msg.sender) Transfers(_WETH) {
+        factory = _factory;
+    }
+
+    function initialize(address _dataStore, address _priceStore) public initializer {
+        owner = msg.sender;
+        dataStore = _dataStore;
+        priceStore = _priceStore;
+    }
 
     modifier isAuthorizedForToken(uint256 tokenId) {
         checkAuthorization(tokenId);
@@ -56,15 +69,6 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
         if(deadline < block.timestamp) {
             revert Expired();
         }
-    }
-
-    /// @dev Initializes the contract by setting `factory`, `WETH`, and `dataStore`.
-    constructor(address _factory, address _WETH, address _dataStore, address _priceStore)
-        TwoStepOwnable(msg.sender)
-        Transfers(_WETH)
-        GammaPoolQueryableLoans(_dataStore) {
-        factory = _factory;
-        priceStore = _priceStore;
     }
 
     /// @dev See {IERC721Metadata-name}.
@@ -152,7 +156,7 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
         if(len!=len2) return;
         for (uint256 i; i < len;) {
             if(amounts[i] < amountsMin[i]) {
-                revert AmountsMin();
+                revert AmountsMin(1);
             }
             unchecked {
                 ++i;
@@ -170,7 +174,7 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
         if(len!=len2) return;
         for (uint256 i; i < len;) {
             if(amounts[i] < amountsMin[i]) {
-                revert AmountsMin();
+                revert AmountsMin(2);
             }
             unchecked {
                 ++i;
@@ -382,4 +386,6 @@ contract PositionManager is TwoStepOwnable, IPositionManager, Transfers, GammaPo
         }
         _logPrice(gammaPool);
     }
+
+    function _authorizeUpgrade(address) internal override onlyOwner {}
 }

@@ -12,11 +12,6 @@ abstract contract GammaPoolQueryableLoans is GammaPoolERC721 {
     /// @dev Database where it will store loan information. dataStore has to know this address though to accept messages
     address public dataStore;
 
-    /// @dev Initializes the contract by setting `dataStore`.
-    constructor(address _dataStore) {
-        dataStore = _dataStore;
-    }
-
     /// @dev Mint tokenId of loan as ERC721 NFT and store in mappings so that it can be queried
     /// @param pool - pool loan identified by `tokenId` belongs to
     /// @param tokenId - unique identifier of loan

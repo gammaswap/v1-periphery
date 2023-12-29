@@ -80,7 +80,8 @@ describe("PositionManager", function () {
 
         await (await factory.addProtocol(implementation.address)).wait();
 
-        posMgr = await TestPositionManager.deploy(factory.address, WETH.address, store.address, priceStore.address);
+        posMgr = await TestPositionManager.deploy(factory.address, WETH.address);
+        await posMgr.initialize(store.address, priceStore.address)
 
         await (await store.setSource(posMgr.address)).wait();
 
@@ -199,121 +200,121 @@ describe("PositionManager", function () {
         it("#checkMinReserves should revert when Amounts < AmountsMin", async function () {
             const amounts =  [90000, 1000];
             const amountsMin =  [90000, 1001];
-            await expect(posMgr.testCheckMinReserves(amounts, amountsMin)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinReservesTest(amounts, amountsMin)).to.be.revertedWith("AmountsMin");
 
             const amounts0 =  [90000, 1000];
             const amountsMin0 =  [90001, 1000];
-            await expect(posMgr.testCheckMinReserves(amounts0, amountsMin0)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinReservesTest(amounts0, amountsMin0)).to.be.revertedWith("AmountsMin");
 
             const amounts1 =  [90000, 1000];
             const amountsMin1 =  [90001, 1001];
-            await expect(posMgr.testCheckMinReserves(amounts1, amountsMin1)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinReservesTest(amounts1, amountsMin1)).to.be.revertedWith("AmountsMin");
 
             const amounts2 =  [1, 1];
             const amountsMin2 =  [1, 2];
-            await expect(posMgr.testCheckMinReserves(amounts2, amountsMin2)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinReservesTest(amounts2, amountsMin2)).to.be.revertedWith("AmountsMin");
 
             const amounts3 =  [0, 1];
             const amountsMin3 =  [1, 1];
-            await expect(posMgr.testCheckMinReserves(amounts3, amountsMin3)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinReservesTest(amounts3, amountsMin3)).to.be.revertedWith("AmountsMin");
 
             const amounts4 =  [1, 0];
             const amountsMin4 =  [1, 1];
-            await expect(posMgr.testCheckMinReserves(amounts4, amountsMin4)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinReservesTest(amounts4, amountsMin4)).to.be.revertedWith("AmountsMin");
 
             const amounts5 =  [0, 0];
             const amountsMin5 =  [1, 1];
-            await expect(posMgr.testCheckMinReserves(amounts5, amountsMin5)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinReservesTest(amounts5, amountsMin5)).to.be.revertedWith("AmountsMin");
         });
 
         it("#checkMinReserves should not revert when Amounts >= AmountsMin", async function () {
             const amounts =  [90000, 1000];
             const amountsMin =  [90000, 1000];
-            posMgr.testCheckMinReserves(amounts, amountsMin);
+            posMgr.checkMinReservesTest(amounts, amountsMin);
 
             const amounts0 =  [90001, 1000];
             const amountsMin0 =  [90000, 1000];
-            posMgr.testCheckMinReserves(amounts0, amountsMin0);
+            posMgr.checkMinReservesTest(amounts0, amountsMin0);
 
             const amounts1 =  [90000, 1001];
             const amountsMin1 =  [90000, 1000];
-            posMgr.testCheckMinReserves(amounts1, amountsMin1);
+            posMgr.checkMinReservesTest(amounts1, amountsMin1);
 
             const amounts2 =  [90001, 1001];
             const amountsMin2 =  [90000, 1000];
-            posMgr.testCheckMinReserves(amounts2, amountsMin2);
+            posMgr.checkMinReservesTest(amounts2, amountsMin2);
 
             const amounts3 =  [1, 1];
             const amountsMin3 =  [1, 1];
-            posMgr.testCheckMinReserves(amounts3, amountsMin3);
+            posMgr.checkMinReservesTest(amounts3, amountsMin3);
 
             const amounts4 =  [1, 1];
             const amountsMin4 =  [0, 0];
-            posMgr.testCheckMinReserves(amounts4, amountsMin4);
+            posMgr.checkMinReservesTest(amounts4, amountsMin4);
 
             const amounts5 =  [0, 0];
             const amountsMin5 =  [0, 0];
-            posMgr.testCheckMinReserves(amounts5, amountsMin5);
+            posMgr.checkMinReservesTest(amounts5, amountsMin5);
         });
 
         it("#checkMinCollateral should revert when Amounts < AmountsMin", async function () {
             const amounts =  [90000, 1000];
             const amountsMin =  [90000, 1001];
-            await expect(posMgr.testCheckMinCollateral(amounts, amountsMin)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinCollateralTest(amounts, amountsMin)).to.be.revertedWith("AmountsMin");
 
             const amounts0 =  [90000, 1000];
             const amountsMin0 =  [90001, 1000];
-            await expect(posMgr.testCheckMinCollateral(amounts0, amountsMin0)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinCollateralTest(amounts0, amountsMin0)).to.be.revertedWith("AmountsMin");
 
             const amounts1 =  [90000, 1000];
             const amountsMin1 =  [90001, 1001];
-            await expect(posMgr.testCheckMinCollateral(amounts1, amountsMin1)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinCollateralTest(amounts1, amountsMin1)).to.be.revertedWith("AmountsMin");
 
             const amounts2 =  [1, 1];
             const amountsMin2 =  [1, 2];
-            await expect(posMgr.testCheckMinCollateral(amounts2, amountsMin2)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinCollateralTest(amounts2, amountsMin2)).to.be.revertedWith("AmountsMin");
 
             const amounts3 =  [0, 1];
             const amountsMin3 =  [1, 1];
-            await expect(posMgr.testCheckMinCollateral(amounts3, amountsMin3)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinCollateralTest(amounts3, amountsMin3)).to.be.revertedWith("AmountsMin");
 
             const amounts4 =  [1, 0];
             const amountsMin4 =  [1, 1];
-            await expect(posMgr.testCheckMinCollateral(amounts4, amountsMin4)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinCollateralTest(amounts4, amountsMin4)).to.be.revertedWith("AmountsMin");
 
             const amounts5 =  [0, 0];
             const amountsMin5 =  [1, 1];
-            await expect(posMgr.testCheckMinCollateral(amounts5, amountsMin5)).to.be.revertedWith("AmountsMin");
+            await expect(posMgr.checkMinCollateralTest(amounts5, amountsMin5)).to.be.revertedWith("AmountsMin");
         });
 
         it("#checkMinCollateral should not revert when Amounts >= AmountsMin", async function () {
             const amounts =  [90000, 1000];
             const amountsMin =  [90000, 1000];
-            posMgr.testCheckMinCollateral(amounts, amountsMin);
+            posMgr.checkMinCollateralTest(amounts, amountsMin);
 
             const amounts0 =  [90001, 1000];
             const amountsMin0 =  [90000, 1000];
-            posMgr.testCheckMinCollateral(amounts0, amountsMin0);
+            posMgr.checkMinCollateralTest(amounts0, amountsMin0);
 
             const amounts1 =  [90000, 1001];
             const amountsMin1 =  [90000, 1000];
-            posMgr.testCheckMinCollateral(amounts1, amountsMin1);
+            posMgr.checkMinCollateralTest(amounts1, amountsMin1);
 
             const amounts2 =  [90001, 1001];
             const amountsMin2 =  [90000, 1000];
-            posMgr.testCheckMinCollateral(amounts2, amountsMin2);
+            posMgr.checkMinCollateralTest(amounts2, amountsMin2);
 
             const amounts3 =  [1, 1];
             const amountsMin3 =  [1, 1];
-            posMgr.testCheckMinCollateral(amounts3, amountsMin3);
+            posMgr.checkMinCollateralTest(amounts3, amountsMin3);
 
             const amounts4 =  [1, 1];
             const amountsMin4 =  [0, 0];
-            posMgr.testCheckMinCollateral(amounts4, amountsMin4);
+            posMgr.checkMinCollateralTest(amounts4, amountsMin4);
 
             const amounts5 =  [0, 0];
             const amountsMin5 =  [0, 0];
-            posMgr.testCheckMinCollateral(amounts5, amountsMin5);
+            posMgr.checkMinCollateralTest(amounts5, amountsMin5);
         });
     });
 

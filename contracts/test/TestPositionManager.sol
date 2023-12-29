@@ -5,20 +5,18 @@ import "../PositionManager.sol";
 
 contract TestPositionManager is PositionManager {
 
-    constructor(address _factory, address _WETH, address _dataStore, address _priceStore)
-        PositionManager( _factory,  _WETH, _dataStore, _priceStore) {
-    }
+    constructor(address _factory, address _WETH) PositionManager( _factory,  _WETH) {}
 
     function createTestLoan(address to) external virtual returns(uint256 tokenId) {
         tokenId = 1;
         _safeMint(to, tokenId);
     }
 
-    function testCheckMinReserves(uint256[] calldata amounts, uint256[] calldata amountsMin) external virtual pure {
+    function checkMinReservesTest(uint256[] calldata amounts, uint256[] calldata amountsMin) external virtual pure {
         checkMinReserves(amounts, amountsMin);
     }
 
-    function testCheckMinCollateral(uint128[] memory amounts, uint128[] memory amountsMin) external virtual pure {
+    function checkMinCollateralTest(uint128[] memory amounts, uint128[] memory amountsMin) external virtual pure {
         checkMinCollateral(amounts, amountsMin);
     }
 
