@@ -17,7 +17,12 @@ abstract contract Transfers is ITransfers {
     error NotGammaPool();
 
     /// @dev See {ITransfers-WETH}
-    address public override WETH;
+    address public immutable override WETH;
+
+    /// @dev Initialize the contract by setting `WETH`
+    constructor(address _WETH) {
+        WETH = _WETH;
+    }
 
     /// @dev Do not accept any Ether unless it comes from Wrapped Ether (WETH) contract
     receive() external payable {

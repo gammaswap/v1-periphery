@@ -11,6 +11,11 @@ import "./PositionManager.sol";
 contract PositionManagerWithStaking is PositionManager, IAutoStakable {
     IStakingPoolRouter stakingRouter;
 
+    /// @dev Constructs the PositionManagerWithStaking contract.
+    /// @param _factory Address of the contract factory.
+    /// @param _WETH Address of the Wrapped Ether (WETH) contract.
+    constructor(address _factory, address _WETH) PositionManager(_factory, _WETH) {}
+
     /// @dev See {IAutoStakable-setStakingRouter}
     function setStakingRouter(address _stakingRouter) external onlyOwner {
         stakingRouter = IStakingPoolRouter(_stakingRouter);

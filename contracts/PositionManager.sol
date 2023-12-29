@@ -30,9 +30,20 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
     string constant private _symbol = "PM-V1";
 
     /// @dev See {IPositionManager-factory}.
-    address public override factory;
+    address public immutable override factory;
 
     address public priceStore;
+
+    /// @dev Initializes the contract by setting `factory`, `WETH`.
+    constructor(address _factory, address _WETH) TwoStepOwnable(msg.sender) Transfers(_WETH) {
+        factory = _factory;
+    }
+
+    function initialize(address _dataStore, address _priceStore) public initializer {
+        owner = msg.sender;
+        dataStore = _dataStore;
+        priceStore = _priceStore;
+    }
 
     modifier isAuthorizedForToken(uint256 tokenId) {
         checkAuthorization(tokenId);
@@ -58,16 +69,6 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
         if(deadline < block.timestamp) {
             revert Expired();
         }
-    }
-
-    constructor() TwoStepOwnable(msg.sender) {}
-
-    function initialize(address _factory, address _WETH, address _dataStore, address _priceStore) public initializer {
-        owner = msg.sender;
-        factory = _factory;
-        WETH = _WETH;
-        dataStore = _dataStore;
-        priceStore = _priceStore;
     }
 
     /// @dev See {IERC721Metadata-name}.
