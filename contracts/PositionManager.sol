@@ -24,7 +24,7 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
 
     error Forbidden();
     error Expired();
-    error AmountsMin();
+    error AmountsMin(uint8 id);
 
     string constant private _name = "PositionManager";
     string constant private _symbol = "PM-V1";
@@ -156,7 +156,7 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
         if(len!=len2) return;
         for (uint256 i; i < len;) {
             if(amounts[i] < amountsMin[i]) {
-                revert AmountsMin();
+                revert AmountsMin(1);
             }
             unchecked {
                 ++i;
@@ -174,7 +174,7 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
         if(len!=len2) return;
         for (uint256 i; i < len;) {
             if(amounts[i] < amountsMin[i]) {
-                revert AmountsMin();
+                revert AmountsMin(2);
             }
             unchecked {
                 ++i;
