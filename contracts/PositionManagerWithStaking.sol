@@ -39,6 +39,7 @@ contract PositionManagerWithStaking is PositionManager, IAutoStakable {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         stakingRouter.unstakeLpForAccount(user, gammaPool, params.amount);
 
+        send(gammaPool, msg.sender, gammaPool, params.amount);
         (reserves, assets) = IGammaPool(gammaPool).withdrawReserves(params.to);
         checkMinReserves(reserves, params.amountsMin);
         emit WithdrawReserve(gammaPool, reserves, assets);
