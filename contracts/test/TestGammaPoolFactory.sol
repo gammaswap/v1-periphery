@@ -22,6 +22,10 @@ contract TestGammaPoolFactory is AbstractGammaPoolFactory {
         return implementation;
     }
 
+    function getProtocolBeacon(uint16) external override view returns (address) {
+        return address(0);
+    }
+
     function isProtocolRestricted(uint16) external virtual override view returns(bool) {
         return false;
     }
