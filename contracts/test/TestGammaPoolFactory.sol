@@ -40,8 +40,7 @@ contract TestGammaPoolFactory is AbstractGammaPoolFactory {
         implementation = _protocol;
     }
 
-    function removeProtocol(uint16) external virtual override {
-        implementation = address(0);
+    function lockProtocol(uint16) external virtual override {
     }
 
     function createPool(uint16 protocolId, address cfmm, address[] calldata tokens, bytes calldata _data) external virtual override returns(address pool){
