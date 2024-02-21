@@ -15,7 +15,10 @@ This repository contains concrete implementations of periphery contracts to inte
 
 Contracts in this repository do not contain core GammaSwap logic. Instead, they enhance the functionality of existing 
 core logic by implementing safety checks when calling certain GammaPool functions and increase composability by extending
-the ERC721 implementation towards GammaPool loans.
+the ERC721 implementation towards GammaPool loans. 
+
+The GammaPool contracts in the v1-core repo do not need the contracts in this repository in order to work, but this 
+repository does depend on the contracts in v1-core.
 
 Users are encouraged to interact with the GammaPools via the contracts in this repository to ensure a safe user experience.
 
