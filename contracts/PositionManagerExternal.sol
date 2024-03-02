@@ -2,8 +2,9 @@
 pragma solidity ^0.8.0;
 
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPoolExternal.sol";
-import "./PositionManager.sol";
+
 import "./interfaces/IPositionManagerExternal.sol";
+import "./PositionManager.sol";
 
 /// @title PositionManagerExternal, concrete implementation of IPositionManagerExternal
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
