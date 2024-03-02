@@ -2,12 +2,14 @@ import { ethers } from "hardhat";
 import { expect } from "chai";
 
 const PROTOCOL_ID = 10000;
+const PROTOCOL_ID_EXTERNAL = 10001;
 
 describe("PositionManager", function () {
     let TestERC20: any;
     let TestPoolViewer: any;
     let GammaPool: any;
     let GammaPool2: any;
+    let GammaPoolExternal: any;
     let GammaPoolFactory: any;
     let TestPositionManager: any;
     let PositionManagerQueries: any;
@@ -31,14 +33,17 @@ describe("PositionManager", function () {
     let gammaPool: any;
     let gammaPool2: any;
     let gammaPool3: any;
+    let gammaPool4: any;
     let poolViewer: any;
     let cfmm: any;
     let cfmm2: any;
     let cfmm3: any;
     let protocolId: any;
+    let protocolIdExternal: any;
     let gammaPoolAddr: any;
     let gammaPoolAddr2: any;
     let gammaPoolAddr3: any;
+    let gammaPoolAddr4: any;
     let tokenId: any;
 
     // `beforeEach` will run before each test, re-deploying the contract every
@@ -53,6 +58,7 @@ describe("PositionManager", function () {
         PriceDataQueries = await ethers.getContractFactory("PriceDataQueries");
         GammaPool = await ethers.getContractFactory("TestGammaPool");
         GammaPool2 = await ethers.getContractFactory("TestGammaPool2");
+        GammaPoolExternal = await ethers.getContractFactory("TestGammaPoolExternal");
         [owner, addr1, addr2, addr3, addr4, addr5, addr6, addr7, addr8] = await ethers.getSigners();
 
         // To deploy our contract, we just have to call Token.deploy() and await
@@ -76,9 +82,14 @@ describe("PositionManager", function () {
         const blocksPerYear = 60 * 60 * 24 * 365 / 12; // assumes 12 seconds per block
         priceStore = await PriceDataQueries.deploy(blocksPerYear, owner.address, maxLen, frequency);
 
-        const implementation = await GammaPool.deploy(PROTOCOL_ID, factory.address, addr1.address, addr2.address, addr3.address, addr5.address, addr6.address, addr7.address, poolViewer.address);
+        const implementation = await GammaPool.deploy(PROTOCOL_ID, factory.address, addr1.address, addr2.address, addr3.address,
+            addr5.address, addr6.address, addr7.address, poolViewer.address);
+
+        const implementationExternal = await GammaPoolExternal.deploy(PROTOCOL_ID_EXTERNAL, factory.address, addr1.address, addr2.address,
+            addr3.address, addr4.address, addr5.address, addr6.address, poolViewer.address, addr7.address, addr8.address);
 
         await (await factory.addProtocol(implementation.address)).wait();
+        await (await factory.addProtocol(implementationExternal.address)).wait();
 
         posMgr = await TestPositionManager.deploy(factory.address, WETH.address);
         await posMgr.initialize(store.address, priceStore.address)
@@ -93,6 +104,12 @@ describe("PositionManager", function () {
             tokens: [tokenA.address, tokenB.address]
         };
 
+        const createPoolParamsExternal = {
+            cfmm: cfmm.address,
+            protocolId: PROTOCOL_ID_EXTERNAL,
+            tokens: [tokenA.address, tokenB.address]
+        };
+
         const data = ethers.utils.defaultAbiCoder.encode(
             [],
             []
@@ -100,6 +117,7 @@ describe("PositionManager", function () {
         const res = await (await factory.createPool(createPoolParams.protocolId, createPoolParams.cfmm ,createPoolParams.tokens, data)).wait();
         const res2 = await (await factory.createPool(createPoolParams.protocolId, cfmm2.address ,createPoolParams.tokens, data)).wait();
         const res3 = await (await factory.createPool(createPoolParams.protocolId, cfmm3.address ,createPoolParams.tokens, data)).wait();
+        const res4 = await (await factory.createPool(createPoolParamsExternal.protocolId, createPoolParamsExternal.cfmm ,createPoolParamsExternal.tokens, data)).wait();
 
         const { args } = res.events[1];
         gammaPoolAddr = args.pool;
@@ -108,6 +126,11 @@ describe("PositionManager", function () {
         gammaPoolAddr3 = res3.events[1].args.pool;
 
         protocolId = args.protocolId;
+
+        const { args: args4 } = res4.events[1];
+        gammaPoolAddr4 = args4.pool;
+
+        protocolIdExternal = args4.protocolId;
 
         gammaPool = await GammaPool.attach(
             gammaPoolAddr // The deployed contract address
@@ -123,6 +146,12 @@ describe("PositionManager", function () {
             gammaPoolAddr3 // The deployed contract address
         );
         await gammaPool3.approve(posMgr.address, ethers.constants.MaxUint256);
+
+
+        gammaPool4 = await GammaPoolExternal.attach(
+            gammaPoolAddr4 // The deployed contract address
+        );
+        await gammaPool4.approve(posMgr.address, ethers.constants.MaxUint256);
 
         const { events } = await (await posMgr.createTestLoan(owner.address)).wait();
         tokenId = events[0].args.tokenId;
@@ -813,6 +842,38 @@ describe("PositionManager", function () {
             expect(args.pool).to.equal(gammaPool.address);
             expect(args.tokenId.toNumber()).to.equal(tokenId);
             expect(args.tokensHeld.length).to.equal(2);
+        });
+
+        it("#rebalanceCollateralExternally should return tokenId and length of tokens held", async function () {
+            const lpTokens = 3;
+            const dataNum = 77;
+            const dataAddr = addr5.address;
+            const data = ethers.utils.defaultAbiCoder.encode(
+                ["uint256","address"],
+                [dataNum,dataAddr]
+            );
+            const RebalanceCollateralParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolIdExternal,
+                tokenId: tokenId,
+                amounts: [4, 2],
+                lpTokens: lpTokens,
+                to: addr4.address,
+                data: data,
+                deadline: ethers.constants.MaxUint256,
+                minCollateral: [0,0]
+            }
+
+            const expectedLoanLiquidityNum = ethers.BigNumber.from(dataAddr.toLowerCase()).add(dataNum).add(lpTokens);
+            const res = await (await posMgr.rebalanceCollateralExternally(RebalanceCollateralParams)).wait();
+
+            const { args } = res.events[0];
+            expect(args.pool).to.equal(gammaPool4.address);
+            expect(args.tokenId.toNumber()).to.equal(tokenId);
+            expect(args.tokensHeld.length).to.equal(2);
+            expect(args.tokensHeld[0]).to.equal(14);
+            expect(args.tokensHeld[1]).to.equal(22);
+            expect(args.loanLiquidity).to.equal(expectedLoanLiquidityNum);
         });
 
         it("#createLoanBorrowAndRebalance should return tokenId, tokensHeld, amounts. No deltas", async function () {
