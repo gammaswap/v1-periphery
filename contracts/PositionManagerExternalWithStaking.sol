@@ -4,20 +4,21 @@ pragma solidity ^0.8.0;
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPoolExternal.sol";
 
 import "./interfaces/IPositionManagerExternal.sol";
-import "./PositionManager.sol";
+import "./PositionManagerWithStaking.sol";
 
-/// @title PositionManagerExternal, concrete implementation of IPositionManagerExternal
+/// @title PositionManagerExternalWithStaking, concrete implementation of IPositionManagerExternal
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
-/// @notice Inherits PositionManager functionality and defines functionality to rebalance loan collateral using external
-/// @notice contracts by calling the rebalanceExternally function of the GammaPool, which works like a flash loan
-contract PositionManagerExternal is PositionManager, IPositionManagerExternal {
+/// @notice Inherits PositionManager functionality from PositionManagerWithStaking and defines functionality to rebalance
+/// @notice loan collateral using external contracts by calling GammaPool::rebalanceExternally()
+contract PositionManagerExternalWithStaking is PositionManagerWithStaking, IPositionManagerExternal {
 
     /// @dev Constructs the PositionManagerWithStaking contract.
     /// @param _factory Address of the contract factory.
     /// @param _WETH Address of the Wrapped Ether (WETH) contract.
-    constructor(address _factory, address _WETH) PositionManager(_factory, _WETH) {}
+    constructor(address _factory, address _WETH) PositionManagerWithStaking(_factory, _WETH) {}
 
-    /// @dev Flash loan pool's collateral and/or lp tokens to external address. Rebalanced loan collateral is acceptable in  repayment of flash loan
+    /// @dev Flash loan pool's collateral and/or lp tokens to external address. Rebalanced loan collateral is acceptable
+    /// @dev in  repayment of flash loan. Function can be used for other purposes besides rebalancing collateral.
     /// @param gammaPool - address of GammaPool of the loan
     /// @param tokenId - unique id identifying loan
     /// @param amounts - collateral amounts being flash loaned

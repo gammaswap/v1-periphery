@@ -3,18 +3,18 @@ pragma solidity 0.8.21;
 
 import "./interfaces/IStakingPoolRouter.sol";
 import "./interfaces/IAutoStakable.sol";
-import "./PositionManagerExternal.sol";
+import "./PositionManager.sol";
 
 /// @title PositionManagerWithStaking
 /// @author Simon Mall
 /// @dev Extension of PositionManager that adds staking and unstaking functionality for automated operations.
-contract PositionManagerWithStaking is PositionManagerExternal, IAutoStakable {
+contract PositionManagerWithStaking is PositionManager, IAutoStakable {
     IStakingPoolRouter stakingRouter;
 
     /// @dev Constructs the PositionManagerWithStaking contract.
     /// @param _factory Address of the contract factory.
     /// @param _WETH Address of the Wrapped Ether (WETH) contract.
-    constructor(address _factory, address _WETH) PositionManagerExternal(_factory, _WETH) {}
+    constructor(address _factory, address _WETH) PositionManager(_factory, _WETH) {}
 
     /// @dev See {IAutoStakable-setStakingRouter}
     function setStakingRouter(address _stakingRouter) external onlyOwner {
