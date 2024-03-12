@@ -201,6 +201,7 @@ contract TestGammaPool is IGammaPool, TERC20 {
     function borrowLiquidity(uint256, uint256, uint256[] calldata) external virtual override returns(uint256 liquidityBorrowed, uint256[] memory amounts, uint128[] memory tokensHeld) {
         liquidityBorrowed = 23;
         amounts = new uint256[](2);
+        tokensHeld = new uint128[](2);
     }
 
     function repayLiquidity(uint256, uint256, uint256, address) external virtual override returns(uint256 liquidityPaid, uint256[] memory amounts) {

@@ -858,7 +858,7 @@ describe("PositionManager", function () {
                 tokenId: tokenId,
                 amounts: [4, 2],
                 lpTokens: lpTokens,
-                to: addr4.address,
+                rebalancer: addr4.address,
                 data: data,
                 deadline: ethers.constants.MaxUint256,
                 minCollateral: [0,0]
@@ -905,6 +905,7 @@ describe("PositionManager", function () {
             expect(args0.pool).to.equal(gammaPool.address);
             expect(args0.owner).to.equal(owner.address);
             expect(args0.tokenId.toNumber()).to.equal(expTokenId);
+            expect(args0.refId).to.equal(0);
 
             expect(res.events[4].event).to.equal("IncreaseCollateral");
             const args1 = res.events[4].args;
@@ -981,6 +982,81 @@ describe("PositionManager", function () {
             expect(args2.amounts.length).to.equal(2);
         });
 
+        it("#createLoanBorrowAndRebalanceExternally should return tokenId, tokensHeld, amounts. No deltas", async function () {
+            const lpTokens = 3;
+            const dataNum = 77;
+            const dataAddr = addr5.address;
+            const data = ethers.utils.defaultAbiCoder.encode(
+                ["uint256","address"],
+                [dataNum,dataAddr]
+            );
+
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256); // must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256); // must approve before sending tokens
+
+            const CreateLoanBorrowAndRebalanceExternallyParams = {
+                protocolId: protocolId,
+                cfmm: cfmm.address,
+                to: owner.address,
+                refId: 0,
+                lpTokens: lpTokens,
+                deadline: ethers.constants.MaxUint256,
+                rebalancer: addr4.address,
+                data: data,
+                amounts: [100,10],
+                minBorrowed: [0,0],
+                minCollateral: [0,0],
+                maxBorrowed: ethers.constants.MaxUint256
+            }
+
+            const expectedLoanLiquidityNum = ethers.BigNumber.from(dataAddr.toLowerCase()).add(dataNum).add(0);
+            const res = await (await posMgr.createLoanBorrowAndRebalanceExternally(CreateLoanBorrowAndRebalanceExternallyParams)).wait();
+
+            const latestBlock = await ethers.provider.getBlock("latest");
+            const num = latestBlock.number * 100;
+            const expTokenId = num + 19;
+
+            expect(res.events[1].event).to.equal("CreateLoan");
+            const args0 = res.events[1].args;
+            expect(args0.pool).to.equal(gammaPool.address);
+            expect(args0.owner).to.equal(owner.address);
+            expect(args0.tokenId.toNumber()).to.equal(expTokenId);
+            expect(args0.refId).to.equal(0);
+
+            expect(res.events[4].event).to.equal("IncreaseCollateral");
+            const args1 = res.events[4].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(expTokenId);
+            expect(args1.tokensHeld.length).to.equal(6);
+            expect(args1.amounts.length).to.equal(2);
+            expect(args1.amounts[0]).to.equal(100);
+            expect(args1.amounts[1]).to.equal(10);
+
+            expect(res.events[5].event).to.equal("BorrowLiquidity");
+            const args2 = res.events[5].args;
+            expect(args2.pool).to.equal(gammaPool.address);
+            expect(args2.tokenId.toNumber()).to.equal(expTokenId);
+            expect(args2.liquidityBorrowed).to.equal(23);
+            expect(args2.amounts.length).to.equal(2);
+
+            expect(res.events[6].event).to.equal("RebalanceCollateralExternally");
+            const args3 = res.events[6].args;
+            expect(args3.pool).to.equal(gammaPool.address);
+            expect(args3.tokenId.toNumber()).to.equal(expTokenId);
+            expect(args3.loanLiquidity).to.equal(expectedLoanLiquidityNum);
+            expect(args3.tokensHeld.length).to.equal(2);
+
+            const res1 = await store.getLoansByOwnerAndPool(owner.address, gammaPool.address, 0, 10);
+            expect(res1.length).to.equal(1);
+            expect(res1[0].tokenId).to.equal(25);
+
+            const res2 = await store.getLoansByOwnerAndPool(owner.address, gammaPool2.address, 0, 10);
+            expect(res2.length).to.equal(0);
+
+            const res3 = await store.getLoansByOwnerAndPool(owner.address, gammaPool.address, 5, 10);
+            expect(res3.length).to.equal(0);
+        });
+
         it("#borrowAndRebalance should return tokensHeld, amounts. No deltas", async function () {
             await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
@@ -1017,6 +1093,61 @@ describe("PositionManager", function () {
             expect(args2.tokenId.toNumber()).to.equal(1);
             expect(args2.liquidityBorrowed).to.equal(23);
             expect(args2.amounts.length).to.equal(2);
+        });
+
+        it("#borrowAndRebalanceExternally should return tokensHeld, amounts. No deltas", async function () {
+            const lpTokens = 3;
+            const dataNum = 77;
+            const dataAddr = addr5.address;
+            const data = ethers.utils.defaultAbiCoder.encode(
+                ["uint256","address"],
+                [dataNum,dataAddr]
+            );
+
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+
+            const BorrowAndRebalanceExternallyParams = {
+                protocolId: protocolId,
+                cfmm: cfmm.address,
+                to: owner.address,
+                tokenId: 1,
+                lpTokens: lpTokens,
+                rebalancer: addr4.address,
+                data: data,
+                deadline: ethers.constants.MaxUint256,
+                amounts: [100,10],
+                withdraw: [],
+                minBorrowed: [0,0],
+                minCollateral: [0,0],
+                maxBorrowed: ethers.constants.MaxUint256
+            }
+
+            const expectedLoanLiquidityNum = ethers.BigNumber.from(dataAddr.toLowerCase()).add(dataNum).add(0);
+            const res = await (await posMgr.borrowAndRebalanceExternally(BorrowAndRebalanceExternallyParams)).wait();
+
+            expect(res.events[2].event).to.equal("IncreaseCollateral");
+            const args1 = res.events[2].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(1);
+            expect(args1.tokensHeld.length).to.equal(6);
+            expect(args1.amounts.length).to.equal(2);
+            expect(args1.amounts[0]).to.equal(100);
+            expect(args1.amounts[1]).to.equal(10);
+
+            expect(res.events[3].event).to.equal("BorrowLiquidity");
+            const args2 = res.events[3].args;
+            expect(args2.pool).to.equal(gammaPool.address);
+            expect(args2.tokenId.toNumber()).to.equal(1);
+            expect(args2.liquidityBorrowed).to.equal(23);
+            expect(args2.amounts.length).to.equal(2);
+
+            expect(res.events[4].event).to.equal("RebalanceCollateralExternally");
+            const args3 = res.events[4].args;
+            expect(args3.pool).to.equal(gammaPool.address);
+            expect(args3.tokenId.toNumber()).to.equal(1);
+            expect(args3.loanLiquidity).to.equal(expectedLoanLiquidityNum);
+            expect(args3.tokensHeld.length).to.equal(2);
         });
 
         it("#borrowAndRebalance should return tokensHeld, amounts. No deltas, withdraws", async function () {
@@ -1066,6 +1197,70 @@ describe("PositionManager", function () {
             expect(args3.amounts[1]).to.equal(2);
         });
 
+        it("#borrowAndRebalanceExternally should return tokensHeld, amounts. No deltas, withdraws", async function () {
+            const lpTokens = 3;
+            const dataNum = 77;
+            const dataAddr = addr5.address;
+            const data = ethers.utils.defaultAbiCoder.encode(
+                ["uint256","address"],
+                [dataNum,dataAddr]
+            );
+
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+
+            const BorrowAndRebalanceExternallyParams = {
+                protocolId: protocolId,
+                cfmm: cfmm.address,
+                to: owner.address,
+                tokenId: 1,
+                lpTokens: lpTokens,
+                rebalancer: addr4.address,
+                data: data,
+                deadline: ethers.constants.MaxUint256,
+                amounts: [100,10],
+                withdraw: [2, 2],
+                minBorrowed: [0,0],
+                minCollateral: [0,0],
+                maxBorrowed: ethers.constants.MaxUint256
+            }
+
+            const expectedLoanLiquidityNum = ethers.BigNumber.from(dataAddr.toLowerCase()).add(dataNum).add(0);
+            const res = await (await posMgr.borrowAndRebalanceExternally(BorrowAndRebalanceExternallyParams)).wait();
+
+            expect(res.events[2].event).to.equal("IncreaseCollateral");
+            const args1 = res.events[2].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(1);
+            expect(args1.tokensHeld.length).to.equal(6);
+            expect(args1.amounts.length).to.equal(2);
+            expect(args1.amounts[0]).to.equal(100);
+            expect(args1.amounts[1]).to.equal(10);
+
+            expect(res.events[3].event).to.equal("BorrowLiquidity");
+            const args2 = res.events[3].args;
+            expect(args2.pool).to.equal(gammaPool.address);
+            expect(args2.tokenId.toNumber()).to.equal(1);
+            expect(args2.liquidityBorrowed).to.equal(23);
+            expect(args2.amounts.length).to.equal(2);
+
+            expect(res.events[4].event).to.equal("RebalanceCollateralExternally");
+            const args3 = res.events[4].args;
+            expect(args3.pool).to.equal(gammaPool.address);
+            expect(args3.tokenId.toNumber()).to.equal(1);
+            expect(args3.loanLiquidity).to.equal(expectedLoanLiquidityNum);
+            expect(args3.tokensHeld.length).to.equal(2);
+
+            expect(res.events[5].event).to.equal("DecreaseCollateral");
+            const args4 = res.events[5].args;
+            expect(args4.pool).to.equal(gammaPool.address);
+            expect(args4.tokenId.toNumber()).to.equal(1);
+            expect(args4.tokensHeld.length).to.equal(7);
+            expect(args4.amounts.length).to.equal(2);
+            expect(args4.amounts[0]).to.equal(2);
+            expect(args4.amounts[1]).to.equal(2);
+        });
+
         it("#borrowAndRebalance should return tokensHeld, amounts. Has deltas", async function () {
             await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
             await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
@@ -1102,6 +1297,184 @@ describe("PositionManager", function () {
             expect(args2.tokenId.toNumber()).to.equal(1);
             expect(args2.liquidityBorrowed).to.equal(23);
             expect(args2.amounts.length).to.equal(2);
+        });
+
+        it("#borrowAndRebalanceExternally should return tokensHeld, amounts. Has deltas", async function () {
+            const lpTokens = 3;
+            const dataNum = 77;
+            const dataAddr = addr5.address;
+            const data = ethers.utils.defaultAbiCoder.encode(
+                ["uint256","address"],
+                [dataNum,dataAddr]
+            );
+
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+
+            const BorrowAndRebalanceExternallyParams = {
+                protocolId: protocolId,
+                cfmm: cfmm.address,
+                to: owner.address,
+                tokenId: 1,
+                lpTokens: lpTokens,
+                rebalancer: addr4.address,
+                data: data,
+                deadline: ethers.constants.MaxUint256,
+                amounts: [100,10],
+                withdraw: [],
+                minBorrowed: [0,0],
+                minCollateral: [0,0],
+                maxBorrowed: ethers.constants.MaxUint256
+            }
+
+            const expectedLoanLiquidityNum = ethers.BigNumber.from(dataAddr.toLowerCase()).add(dataNum).add(0);
+            const res = await (await posMgr.borrowAndRebalanceExternally(BorrowAndRebalanceExternallyParams)).wait();
+
+            expect(res.events[2].event).to.equal("IncreaseCollateral");
+            const args1 = res.events[2].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(1);
+            expect(args1.tokensHeld.length).to.equal(6);
+            expect(args1.amounts.length).to.equal(2);
+            expect(args1.amounts[0]).to.equal(100);
+            expect(args1.amounts[1]).to.equal(10);
+
+            expect(res.events[3].event).to.equal("BorrowLiquidity");
+            const args2 = res.events[3].args;
+            expect(args2.pool).to.equal(gammaPool.address);
+            expect(args2.tokenId.toNumber()).to.equal(1);
+            expect(args2.liquidityBorrowed).to.equal(23);
+            expect(args2.amounts.length).to.equal(2);
+
+            expect(res.events[4].event).to.equal("RebalanceCollateralExternally");
+            const args3 = res.events[4].args;
+            expect(args3.pool).to.equal(gammaPool.address);
+            expect(args3.tokenId.toNumber()).to.equal(1);
+            expect(args3.loanLiquidity).to.equal(expectedLoanLiquidityNum);
+            expect(args3.tokensHeld.length).to.equal(2);
+        });
+
+        it("#borrowAndRebalanceExternally should return tokensHeld, amounts. Has deltas, No Rebalance", async function () {
+            const lpTokens = 3;
+            const dataNum = 77;
+            const dataAddr = addr5.address;
+            const data = ethers.utils.defaultAbiCoder.encode(
+                ["uint256","address"],
+                [dataNum,dataAddr]
+            );
+
+            await tokenA.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+            await tokenB.approve(posMgr.address, ethers.constants.MaxUint256);//must approve before sending tokens
+
+            const BorrowAndRebalanceExternallyParams = {
+                protocolId: protocolId,
+                cfmm: cfmm.address,
+                to: owner.address,
+                tokenId: 1,
+                lpTokens: lpTokens,
+                rebalancer: ethers.constants.AddressZero,
+                data: data,
+                deadline: ethers.constants.MaxUint256,
+                amounts: [100,10],
+                withdraw: [],
+                minBorrowed: [0,0],
+                minCollateral: [0,0],
+                maxBorrowed: ethers.constants.MaxUint256
+            }
+
+            const res = await (await posMgr.borrowAndRebalanceExternally(BorrowAndRebalanceExternallyParams)).wait();
+
+            expect(res.events[2].event).to.equal("IncreaseCollateral");
+            const args1 = res.events[2].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(1);
+            expect(args1.tokensHeld.length).to.equal(6);
+            expect(args1.amounts.length).to.equal(2);
+            expect(args1.amounts[0]).to.equal(100);
+            expect(args1.amounts[1]).to.equal(10);
+
+            expect(res.events[3].event).to.equal("BorrowLiquidity");
+            const args2 = res.events[3].args;
+            expect(args2.pool).to.equal(gammaPool.address);
+            expect(args2.tokenId.toNumber()).to.equal(1);
+            expect(args2.liquidityBorrowed).to.equal(23);
+            expect(args2.amounts.length).to.equal(2);
+
+            expect(res.events.length).to.equal(4);
+        });
+
+        it("#rebalanceExternallyAndRepayLiquidity should return tokenId, paid liquidity, paid lp tokens and length of amounts array", async function () {
+            const dataNum = 77;
+            const dataAddr = addr5.address;
+            const data = ethers.utils.defaultAbiCoder.encode(
+                ["uint256","address"],
+                [dataNum,dataAddr]
+            );
+
+            const RebalanceExternallyAndRepayLiquidityParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolId,
+                tokenId: tokenId,
+                liquidity: 1,
+                amounts: [100,10],
+                rebalancer: addr4.address,
+                data: data,
+                collateralId: 0,
+                to: ethers.constants.AddressZero,
+                deadline: ethers.constants.MaxUint256,
+                minCollateral: [],
+                minRepaid: [0,0]
+            }
+
+            const expectedLoanLiquidityNum = ethers.BigNumber.from(dataAddr.toLowerCase()).add(dataNum).add(0);
+            const res = await (await posMgr.rebalanceExternallyAndRepayLiquidity(RebalanceExternallyAndRepayLiquidityParams)).wait();
+
+            expect(res.events[0].event).to.equal("RebalanceCollateralExternally");
+            const args = res.events[0].args;
+            expect(args.pool).to.equal(gammaPool.address);
+            expect(args.tokenId.toNumber()).to.equal(1);
+            expect(args.loanLiquidity).to.equal(expectedLoanLiquidityNum);
+            expect(args.tokensHeld.length).to.equal(2);
+
+            expect(res.events[1].event).to.equal("RepayLiquidity");
+            const args1 = res.events[1].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(tokenId);
+            expect(args1.liquidityPaid).to.equal(24);
+            expect(args1.amounts.length).to.equal(2);
+        });
+
+        it("#rebalanceExternallyAndRepayLiquidity should return tokenId, paid liquidity, paid lp tokens and length of amounts array, No Rebalance", async function () {
+            const dataNum = 77;
+            const dataAddr = addr5.address;
+            const data = ethers.utils.defaultAbiCoder.encode(
+                ["uint256","address"],
+                [dataNum,dataAddr]
+            );
+
+            const RebalanceExternallyAndRepayLiquidityParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolId,
+                tokenId: tokenId,
+                liquidity: 1,
+                amounts: [100,10],
+                rebalancer: ethers.constants.AddressZero,
+                data: data,
+                collateralId: 0,
+                to: ethers.constants.AddressZero,
+                deadline: ethers.constants.MaxUint256,
+                minCollateral: [],
+                minRepaid: [0,0]
+            }
+
+            const res = await (await posMgr.rebalanceExternallyAndRepayLiquidity(RebalanceExternallyAndRepayLiquidityParams)).wait();
+
+            expect(res.events[0].event).to.equal("RepayLiquidity");
+            const args1 = res.events[0].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(tokenId);
+            expect(args1.liquidityPaid).to.equal(24);
+            expect(args1.amounts.length).to.equal(2);
         });
     });
 });

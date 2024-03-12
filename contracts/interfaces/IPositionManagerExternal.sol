@@ -29,7 +29,7 @@ interface IPositionManagerExternal is IPositionManager {
         /// @dev CFMM LP tokens requesting to borrow during external rebalancing. Must be returned at function call end
         uint256 lpTokens;
         /// @dev address of contract that will rebalance collateral. This address must return collateral back to GammaPool
-        address to;
+        address rebalancer;
         /// @param data - optional bytes parameter for custom user defined data
         bytes data;
         /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
@@ -67,7 +67,7 @@ interface IPositionManagerExternal is IPositionManager {
     }
 
     /// @dev Struct parameters for `repayLiquidity` function. Repaying liquidity
-    struct RebalanceExternallyAndRepayParams {
+    struct RebalanceExternallyAndRepayLiquidityParams {
         /// @dev protocolId of GammaPool (e.g. version of GammaPool)
         uint16 protocolId;
         /// @dev address of CFMM, along with protocolId can be used to calculate GammaPool address
@@ -94,6 +94,36 @@ interface IPositionManagerExternal is IPositionManager {
         uint256[] minRepaid;
     }
 
+    /// @dev Struct parameters for `createLoanBorrowAndRebalance` function.
+    struct BorrowAndRebalanceExternallyParams {
+        /// @dev protocolId of GammaPool (e.g. version of GammaPool)
+        uint16 protocolId;
+        /// @dev address of CFMM, along with protocolId can be used to calculate GammaPool address
+        address cfmm;
+        /// @dev receiver of reserve tokens when withdrawing collateral
+        address to;
+        /// @dev tokenId of loan whose collateral will change
+        uint256 tokenId;
+        /// @dev CFMM LP tokens requesting to borrow to short
+        uint256 lpTokens;
+        /// @dev CFMM LP tokens requesting to borrow during external rebalancing. Must be returned at function call end
+        address rebalancer;
+        /// @param data - optional bytes parameter for custom user defined data
+        bytes data;
+        /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
+        uint256 deadline;
+        /// @dev amounts of reserve tokens requesting to deposit as collateral for a loan
+        uint256[] amounts;
+        /// @dev amounts of reserve tokens requesting to withdraw from a loan's collateral
+        uint128[] withdraw;
+        /// @dev minimum amounts of reserve tokens expected to have been withdrawn representing the `lpTokens` (borrowing). Slippage protection
+        uint256[] minBorrowed;
+        /// @dev amounts of reserve tokens to swap (>0 buy token, <0 sell token). At least one index value must be set to zero
+        uint128[] minCollateral;
+        /// @dev max borrowed liquidity
+        uint256 maxBorrowed;
+    }
+
     /// @dev Re-balance loan collateral tokens by swapping one for another using an external source
     /// @param params - struct containing params to identify a GammaPool and loan with information to re-balance its collateral
     /// @return loanLiquidity - updated loan liquidity, includes flash loan fees
@@ -109,17 +139,17 @@ interface IPositionManagerExternal is IPositionManager {
     /// @return amounts - amounts of reserve tokens received to hold as collateral for liquidity borrowed
     function createLoanBorrowAndRebalanceExternally(CreateLoanBorrowAndRebalanceExternallyParams calldata params) external returns(uint256 tokenId, uint128[] memory tokensHeld, uint256 liquidityBorrowed, uint256[] memory amounts);
 
-    /// @dev Repay liquidity debt from GammaPool
+    /// @dev Repay liquidity debt from GammaPool rebalancing collateral externally to pay the debt in the proper ratio
     /// @param params - struct containing params to identify a GammaPool and loan to pay its liquidity debt
     /// @return liquidityPaid - actual liquidity debt paid
     /// @return amounts - reserve tokens used to pay liquidity debt
-    function rebalanceExternallyAndRepayLiquidity(RebalanceExternallyAndRepayParams calldata params) external returns (uint256 liquidityPaid, uint256[] memory amounts);
+    function rebalanceExternallyAndRepayLiquidity(RebalanceExternallyAndRepayLiquidityParams calldata params) external returns (uint256 liquidityPaid, uint256[] memory amounts);
 
-    /// @notice Aggregate increase collateral, borrow collateral, re-balance collateral, and decrease collateral into one transaction
+    /// @notice Aggregate increase collateral, borrow collateral, re-balance collateral externally, and decrease collateral into one transaction
     /// @dev All transactions are optional but must happen in the order described
     /// @param params - struct containing params to identify GammaPool to perform transactions on
     /// @return tokensHeld - new loan collateral token amounts
     /// @return liquidityBorrowed - liquidity borrowed in exchange for CFMM LP tokens (`lpTokens`)
     /// @return amounts - amounts of reserve tokens received to hold as collateral for liquidity borrowed
-    function borrowAndRebalanceExternally(BorrowAndRebalanceParams calldata params) external returns(uint128[] memory tokensHeld, uint256 liquidityBorrowed, uint256[] memory amounts);
+    function borrowAndRebalanceExternally(BorrowAndRebalanceExternallyParams calldata params) external returns(uint128[] memory tokensHeld, uint256 liquidityBorrowed, uint256[] memory amounts);
 }
