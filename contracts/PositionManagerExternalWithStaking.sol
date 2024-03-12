@@ -40,4 +40,47 @@ contract PositionManagerExternalWithStaking is PositionManagerWithStaking, IPosi
         (loanLiquidity,tokensHeld) = rebalanceCollateralExternally(gammaPool, params.tokenId, params.amounts, params.lpTokens, params.to, params.data, params.minCollateral);
         _logPrice(gammaPool);
     }
+
+    /// @dev See {IPositionManagerExternal-createLoanBorrowAndRebalanceExternally}.
+    function createLoanBorrowAndRebalanceExternally(CreateLoanBorrowAndRebalanceExternallyParams calldata params) external virtual override isExpired(params.deadline) returns(uint256 tokenId, uint128[] memory tokensHeld, uint256 liquidityBorrowed, uint256[] memory amounts) {
+        address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
+        tokenId = createLoan(gammaPool, params.to, params.refId);
+        tokensHeld = increaseCollateral(gammaPool, tokenId, params.amounts, new uint256[](0), new uint128[](0));
+        if(params.lpTokens != 0) {
+            (liquidityBorrowed, amounts, tokensHeld) = borrowLiquidity(gammaPool, tokenId, params.lpTokens, new uint256[](0), params.minBorrowed, params.maxBorrowed, new uint128[](0));
+        }
+        if(params.rebalancer != address(0)) {
+            (,tokensHeld) = rebalanceCollateralExternally(gammaPool, tokenId, tokensHeld, 0, params.rebalancer, params.data, params.minCollateral);
+        }
+        _logPrice(gammaPool);
+    }
+
+    /// @dev See {IPositionManagerExternal-rebalanceExternallyAndRepayLiquidity}.
+    function rebalanceExternallyAndRepayLiquidity(RebalanceExternallyAndRepayParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityPaid, uint256[] memory amounts) {
+        address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
+        if(params.rebalancer != address(0)) {
+            rebalanceCollateralExternally(gammaPool, params.tokenId, params.amounts, 0, params.rebalancer, params.data, params.minCollateral);
+        }
+        (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to, params.minRepaid);
+        _logPrice(gammaPool);
+    }
+
+    /// @dev See {IPositionManagerExternal-borrowAndRebalanceExternally}.
+    function borrowAndRebalanceExternally(BorrowAndRebalanceParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint128[] memory tokensHeld, uint256 liquidityBorrowed, uint256[] memory amounts) {
+        address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
+        bool isWithdrawCollateral = params.withdraw.length != 0;
+        if(params.amounts.length != 0) {
+            tokensHeld = increaseCollateral(gammaPool, params.tokenId, params.amounts, new uint256[](0), new uint128[](0));
+        }
+        if(params.lpTokens != 0) {
+            (liquidityBorrowed, amounts, tokensHeld) = borrowLiquidity(gammaPool, params.tokenId, params.lpTokens, new uint256[](0), params.minBorrowed, params.maxBorrowed, new uint128[](0));
+        }
+        //if(params.rebalancer != address(0)) {
+        //    (,tokensHeld) = rebalanceCollateralExternally(gammaPool, tokenId, tokensHeld, 0, params.rebalancer, params.data, params.minCollateral);
+        //}
+        if(isWithdrawCollateral) {
+            tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw, params.ratio, params.minCollateral);
+        }
+        _logPrice(gammaPool);
+    }
 }
