@@ -79,7 +79,7 @@ contract PositionManagerExternalWithStaking is PositionManagerWithStaking, IPosi
             (,tokensHeld) = rebalanceCollateralExternally(gammaPool, params.tokenId, tokensHeld, 0, params.rebalancer, params.data, params.minCollateral);
         }
         if(isWithdrawCollateral) {
-            tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw, new uint256[](0), params.minCollateral);
+            tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw, new uint256[](0), new uint128[](0));
         }
         _logPrice(gammaPool);
     }

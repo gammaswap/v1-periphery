@@ -24,13 +24,13 @@ interface IPositionManagerExternal is IPositionManager {
         address cfmm;
         /// @dev tokenId of loan whose collateral will change
         uint256 tokenId;
-        /// @dev amounts of reserve tokens to swap (>0 buy token, <0 sell token). At least one index value must be set to zero
+        /// @dev amounts of reserve tokens to send to the rebalancer contract
         uint128[] amounts;
         /// @dev CFMM LP tokens requesting to borrow during external rebalancing. Must be returned at function call end
         uint256 lpTokens;
         /// @dev address of contract that will rebalance collateral. This address must return collateral back to GammaPool
         address rebalancer;
-        /// @param data - optional bytes parameter for custom user defined data
+        /// @dev data - optional bytes parameter to pass data to the rebalancer contract with rebalancing instructions
         bytes data;
         /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
         uint256 deadline;
@@ -38,7 +38,7 @@ interface IPositionManagerExternal is IPositionManager {
         uint128[] minCollateral;
     }
 
-    /// @dev Struct parameters for `borrowAndRebalance` function.
+    /// @dev Struct parameters for `createLoanBorrowAndRebalanceExternally` function.
     struct CreateLoanBorrowAndRebalanceExternallyParams {
         /// @dev protocolId of GammaPool (e.g. version of GammaPool)
         uint16 protocolId;
@@ -52,9 +52,9 @@ interface IPositionManagerExternal is IPositionManager {
         uint256[] amounts;
         /// @dev CFMM LP tokens requesting to borrow to short
         uint256 lpTokens;
-        /// @dev Ratio to rebalance collateral to
+        /// @dev address of contract that will rebalance collateral. This address must return collateral back to GammaPool
         address rebalancer;
-        /// @dev Ratio to rebalance collateral to
+        /// @dev data - optional bytes parameter to pass data to the rebalancer contract with rebalancing instructions
         bytes data;
         /// @dev minimum amounts of reserve tokens expected to have been withdrawn representing the `lpTokens`. Slippage protection
         uint256[] minBorrowed;
@@ -66,7 +66,7 @@ interface IPositionManagerExternal is IPositionManager {
         uint256 maxBorrowed;
     }
 
-    /// @dev Struct parameters for `repayLiquidity` function. Repaying liquidity
+    /// @dev Struct parameters for `rebalanceExternallyAndRepayLiquidity` function.
     struct RebalanceExternallyAndRepayLiquidityParams {
         /// @dev protocolId of GammaPool (e.g. version of GammaPool)
         uint16 protocolId;
@@ -76,13 +76,13 @@ interface IPositionManagerExternal is IPositionManager {
         uint256 tokenId;
         /// @dev liquidity debt to pay
         uint256 liquidity;
-        /// @dev amounts of requesting to deposit as collateral for a loan or withdraw from a loan's collateral
+        /// @dev amounts to send to rebalancer contract to rebalance for liquidity repayment
         uint128[] amounts;
-        /// @dev Ratio to rebalance collateral to
+        /// @dev address of contract that will rebalance collateral. This address must return collateral back to GammaPool
         address rebalancer;
-        /// @dev Ratio to rebalance collateral to
+        /// @dev data - optional bytes parameter to pass data to the rebalancer contract with instructions to rebalancer
         bytes data;
-        /// @dev collateralId - index of collateral token + 1
+        /// @dev collateralId - index of collateral token + 1 that remaining collateral after repayment will be converted to
         uint256 collateralId;
         /// @dev to - if repayment type requires withdrawal, the address that will receive the funds. Otherwise can be zero address
         address to;
@@ -94,7 +94,7 @@ interface IPositionManagerExternal is IPositionManager {
         uint256[] minRepaid;
     }
 
-    /// @dev Struct parameters for `createLoanBorrowAndRebalance` function.
+    /// @dev Struct parameters for `borrowAndRebalanceExternally` function.
     struct BorrowAndRebalanceExternallyParams {
         /// @dev protocolId of GammaPool (e.g. version of GammaPool)
         uint16 protocolId;
@@ -106,9 +106,9 @@ interface IPositionManagerExternal is IPositionManager {
         uint256 tokenId;
         /// @dev CFMM LP tokens requesting to borrow to short
         uint256 lpTokens;
-        /// @dev CFMM LP tokens requesting to borrow during external rebalancing. Must be returned at function call end
+        /// @dev address of contract that will rebalance collateral. This address must return collateral back to GammaPool
         address rebalancer;
-        /// @param data - optional bytes parameter for custom user defined data
+        /// @dev data - optional bytes parameter to pass data to the rebalancer contract
         bytes data;
         /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
         uint256 deadline;
