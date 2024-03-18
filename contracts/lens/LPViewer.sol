@@ -5,6 +5,10 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "../interfaces/lens/ILPViewer.sol";
 
+/// @title Interface for LPViewer
+/// @author Daniel D. Alcarraz (https://github.com/0xDanr)
+/// @notice Implementation contract of ILPViewer to get token balance information per user per pool
+/// @notice and across a given number of pools per user, aggregated or per pool
 contract LPViewer is ILPViewer {
 
     mapping(address => uint256) tokenIndex;
@@ -12,6 +16,7 @@ contract LPViewer is ILPViewer {
     constructor(){
     }
 
+    /// @inheritdoc ILPViewer
     function tokenBalancesInPoolsNonStatic(address user, address[] calldata pools) public virtual override returns(address[] memory tokens, uint256[] memory tokenBalances, uint256 size) {
         tokens = new address[](pools.length * 2);
         tokenBalances = new uint256[](pools.length * 2);
@@ -55,6 +60,7 @@ contract LPViewer is ILPViewer {
         }
     }
 
+    /// @inheritdoc ILPViewer
     function tokenBalancesInPools(address user, address[] calldata pools) public virtual override view returns(address[] memory tokens, uint256[] memory tokenBalances, uint256 size) {
         tokens = new address[](pools.length * 2);
         tokenBalances = new uint256[](pools.length * 2);
@@ -119,11 +125,20 @@ contract LPViewer is ILPViewer {
         }
     }
 
+    /// @inheritdoc ILPViewer
     function lpBalanceByPool(address user, address pool) public virtual override view returns(address token0, address token1,
         uint256 token0Balance, uint256 token1Balance, uint256 lpBalance) {
         return _lpBalanceByPool(user, pool);
     }
 
+    /// @dev token quantity and GS LP balance information for a user in a given pool
+    /// @param user - address of user to get information for
+    /// @param pool - address of pool to get information for
+    /// @return token0 - address of token0 in pool
+    /// @return token1 - address of token1 in pool
+    /// @return token0Balance - balance of token0 in pool belonging to user
+    /// @return token1Balance - balance of token1 in pool belonging to user
+    /// @return lpBalance - GS LP Balance of user
     function _lpBalanceByPool(address user, address pool) internal virtual view returns(address token0, address token1,
         uint256 token0Balance, uint256 token1Balance, uint256 lpBalance) {
         lpBalance = IERC20(pool).balanceOf(user);
@@ -140,6 +155,7 @@ contract LPViewer is ILPViewer {
         token1Balance = lpBalance * lpTokenBalance * uint256(cfmmReserves[1]) / (cfmmTotalSupply * lpTotalSupply);
     }
 
+    /// @inheritdoc ILPViewer
     function lpBalanceByPools(address user, address[] calldata pools) public virtual override view returns(address[] memory token0,
         address[] memory token1, uint256[] memory token0Balance, uint256[] memory token1Balance, uint256[] memory lpBalance) {
         uint256 len = pools.length;
