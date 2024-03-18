@@ -3,15 +3,16 @@ pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
+import "../interfaces/lens/ILPViewer.sol";
 
-contract LPViewer {
+contract LPViewer is ILPViewer {
 
     mapping(address => uint256) tokenIndex;
 
     constructor(){
     }
 
-    function tokenBalancesInPoolsNonStatic(address user, address[] calldata pools) public virtual returns(address[] memory tokens, uint256[] memory tokenBalances, uint256 size) {
+    function tokenBalancesInPoolsNonStatic(address user, address[] calldata pools) public virtual override returns(address[] memory tokens, uint256[] memory tokenBalances, uint256 size) {
         tokens = new address[](pools.length * 2);
         tokenBalances = new uint256[](pools.length * 2);
         size = 0;
@@ -54,7 +55,7 @@ contract LPViewer {
         }
     }
 
-    function tokenBalancesInPools(address user, address[] calldata pools) public virtual view returns(address[] memory tokens, uint256[] memory tokenBalances, uint256 size) {
+    function tokenBalancesInPools(address user, address[] calldata pools) public virtual override view returns(address[] memory tokens, uint256[] memory tokenBalances, uint256 size) {
         tokens = new address[](pools.length * 2);
         tokenBalances = new uint256[](pools.length * 2);
         size = 0;
@@ -118,7 +119,7 @@ contract LPViewer {
         }
     }
 
-    function lpBalanceByPool(address user, address pool) public virtual view returns(address token0, address token1,
+    function lpBalanceByPool(address user, address pool) public virtual override view returns(address token0, address token1,
         uint256 token0Balance, uint256 token1Balance, uint256 lpBalance) {
         return _lpBalanceByPool(user, pool);
     }
@@ -139,7 +140,7 @@ contract LPViewer {
         token1Balance = lpBalance * lpTokenBalance * uint256(cfmmReserves[1]) / (cfmmTotalSupply * lpTotalSupply);
     }
 
-    function lpBalanceByPools(address user, address[] calldata pools) public virtual view returns(address[] memory token0,
+    function lpBalanceByPools(address user, address[] calldata pools) public virtual override view returns(address[] memory token0,
         address[] memory token1, uint256[] memory token0Balance, uint256[] memory token1Balance, uint256[] memory lpBalance) {
         uint256 len = pools.length;
         token0 = new address[](len);
