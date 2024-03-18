@@ -5,7 +5,7 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
 import "../interfaces/lens/ILPViewer.sol";
 
-/// @title Interface for LPViewer
+/// @title LPViewer
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Implementation contract of ILPViewer to get token balance information per user per pool
 /// @notice and across a given number of pools per user, aggregated or per pool
