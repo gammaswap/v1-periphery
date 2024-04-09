@@ -88,6 +88,8 @@ interface IPositionManagerExternal is IPositionManager {
         address to;
         /// @dev timestamp after which the transaction expires. Used to prevent stale transactions from executing
         uint256 deadline;
+        /// @dev amounts of reserve tokens requesting to withdraw from a loan's collateral
+        uint128[] withdraw;
         /// @dev minimum amounts of collateral expected to have after re-balancing collateral. Slippage protection
         uint128[] minCollateral;
         /// @dev minimum amounts of reserve tokens expected to have been used to repay the liquidity debt. Slippage protection

@@ -1422,6 +1422,7 @@ describe("PositionManager", function () {
                 collateralId: 0,
                 to: ethers.constants.AddressZero,
                 deadline: ethers.constants.MaxUint256,
+                withdraw: [],
                 minCollateral: [],
                 minRepaid: [0,0]
             }
@@ -1463,6 +1464,7 @@ describe("PositionManager", function () {
                 collateralId: 0,
                 to: ethers.constants.AddressZero,
                 deadline: ethers.constants.MaxUint256,
+                withdraw: [],
                 minCollateral: [],
                 minRepaid: [0,0]
             }
@@ -1475,6 +1477,49 @@ describe("PositionManager", function () {
             expect(args1.tokenId.toNumber()).to.equal(tokenId);
             expect(args1.liquidityPaid).to.equal(24);
             expect(args1.amounts.length).to.equal(2);
+        });
+
+        it("#rebalanceExternallyAndRepayLiquidity should return tokenId, paid liquidity, paid lp tokens and length of amounts array, No Rebalance", async function () {
+            const dataNum = 77;
+            const dataAddr = addr5.address;
+            const data = ethers.utils.defaultAbiCoder.encode(
+                ["uint256","address"],
+                [dataNum,dataAddr]
+            );
+
+            const RebalanceExternallyAndRepayLiquidityParams = {
+                cfmm: cfmm.address,
+                protocolId: protocolId,
+                tokenId: tokenId,
+                liquidity: 1,
+                amounts: [100,10],
+                rebalancer: ethers.constants.AddressZero,
+                data: data,
+                collateralId: 0,
+                to: ethers.constants.AddressZero,
+                deadline: ethers.constants.MaxUint256,
+                withdraw: [0,2],
+                minCollateral: [],
+                minRepaid: [0,0]
+            }
+
+            const res = await (await posMgr.rebalanceExternallyAndRepayLiquidity(RebalanceExternallyAndRepayLiquidityParams)).wait();
+
+            expect(res.events[0].event).to.equal("RepayLiquidity");
+            const args1 = res.events[0].args;
+            expect(args1.pool).to.equal(gammaPool.address);
+            expect(args1.tokenId.toNumber()).to.equal(tokenId);
+            expect(args1.liquidityPaid).to.equal(24);
+            expect(args1.amounts.length).to.equal(2);
+            expect(res.events[1].event).to.equal("DecreaseCollateral");
+            const args2 = res.events[1].args;
+            expect(args2.pool).to.equal(gammaPool.address);
+            expect(args2.tokenId.toNumber()).to.equal(tokenId);
+            expect(args2.tokensHeld.length).to.equal(7);
+            expect(args2.amounts.length).to.equal(RebalanceExternallyAndRepayLiquidityParams.withdraw.length);
+            expect(args2.amounts[0]).to.equal(RebalanceExternallyAndRepayLiquidityParams.withdraw[0]);
+            expect(args2.amounts[1]).to.equal(RebalanceExternallyAndRepayLiquidityParams.withdraw[1]);
+
         });
     });
 });
