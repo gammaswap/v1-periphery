@@ -61,7 +61,14 @@ contract PositionManagerExternalWithStaking is PositionManagerWithStaking, IPosi
         if(params.rebalancer != address(0)) {
             rebalanceCollateralExternally(gammaPool, params.tokenId, params.amounts, 0, params.rebalancer, params.data, params.minCollateral);
         }
-        (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to, params.minRepaid);
+        if(params.withdraw.length > 0) {
+            // if partial repay
+            (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, 0, address(0), params.minRepaid);
+            decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw, new uint256[](0), new uint128[](0));
+        } else {
+            // if full repay
+            (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to, params.minRepaid);
+        }
         _logPrice(gammaPool);
     }
 
