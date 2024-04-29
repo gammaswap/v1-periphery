@@ -22,22 +22,29 @@ contract PositionManagerWithStaking is PositionManager, IAutoStakable {
     }
 
     /// @dev See {IAutoStakable-depositReservesAndStake}.
-    function depositReservesAndStake(DepositReservesParams calldata params) external isExpired(params.deadline) returns(uint256[] memory reserves, uint256 shares) {
+    function depositReservesAndStake(DepositReservesParams calldata params, address _stakingRouter) external isExpired(params.deadline) returns(uint256[] memory reserves, uint256 shares) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
+        address receiver = _stakingRouter != address(0) ? _stakingRouter : params.to;
         (reserves, shares) = IGammaPool(gammaPool)
-        .depositReserves(address(stakingRouter), params.amountsDesired, params.amountsMin,
+        .depositReserves(receiver, params.amountsDesired, params.amountsMin,
             abi.encode(SendTokensCallbackData({cfmm: params.cfmm, protocolId: params.protocolId, payer: msg.sender})));
 
-        stakingRouter.stakeLpForAccount(params.to, gammaPool, shares);
+        if(_stakingRouter != address(0)) {
+            IStakingPoolRouter(_stakingRouter).stakeLpForAccount(params.to, gammaPool, shares);
+        }
+
         emit DepositReserve(gammaPool, reserves, shares);
     }
 
     /// @dev See {IAutoStakable-withdrawReservesAndUnstake}.
-    function withdrawReservesAndUnstake(WithdrawReservesParams calldata params) external isExpired(params.deadline) returns (uint256[] memory reserves, uint256 assets) {
+    function withdrawReservesAndUnstake(WithdrawReservesParams calldata params, address _stakingRouter) external isExpired(params.deadline) returns (uint256[] memory reserves, uint256 assets) {
         address user = msg.sender;
 
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
-        stakingRouter.unstakeLpForAccount(user, gammaPool, params.amount);
+
+        if(_stakingRouter != address(0)) {
+            IStakingPoolRouter(_stakingRouter).unstakeLpForAccount(user, gammaPool, params.amount);
+        }
 
         send(gammaPool, msg.sender, gammaPool, params.amount);
         (reserves, assets) = IGammaPool(gammaPool).withdrawReserves(params.to);
