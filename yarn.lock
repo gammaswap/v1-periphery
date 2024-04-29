@@ -576,10 +576,10 @@
   resolved "https://registry.yarnpkg.com/@fastify/busboy/-/busboy-2.0.0.tgz#f22824caff3ae506b18207bad4126dbc6ccdb6b8"
   integrity sha512-JUFJad5lv7jxj926GPgymrWQxxjPYuJNiNjNMzqT+HiuP6Vl3dk5xzG+8sTX96np0ZAluvaMzPsjhHZ5rNuNQQ==
 
-"@gammaswap/v1-core@^1.2.3":
-  version "1.2.3"
-  resolved "https://npm.pkg.github.com/download/@gammaswap/v1-core/1.2.3/b1df5e7e559752b8a98e9bd680fcf3e2faad409c#b1df5e7e559752b8a98e9bd680fcf3e2faad409c"
-  integrity sha512-GNu8Cwf3rjw7jqQ2USurJoOZqkU3oihFzVNBhKV/hxTFCGrwUgo+GDxxLt4UPQoauZ9V30Ue6QrNzY23wVQ1sw==
+"@gammaswap/v1-core@^1.2.7":
+  version "1.2.7"
+  resolved "https://npm.pkg.github.com/download/@gammaswap/v1-core/1.2.7/02a1c46dc6d2df88196c3d23b312d37378d7ae54#02a1c46dc6d2df88196c3d23b312d37378d7ae54"
+  integrity sha512-eSxNUf829k188M62zjM51BXBqOSlQoH5DOhFPR8s2HfUuqWqUISa5M6x01eaXv5pYUovW81l42QsEkCoyHxifQ==
   dependencies:
     "@openzeppelin/contracts" "^4.7.0"
 
