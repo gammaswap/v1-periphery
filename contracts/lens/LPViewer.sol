@@ -3,17 +3,66 @@ pragma solidity >=0.8.0;
 
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "@gammaswap/v1-core/contracts/interfaces/IGammaPool.sol";
+import "@gammaswap/v1-core/contracts/utils/TwoStepOwnable.sol";
+import "@gammaswap/v1-staking/contracts/RewardTracker.sol";
 import "../interfaces/lens/ILPViewer.sol";
 
 /// @title LPViewer
 /// @author Daniel D. Alcarraz (https://github.com/0xDanr)
 /// @notice Implementation contract of ILPViewer to get token balance information per user per pool
 /// @notice and across a given number of pools per user, aggregated or per pool
-contract LPViewer is ILPViewer {
+contract LPViewer is ILPViewer, TwoStepOwnable {
 
     mapping(address => uint256) tokenIndex;
+    mapping(address => address[]) stakingPoolsByPool;
 
-    constructor(){
+    constructor() TwoStepOwnable(msg.sender) {
+    }
+
+    function findRewardTracker(address pool, address rewardTracker) internal virtual view returns(int256) {
+        uint256 len = stakingPoolsByPool[pool].length;
+        for(uint256 i = 0; i < len;) {
+            address _rewardTracker = stakingPoolsByPool[pool][i];
+            if(_rewardTracker == rewardTracker) {
+                return int256(i);
+            }
+            unchecked {
+                ++i;
+            }
+        }
+        return -int256(1);
+    }
+
+    function registerRewardTracker(address pool, address rewardTracker) public override virtual onlyOwner {
+        int256 idx = findRewardTracker(pool, rewardTracker);
+        if(idx == -1) {
+            if(RewardTracker(rewardTracker).isDepositToken(pool)) {
+                stakingPoolsByPool[pool].push(rewardTracker);
+
+                emit RegisterRewardTracker(pool, rewardTracker);
+            }
+        }
+    }
+
+    function unregisterRewardTracker(address pool, address rewardTracker) public override virtual onlyOwner {
+        int256 idx = findRewardTracker(pool, rewardTracker);
+        if(idx >= 0) {
+            stakingPoolsByPool[pool][uint256(idx)] = address(0);
+            emit UnregisterRewardTracker(pool, rewardTracker);
+        }
+    }
+
+    function getStakedLPBalance(address user, address pool) public virtual override view returns(uint256 lpBalance) {
+        uint256 len = stakingPoolsByPool[pool].length;
+        for(uint256 i = 0; i < len;) {
+            address _rewardTracker = stakingPoolsByPool[pool][i];
+            if(_rewardTracker != address(0)) {
+                lpBalance += IRewardTracker(_rewardTracker).stakedAmounts(user);
+            }
+            unchecked {
+                ++i;
+            }
+        }
     }
 
     /// @inheritdoc ILPViewer
@@ -142,6 +191,7 @@ contract LPViewer is ILPViewer {
     function _lpBalanceByPool(address user, address pool) internal virtual view returns(address token0, address token1,
         uint256 token0Balance, uint256 token1Balance, uint256 lpBalance) {
         lpBalance = IERC20(pool).balanceOf(user);
+        lpBalance += getStakedLPBalance(user, pool);
         uint256 lpTotalSupply = IERC20(pool).totalSupply();
 
         address[] memory tokens = IGammaPool(pool).tokens();
