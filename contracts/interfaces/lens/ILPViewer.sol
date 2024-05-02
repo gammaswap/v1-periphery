@@ -6,6 +6,33 @@ pragma solidity >=0.8.0;
 /// @notice Interface used to send tokens and clear tokens and Ether from a contract
 interface ILPViewer {
 
+    /// @dev Event emitted when a staking contract is set up for a pool to track LP deposits in staking contract
+    /// @param pool - address of pool to get information for
+    /// @param rewardTracker - rewardTracker of staking contract that accepts pool as deposit token
+    event RegisterRewardTracker(address indexed pool, address rewardTracker);
+
+    /// @dev Event emitted when a staking contract is deregistered for a pool because we won't track staked
+    /// @dev positions for that pool anymore
+    /// @param pool - address of pool to get information for
+    /// @param rewardTracker - rewardTracker of staking contract that accepts pool as deposit token
+    event UnregisterRewardTracker(address indexed pool, address rewardTracker);
+
+    /// @dev Register a reward tracker for a pool so that we can get the staked amount for a user
+    /// @param pool - address of pool to get information for
+    /// @param rewardTracker - rewardTracker of staking contract that accepts pool as deposit token
+    function registerRewardTracker(address pool, address rewardTracker) external;
+
+    /// @dev Unregister a reward tracker for a pool
+    /// @param pool - address of pool to get information for
+    /// @param rewardTracker - rewardTracker of staking contract that accepts pool as deposit token
+    function unregisterRewardTracker(address pool, address rewardTracker) external;
+
+    /// @dev Get total GS LP balance amount for a user staked in all staking contracts of a given pool
+    /// @param user - address of user to get information for
+    /// @param pool - address of pool to get information for
+    /// @return lpBalance - GS LP Balance of user
+    function getStakedLPBalance(address user, address pool) external view returns(uint256 lpBalance);
+
     /// @dev NonStatic call to get total token balances in pools array belonging to a user.
     /// @dev The index of the tokenBalances array will match the index of the tokens array.
     /// @notice there may be more tokens than there are pools. E.g. WETH/USDC => 2 tokens and 1 pool
