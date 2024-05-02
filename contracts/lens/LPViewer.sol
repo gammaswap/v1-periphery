@@ -14,11 +14,15 @@ import "../interfaces/lens/ILPViewer.sol";
 contract LPViewer is ILPViewer, TwoStepOwnable {
 
     mapping(address => uint256) tokenIndex;
-    mapping(address => address[]) stakingPoolsByPool;
+    mapping(address => address[]) public stakingPoolsByPool;
 
     constructor() TwoStepOwnable(msg.sender) {
     }
 
+    /// @dev Find index of rewardTracker (staking contract) of a given pool in array value of stakingPoolsByPool
+    /// @param pool - address of pool to get information for
+    /// @param rewardTracker - address of rewardTracker (staking contract) of a pool
+    /// @return index - index of staking contract in array valu of stakingPoolsByPool. If not found return -1
     function findRewardTracker(address pool, address rewardTracker) internal virtual view returns(int256) {
         uint256 len = stakingPoolsByPool[pool].length;
         for(uint256 i = 0; i < len;) {
@@ -33,6 +37,7 @@ contract LPViewer is ILPViewer, TwoStepOwnable {
         return -int256(1);
     }
 
+    /// @inheritdoc ILPViewer
     function registerRewardTracker(address pool, address rewardTracker) public override virtual onlyOwner {
         int256 idx = findRewardTracker(pool, rewardTracker);
         if(idx == -1) {
@@ -44,6 +49,7 @@ contract LPViewer is ILPViewer, TwoStepOwnable {
         }
     }
 
+    /// @inheritdoc ILPViewer
     function unregisterRewardTracker(address pool, address rewardTracker) public override virtual onlyOwner {
         int256 idx = findRewardTracker(pool, rewardTracker);
         if(idx >= 0) {
@@ -52,6 +58,7 @@ contract LPViewer is ILPViewer, TwoStepOwnable {
         }
     }
 
+    /// @inheritdoc ILPViewer
     function getStakedLPBalance(address user, address pool) public virtual override view returns(uint256 lpBalance) {
         uint256 len = stakingPoolsByPool[pool].length;
         for(uint256 i = 0; i < len;) {

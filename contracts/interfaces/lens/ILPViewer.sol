@@ -27,7 +27,7 @@ interface ILPViewer {
     /// @param rewardTracker - rewardTracker of staking contract that accepts pool as deposit token
     function unregisterRewardTracker(address pool, address rewardTracker) external;
 
-    /// @dev token quantity and GS LP balance information for a user in a given pool
+    /// @dev Get total GS LP balance amount for a user staked in all staking contracts of a given pool
     /// @param user - address of user to get information for
     /// @param pool - address of pool to get information for
     /// @return lpBalance - GS LP Balance of user
