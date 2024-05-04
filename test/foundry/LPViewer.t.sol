@@ -3,6 +3,7 @@ pragma solidity ^0.8.0;
 import "forge-std/Test.sol";
 import "../../contracts/test/TestGammaPool3.sol";
 import "../../contracts/lens/LPViewer.sol";
+import "../../contracts/test/TestRewardTracker.sol";
 
 contract LPViewerTest is Test {
 
@@ -23,9 +24,18 @@ contract LPViewerTest is Test {
     address addr4;
 
     LPViewer lpViewer;
+    RewardTracker rewardTracker1;
+    RewardTracker rewardTracker2;
 
     function setUp() public {
-        lpViewer = new LPViewer();
+        addr1 = vm.addr(1);
+        addr2 = vm.addr(2);
+        addr3 = vm.addr(3);
+        addr4 = vm.addr(4);
+
+        lpViewer = new LPViewer(addr1);
+        rewardTracker1 = new TestRewardTracker("Reward Tracker 1", "RT1");
+        rewardTracker2 = new TestRewardTracker("Reward Tracker 2", "RT2");
         tokenA = new TERC20("TokenA", "TOKA");
         tokenB = new TERC20("TokenB", "TOKB");
         tokenC = new TERC20("TokenC", "TOKC");
@@ -36,11 +46,6 @@ contract LPViewerTest is Test {
         pool2 = createPool(3, address(tokenB), address(tokenC));
         pool3 = createPool(4, address(tokenB), address(tokenD));
         pool4 = createPool(5, address(tokenA), address(tokenE));
-
-        addr1 = vm.addr(1);
-        addr2 = vm.addr(2);
-        addr3 = vm.addr(3);
-        addr4 = vm.addr(4);
 
         pool0.mintTo(addr1, 100*1e18);
         pool1.mintTo(addr1, 200*1e18);
@@ -63,6 +68,99 @@ contract LPViewerTest is Test {
         decimals[0] = 18;
         decimals[1] = 18;
         pool.initialize(address(666), tokens, decimals, 0, "0x");
+    }
+
+    function testRegisterRewardTracker() public {
+        vm.prank(address(this));
+        rewardTracker1.setDepositToken(address(pool0), true);
+
+        vm.expectRevert("Forbidden");
+        lpViewer.registerRewardTracker(address(pool0), address(rewardTracker1));
+
+        vm.startPrank(addr1);
+
+        vm.expectRevert();
+        lpViewer.registerRewardTracker(address(pool0), address(pool1));
+
+        vm.expectRevert("LP_VIEWER: RT_NOT_DEPOSIT_TOKEN");
+        lpViewer.registerRewardTracker(address(pool1), address(rewardTracker1));
+
+        lpViewer.registerRewardTracker(address(pool0), address(rewardTracker1));
+
+        vm.expectRevert("LP_VIEWER: RT_REGISTERED");
+        lpViewer.registerRewardTracker(address(pool0), address(rewardTracker1));
+
+        vm.stopPrank();
+    }
+
+    function testUnregisterRewardTracker() public {
+        vm.prank(address(this));
+        rewardTracker1.setDepositToken(address(pool0), true);
+
+        vm.expectRevert("Forbidden");
+        lpViewer.unregisterRewardTracker(address(pool0), address(rewardTracker1));
+
+        vm.startPrank(addr1);
+
+        vm.expectRevert("LP_VIEWER: RT_NOT_REGISTERED");
+        lpViewer.unregisterRewardTracker(address(pool0), address(rewardTracker1));
+
+        lpViewer.registerRewardTracker(address(pool0), address(rewardTracker1));
+
+        vm.expectRevert("LP_VIEWER: RT_NOT_REGISTERED");
+        lpViewer.unregisterRewardTracker(address(pool0), address(rewardTracker2));
+
+        lpViewer.unregisterRewardTracker(address(pool0), address(rewardTracker1));
+
+        vm.expectRevert("LP_VIEWER: RT_NOT_REGISTERED");
+        lpViewer.unregisterRewardTracker(address(pool0), address(rewardTracker1));
+
+        vm.stopPrank();
+    }
+
+    function testStakedLPBalance() public {
+        vm.startPrank(address(this));
+        rewardTracker1.setDepositToken(address(pool0), true);
+        rewardTracker1.setInPrivateStakingMode(false);
+
+        rewardTracker2.setDepositToken(address(pool0), true);
+        rewardTracker2.setInPrivateStakingMode(false);
+        vm.stopPrank();
+
+        vm.startPrank(addr1);
+
+        pool0.approve(address(rewardTracker1), type(uint256).max);
+        pool0.approve(address(rewardTracker2), type(uint256).max);
+
+        rewardTracker1.stake(address(pool0), 1e18);
+
+        assertEq(1e18,rewardTracker1.stakedAmounts(addr1));
+        assertEq(0,lpViewer.getStakedLPBalance(addr1, address(pool0)));
+
+        lpViewer.registerRewardTracker(address(pool0), address(rewardTracker1));
+
+        assertEq(1e18,lpViewer.getStakedLPBalance(addr1, address(pool0)));
+
+        rewardTracker2.stake(address(pool0), 2e18);
+
+        assertEq(1e18,lpViewer.getStakedLPBalance(addr1, address(pool0)));
+
+        lpViewer.registerRewardTracker(address(pool0), address(rewardTracker2));
+        assertEq(3e18,lpViewer.getStakedLPBalance(addr1, address(pool0)));
+
+        lpViewer.unregisterRewardTracker(address(pool0), address(rewardTracker1));
+        assertEq(2e18,lpViewer.getStakedLPBalance(addr1, address(pool0)));
+
+        rewardTracker1.unstake(address(pool0), 1e18);
+        assertEq(2e18,lpViewer.getStakedLPBalance(addr1, address(pool0)));
+
+        rewardTracker2.unstake(address(pool0), 1e18);
+        assertEq(1e18,lpViewer.getStakedLPBalance(addr1, address(pool0)));
+
+        rewardTracker2.unstake(address(pool0), 1e18);
+        assertEq(0,lpViewer.getStakedLPBalance(addr1, address(pool0)));
+
+        vm.stopPrank();
     }
 
     function testTotalSupplies() public {
