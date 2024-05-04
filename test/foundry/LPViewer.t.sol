@@ -25,7 +25,12 @@ contract LPViewerTest is Test {
     LPViewer lpViewer;
 
     function setUp() public {
-        lpViewer = new LPViewer();
+        addr1 = vm.addr(1);
+        addr2 = vm.addr(2);
+        addr3 = vm.addr(3);
+        addr4 = vm.addr(4);
+
+        lpViewer = new LPViewer(addr1);
         tokenA = new TERC20("TokenA", "TOKA");
         tokenB = new TERC20("TokenB", "TOKB");
         tokenC = new TERC20("TokenC", "TOKC");
@@ -37,10 +42,6 @@ contract LPViewerTest is Test {
         pool3 = createPool(4, address(tokenB), address(tokenD));
         pool4 = createPool(5, address(tokenA), address(tokenE));
 
-        addr1 = vm.addr(1);
-        addr2 = vm.addr(2);
-        addr3 = vm.addr(3);
-        addr4 = vm.addr(4);
 
         pool0.mintTo(addr1, 100*1e18);
         pool1.mintTo(addr1, 200*1e18);
