@@ -16,7 +16,7 @@ contract LPViewer is ILPViewer, TwoStepOwnable {
     mapping(address => uint256) tokenIndex;
     mapping(address => address[]) public stakingPoolsByPool;
 
-    constructor() TwoStepOwnable(msg.sender) {
+    constructor(address _owner) TwoStepOwnable(_owner) {
     }
 
     /// @dev Find index of rewardTracker (staking contract) of a given pool in array value of stakingPoolsByPool
@@ -39,23 +39,22 @@ contract LPViewer is ILPViewer, TwoStepOwnable {
 
     /// @inheritdoc ILPViewer
     function registerRewardTracker(address pool, address rewardTracker) public override virtual onlyOwner {
-        int256 idx = findRewardTracker(pool, rewardTracker);
-        if(idx == -1) {
-            if(RewardTracker(rewardTracker).isDepositToken(pool)) {
-                stakingPoolsByPool[pool].push(rewardTracker);
+        require(RewardTracker(rewardTracker).isDepositToken(pool), "LP_VIEWER: RT_NOT_DEPOSIT_TOKEN");
+        require(findRewardTracker(pool, rewardTracker) == -1, "LP_VIEWER: RT_REGISTERED");
 
-                emit RegisterRewardTracker(pool, rewardTracker);
-            }
-        }
+        stakingPoolsByPool[pool].push(rewardTracker);
+
+        emit RegisterRewardTracker(pool, rewardTracker);
     }
 
     /// @inheritdoc ILPViewer
     function unregisterRewardTracker(address pool, address rewardTracker) public override virtual onlyOwner {
         int256 idx = findRewardTracker(pool, rewardTracker);
-        if(idx >= 0) {
-            stakingPoolsByPool[pool][uint256(idx)] = address(0);
-            emit UnregisterRewardTracker(pool, rewardTracker);
-        }
+        require(idx >= 0, "LP_VIEWER: RT_NOT_REGISTERED");
+
+        stakingPoolsByPool[pool][uint256(idx)] = address(0);
+
+        emit UnregisterRewardTracker(pool, rewardTracker);
     }
 
     /// @inheritdoc ILPViewer
