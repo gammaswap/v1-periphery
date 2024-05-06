@@ -24,6 +24,12 @@ contract TestPositionManager is PositionManagerExternalWithStaking {
         return "";
     }
 
+    function transferOwnership(address newOwner) external virtual override {
+    }
+
+    function acceptOwnership() external virtual override {
+    }
+
 }
 
 
