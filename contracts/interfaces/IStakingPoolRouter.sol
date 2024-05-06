@@ -9,8 +9,9 @@ interface IStakingPoolRouter {
   /// @dev Stake GS_LP tokens on behalf of user
   /// @param _account User address for query
   /// @param _gsPool GammaPool address
+  /// @param _esToken Escrow token address
   /// @param _amount Amount of GS_LP tokens to stake
-  function stakeLpForAccount(address _account, address _gsPool, uint256 _amount) external;
+  function stakeLpForAccount(address _account, address _gsPool, address _esToken, uint256 _amount) external;
 
   /// @dev Stake loan on behalf of user
   /// @param _account User address for query
@@ -21,8 +22,9 @@ interface IStakingPoolRouter {
   /// @dev Unstake GS_LP tokens on behalf of user
   /// @param _account User address for query
   /// @param _gsPool GammaPool address
+  /// @param _esToken Escrow token address
   /// @param _amount Amount of GS_LP tokens to unstake
-  function unstakeLpForAccount(address _account, address _gsPool, uint256 _amount) external;
+  function unstakeLpForAccount(address _account, address _gsPool, address _esToken, uint256 _amount) external;
 
   /// @dev Unstake loan on behalf of user
   /// @param _account User address for query

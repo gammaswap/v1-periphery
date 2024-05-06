@@ -7,6 +7,9 @@ import "./IPositionManager.sol";
 /// @author Simon Mall
 /// @dev This should be used along with IPositionManager to define a contract
 interface IAutoStakable {
+  /// @dev error to emit when trying to use staking router and router is not set
+  error StakingRouterNotSet();
+
   /// @dev Set staking router contract address
   /// @dev Requires admin permission
   /// @param _stakingRouter Staking Router contract address
@@ -15,16 +18,16 @@ interface IAutoStakable {
   /// @dev Deposit reserve tokens into a GammaPool and stake GS LP tokens
   /// @dev See more {IPositionManager-depositReserves}
   /// @param params - struct containing parameters to identify a GammaPool to deposit reserve tokens to
-  /// @param stakingRouter - address of router used for staking contracts
+  /// @param esToken - address of escrow token of staking contract
   /// @return reserves - reserve tokens deposited into GammaPool
   /// @return shares - GS LP token shares minted for depositing
-  function depositReservesAndStake(IPositionManager.DepositReservesParams calldata params, address stakingRouter) external returns(uint256[] memory reserves, uint256 shares);
+  function depositReservesAndStake(IPositionManager.DepositReservesParams calldata params, address esToken) external returns(uint256[] memory reserves, uint256 shares);
 
   /// @dev Unstake GS LP tokens from staking router and withdraw reserve tokens from a GammaPool
   /// @dev See more {IPositionManager-withdrawReserves}
   /// @param params - struct containing parameters to identify a GammaPool to withdraw reserve tokens from
-  /// @param stakingRouter - address of router used for staking contracts
+  /// @param esToken - address of escrow token of staking contract
   /// @return reserves - reserve tokens withdrawn from GammaPool
   /// @return assets - CFMM LP token shares equivalent of reserves withdrawn from GammaPool
-  function withdrawReservesAndUnstake(IPositionManager.WithdrawReservesParams calldata params, address stakingRouter) external returns (uint256[] memory reserves, uint256 assets);
+  function withdrawReservesAndUnstake(IPositionManager.WithdrawReservesParams calldata params, address esToken) external returns (uint256[] memory reserves, uint256 assets);
 }

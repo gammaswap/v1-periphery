@@ -22,28 +22,32 @@ contract PositionManagerWithStaking is PositionManager, IAutoStakable {
     }
 
     /// @dev See {IAutoStakable-depositReservesAndStake}.
-    function depositReservesAndStake(DepositReservesParams calldata params, address _stakingRouter) external isExpired(params.deadline) returns(uint256[] memory reserves, uint256 shares) {
+    function depositReservesAndStake(DepositReservesParams calldata params, address esToken) external isExpired(params.deadline) returns(uint256[] memory reserves, uint256 shares) {
+        if(address(stakingRouter) == address(0) && esToken != address(0)) revert StakingRouterNotSet();
+
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
-        address receiver = _stakingRouter != address(0) ? _stakingRouter : params.to;
+        address receiver = esToken != address(0) ? address(stakingRouter) : params.to;
         (reserves, shares) = IGammaPool(gammaPool)
         .depositReserves(receiver, params.amountsDesired, params.amountsMin,
             abi.encode(SendTokensCallbackData({cfmm: params.cfmm, protocolId: params.protocolId, payer: msg.sender})));
 
-        if(_stakingRouter != address(0)) {
-            IStakingPoolRouter(_stakingRouter).stakeLpForAccount(params.to, gammaPool, shares);
+        if(esToken != address(0)) {
+            stakingRouter.stakeLpForAccount(params.to, gammaPool, esToken, shares);
         }
 
         emit DepositReserve(gammaPool, reserves, shares);
     }
 
     /// @dev See {IAutoStakable-withdrawReservesAndUnstake}.
-    function withdrawReservesAndUnstake(WithdrawReservesParams calldata params, address _stakingRouter) external isExpired(params.deadline) returns (uint256[] memory reserves, uint256 assets) {
+    function withdrawReservesAndUnstake(WithdrawReservesParams calldata params, address esToken) external isExpired(params.deadline) returns (uint256[] memory reserves, uint256 assets) {
         address user = msg.sender;
 
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
 
-        if(_stakingRouter != address(0)) {
-            IStakingPoolRouter(_stakingRouter).unstakeLpForAccount(user, gammaPool, params.amount);
+        if(esToken != address(0)) {
+            if(address(stakingRouter) == address(0)) revert StakingRouterNotSet();
+
+            stakingRouter.unstakeLpForAccount(user, gammaPool, esToken, params.amount);
         }
 
         send(gammaPool, msg.sender, gammaPool, params.amount);
