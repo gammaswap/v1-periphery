@@ -624,6 +624,15 @@
     "@gammaswap/v1-core" "^1.2.7"
     "@openzeppelin/contracts" "^4.7.0"
 
+"@gammaswap/v1-periphery@^1.2.10":
+  version "1.2.10"
+  resolved "https://npm.pkg.github.com/download/@gammaswap/v1-periphery/1.2.10/bf1c1e128acd1e1a61bb743d04fc1506ce580d3d#bf1c1e128acd1e1a61bb743d04fc1506ce580d3d"
+  integrity sha512-VildyoSAEEtSVojyXlRbUgmhOVc771hzF1RoIEls2SRv7BZ9e7iCxHc75rI2GMZKMR/pjwG6HQUpxi42HmT6yw==
+  dependencies:
+    "@gammaswap/v1-core" "^1.2.7"
+    "@gammaswap/v1-staking" "^0.3.9"
+    "@openzeppelin/contracts" "^4.7.0"
+
 "@gammaswap/v1-periphery@^1.2.7":
   version "1.2.7"
   resolved "https://npm.pkg.github.com/download/@gammaswap/v1-periphery/1.2.7/b9dea46b6d2cb1fda57cb18408f198c6048497bd#b9dea46b6d2cb1fda57cb18408f198c6048497bd"
@@ -640,6 +649,21 @@
     "@gammaswap/v1-core" "^1.2.7"
     "@gammaswap/v1-implementations" "^1.2.8"
     "@gammaswap/v1-periphery" "^1.2.7"
+    "@layerzerolabs/lz-sdk" "^0.0.38"
+    "@layerzerolabs/solidity-examples" "^0.0.13"
+    "@layerzerolabs/ua-utils" "^0.0.4"
+    "@openzeppelin/contracts" "^4.9.2"
+    "@uniswap/v2-core" "^1.0.1"
+    "@uniswap/v2-periphery" "^1.1.0-beta.0"
+
+"@gammaswap/v1-staking@^0.4.0":
+  version "0.4.0"
+  resolved "https://npm.pkg.github.com/download/@gammaswap/v1-staking/0.4.0/e6ba5ae4de558ff38bc0f59045d36735723e34e2#e6ba5ae4de558ff38bc0f59045d36735723e34e2"
+  integrity sha512-m5vW4pcDmzaZpxMqoMsdut29JYIXEYHMod0OEdCD3f/MmCkz0knQPOPes2xy6cgV0pgjk4X4S30GGvDAc3A8oA==
+  dependencies:
+    "@gammaswap/v1-core" "^1.2.7"
+    "@gammaswap/v1-implementations" "^1.2.8"
+    "@gammaswap/v1-periphery" "^1.2.10"
     "@layerzerolabs/lz-sdk" "^0.0.38"
     "@layerzerolabs/solidity-examples" "^0.0.13"
     "@layerzerolabs/ua-utils" "^0.0.4"
