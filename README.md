@@ -34,7 +34,7 @@ To deploy contracts to local live network use v1-deployment repository
 To install foundry locally go to [getfoundry.sh](https://getfoundry.sh/)
 
 ## Solidity Versions
-Code is tested with solidity version 0.8.21 but paris evm version because arbitrum does not support shanghai evm
+Code is tested with solidity version 0.8.21 but compiled and deployed with paris evm version because arbitrum does not support shanghai evm
 
 Concrete contracts support only solidity version 0.8.21.
 

@@ -135,15 +135,6 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
     // **** LONG GAMMA **** //
 
     function logPrice(address gammaPool) external virtual {
-        if(IGammaPoolFactory(factory).getKey(gammaPool) > 0) {
-            _logPrice(gammaPool);
-        }
-    }
-
-    function _logPrice(address gammaPool) internal virtual {
-        if(priceStore != address(0)) {
-            IPriceStore(priceStore).addPriceInfo(gammaPool);
-        }
     }
 
     /// @notice Slippage protection for uint256[] array. If amounts < amountsMin, less was obtained than expected
@@ -304,14 +295,12 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
     function createLoan(uint16 protocolId, address cfmm, address to, uint16 refId, uint256 deadline) external virtual override isExpired(deadline) returns(uint256 tokenId) {
         address gammaPool = getGammaPoolAddress(cfmm, protocolId);
         tokenId = createLoan(gammaPool, to, refId);
-        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-borrowLiquidity}.
     function borrowLiquidity(BorrowLiquidityParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns (uint256 liquidityBorrowed, uint256[] memory amounts, uint128[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         (liquidityBorrowed, amounts, tokensHeld) = borrowLiquidity(gammaPool, params.tokenId, params.lpTokens, params.ratio, params.minBorrowed, params.maxBorrowed, params.minCollateral);
-        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-repayLiquidity}.
@@ -322,7 +311,6 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
         } else {
             (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to, params.minRepaid);
         }
-        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-repayLiquidityWithLP}.
@@ -330,28 +318,24 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         send(params.cfmm, msg.sender, gammaPool, params.lpTokens);
         (liquidityPaid, tokensHeld) = repayLiquidityWithLP(gammaPool, params.tokenId, params.collateralId, params.to, params.minCollateral, params.lpTokens);
-        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-increaseCollateral}.
     function increaseCollateral(AddCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint128[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         tokensHeld = increaseCollateral(gammaPool, params.tokenId, params.amounts, params.ratio, params.minCollateral);
-        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-decreaseCollateral}.
     function decreaseCollateral(RemoveCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint128[] memory tokensHeld){
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.amounts, params.ratio, params.minCollateral);
-        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-rebalanceCollateral}.
     function rebalanceCollateral(RebalanceCollateralParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint128[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         tokensHeld = rebalanceCollateral(gammaPool, params.tokenId, params.deltas, params.ratio, params.minCollateral);
-        _logPrice(gammaPool);
     }
 
     // Multi Function Calls
@@ -364,7 +348,6 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
         if(params.lpTokens != 0) {
             (liquidityBorrowed, amounts, tokensHeld) = borrowLiquidity(gammaPool, tokenId, params.lpTokens, params.ratio, params.minBorrowed, params.maxBorrowed, params.minCollateral);
         }
-        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManager-borrowAndRebalance}.
@@ -384,7 +367,6 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
         if(isWithdrawCollateral) {
             tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw, params.ratio, params.minCollateral);
         }
-        _logPrice(gammaPool);
     }
 
     function _authorizeUpgrade(address) internal override onlyOwner {}
