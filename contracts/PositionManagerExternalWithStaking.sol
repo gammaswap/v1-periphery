@@ -38,7 +38,6 @@ contract PositionManagerExternalWithStaking is PositionManagerWithStaking, IPosi
     function rebalanceCollateralExternally(RebalanceCollateralExternallyParams calldata params) external virtual override isAuthorizedForToken(params.tokenId) isExpired(params.deadline) returns(uint256 loanLiquidity, uint128[] memory tokensHeld) {
         address gammaPool = getGammaPoolAddress(params.cfmm, params.protocolId);
         (loanLiquidity,tokensHeld) = rebalanceCollateralExternally(gammaPool, params.tokenId, params.amounts, params.lpTokens, params.rebalancer, params.data, params.minCollateral);
-        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManagerExternal-createLoanBorrowAndRebalanceExternally}.
@@ -52,7 +51,6 @@ contract PositionManagerExternalWithStaking is PositionManagerWithStaking, IPosi
         if(params.rebalancer != address(0)) {
             (,tokensHeld) = rebalanceCollateralExternally(gammaPool, tokenId, tokensHeld, 0, params.rebalancer, params.data, params.minCollateral);
         }
-        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManagerExternal-rebalanceExternallyAndRepayLiquidity}.
@@ -69,7 +67,6 @@ contract PositionManagerExternalWithStaking is PositionManagerWithStaking, IPosi
             // if full repay
             (liquidityPaid, amounts) = repayLiquidity(gammaPool, params.tokenId, params.liquidity, params.collateralId, params.to, params.minRepaid);
         }
-        _logPrice(gammaPool);
     }
 
     /// @dev See {IPositionManagerExternal-borrowAndRebalanceExternally}.
@@ -88,6 +85,5 @@ contract PositionManagerExternalWithStaking is PositionManagerWithStaking, IPosi
         if(isWithdrawCollateral) {
             tokensHeld = decreaseCollateral(gammaPool, params.to, params.tokenId, params.withdraw, new uint256[](0), new uint128[](0));
         }
-        _logPrice(gammaPool);
     }
 }

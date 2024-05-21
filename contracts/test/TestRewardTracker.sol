@@ -5,7 +5,9 @@ import "@gammaswap/v1-staking/contracts/RewardTracker.sol";
 
 contract TestRewardTracker is RewardTracker {
 
-    constructor(string memory _name, string memory _symbol) RewardTracker(_name, _symbol) {
+    constructor(string memory _name, string memory _symbol) RewardTracker() {
+        name = _name;
+        symbol = _symbol;
     }
 
     function _stake(address _fundingAccount, address _account, address _depositToken, uint256 _amount) internal virtual override {
