@@ -166,7 +166,7 @@ describe("PositionManager", function () {
             expect(await posMgr.dataStore()).to.be.equal(store.address);
             await (await posMgr.removeDataStore()).wait();
             expect(await posMgr.dataStore()).to.be.equal(ethers.constants.AddressZero);
-            expect(await posMgr.priceStore()).to.be.equal(priceStore.address);
+            expect(await posMgr.priceStore()).to.be.equal(ethers.constants.AddressZero);
             await (await posMgr.removePriceStore()).wait();
             expect(await posMgr.priceStore()).to.be.equal(ethers.constants.AddressZero);
         })
