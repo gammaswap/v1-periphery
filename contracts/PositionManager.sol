@@ -39,10 +39,10 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
         factory = _factory;
     }
 
-    function initialize(address _dataStore, address _priceStore) public initializer {
+    function initialize(address _dataStore, address) public virtual initializer {
         owner = msg.sender;
         dataStore = _dataStore;
-        priceStore = _priceStore;
+        priceStore = address(0);
     }
 
     modifier isAuthorizedForToken(uint256 tokenId) {
@@ -133,9 +133,6 @@ contract PositionManager is Initializable, UUPSUpgradeable, TwoStepOwnable, IPos
     }
 
     // **** LONG GAMMA **** //
-
-    function logPrice(address gammaPool) external virtual {
-    }
 
     /// @notice Slippage protection for uint256[] array. If amounts < amountsMin, less was obtained than expected
     /// @dev Used to check quantities of tokens not used as collateral
