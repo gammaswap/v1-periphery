@@ -9,7 +9,7 @@ contract TestPoolViewer is PoolViewer {
         return IGammaPool(pool).loan(tokenId);
     }
 
-    function getLatestPoolData(address pool) external virtual override view returns(IGammaPool.PoolData memory data) {
+    function getLatestPoolData(address pool) public virtual override view returns(IGammaPool.PoolData memory data) {
         return IGammaPool(pool).getPoolData();
     }
 
