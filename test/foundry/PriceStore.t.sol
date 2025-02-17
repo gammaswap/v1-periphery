@@ -56,9 +56,10 @@ contract PriceStoreTest is Test {
         assertEq(addr1, ps.source());
     }
 
-    function testFailSetSource() public {
+    function testSetSourceError() public {
         assertFalse(addr1 == ps.source());
         vm.prank(addr1);
+        vm.expectRevert();
         ps.setSource(addr1);
     }
 
@@ -86,9 +87,10 @@ contract PriceStoreTest is Test {
         assertEq(3600, ps.frequency());
     }
 
-    function testFailSetFrequency(uint256 var1) public {
+    function testSetFrequencyError(uint256 var1) public {
         assertEq(frequency, ps.frequency());
         vm.prank(addr1);
+        vm.expectRevert();
         ps.setFrequency(var1);
     }
 
@@ -98,14 +100,16 @@ contract PriceStoreTest is Test {
         assertEq(var1, ps.maxLen());
     }
 
-    function testFailSetMaxLen(uint256 var1) public {
+    function testSetMaxLenError(uint256 var1) public {
         assertEq(maxLen, ps.maxLen());
         vm.prank(addr1);
+        vm.expectRevert();
         ps.setMaxLen(var1);
     }
 
-    function testFailAddPriceInfo(uint256 var1) public {
+    function testAddPriceInfoError(uint256 var1) public {
         vm.prank(addr1);
+        vm.expectRevert();
         ps.addPriceInfo(address(pool));
     }
 
