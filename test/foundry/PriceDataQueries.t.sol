@@ -53,11 +53,13 @@ contract PriceDataQueriesTest is Test {
         addr1 = vm.addr(5);
     }
 
-    function testFailGetCandleBarsFrequency0() public {
+    function testGetCandleBarsFrequency0Error() public {
+        vm.expectRevert();
         pdq.getCandleBars(_pool, 0);
     }
 
-    function testFailGetCandleBarsFrequency25() public {
+    function testGetCandleBarsFrequency25Error() public {
+        vm.expectRevert();
         pdq.getCandleBars(_pool, 25);
     }
 
