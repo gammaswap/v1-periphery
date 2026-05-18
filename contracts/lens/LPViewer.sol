@@ -15,6 +15,7 @@ contract LPViewer is ILPViewer, TwoStepOwnable {
 
     mapping(address => uint256) tokenIndex;
     mapping(address => address[]) public stakingPoolsByPool;
+    uint256 public constant MAX_TRACKERS_PER_POOL = 20;
 
     constructor(address _owner) TwoStepOwnable(_owner) {
     }
@@ -40,6 +41,10 @@ contract LPViewer is ILPViewer, TwoStepOwnable {
     /// @inheritdoc ILPViewer
     function registerRewardTracker(address pool, address rewardTracker) public override virtual onlyOwner {
         require(RewardTracker(rewardTracker).isDepositToken(pool), "LP_VIEWER: RT_NOT_DEPOSIT_TOKEN");
+        require(
+            stakingPoolsByPool[pool].length < MAX_TRACKERS_PER_POOL,
+            "LP_VIEWER: MAX_TRACKERS"
+        );
         require(findRewardTracker(pool, rewardTracker) == -1, "LP_VIEWER: RT_REGISTERED");
 
         stakingPoolsByPool[pool].push(rewardTracker);
@@ -53,6 +58,15 @@ contract LPViewer is ILPViewer, TwoStepOwnable {
         require(idx >= 0, "LP_VIEWER: RT_NOT_REGISTERED");
 
         stakingPoolsByPool[pool][uint256(idx)] = address(0);
+
+        uint256 uidx = uint256(idx);
+        uint256 lastIdx = stakingPoolsByPool[pool].length - 1;
+
+        if (uidx != lastIdx) {
+            // Swap with last element
+            stakingPoolsByPool[pool][uidx] = stakingPoolsByPool[pool][lastIdx];
+        }
+        stakingPoolsByPool[pool].pop(); // actually shrinks the array
 
         emit UnregisterRewardTracker(pool, rewardTracker);
     }
